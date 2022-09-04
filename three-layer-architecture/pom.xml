@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>com.gebel.threelayerarchitecture</groupId>
 		<artifactId>three-layer-architecture-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
-	<artifactId>three-layer-architecture</artifactId>
+
+	<artifactId>three-layer-architecture-bom</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<modules>
 		<module>three-layer-architecture-dao</module>
 		<module>three-layer-architecture-business</module>
 		<module>three-layer-architecture-controller</module>
+		<module>three-layer-architecture</module>
 	</modules>
-	
-	<!-- <build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build> -->
-	
+
+	<properties>
+		<spring-boot.version>2.7.3</spring-boot.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Project. -->
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-dao</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-business</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-controller</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Miscellaneous -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+
+			<!-- Test -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
 </project>

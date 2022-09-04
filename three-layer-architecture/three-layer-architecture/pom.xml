@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>three-layer-architecture-business</artifactId>
+	<artifactId>three-layer-architecture</artifactId>
 	
 	<properties>
 		<!-- Do not declare any version in this pom (only in the bom). -->
@@ -20,7 +20,20 @@
 		<!-- Project. -->
 		<dependency>
 			<groupId>com.gebel.threelayerarchitecture</groupId>
-			<artifactId>three-layer-architecture-dao</artifactId>
+			<artifactId>three-layer-architecture-controller</artifactId>
+		</dependency>
+
+		<!-- Miscellaneous -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
