@@ -21,6 +21,7 @@
 
 	<properties>
 		<spring-boot.version>2.7.3</spring-boot.version>
+		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
 	</properties>
 
 	<dependencyManagement>
@@ -43,12 +44,23 @@
 				<version>${project.version}</version>
 			</dependency>
 
-			<!-- Miscellaneous -->
+			<!-- Spring -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+
+			<!-- Miscellaneous -->
+<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 
 			<!-- Test -->
 			<dependency>
