@@ -23,6 +23,7 @@
 		
 		<!-- Plugins -->
 		<maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
+		
 	</properties>
 
 	<dependencies>
@@ -57,12 +58,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>${spring-boot.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>${spring-boot.version}</version>
 			<scope>test</scope>
 		</dependency>

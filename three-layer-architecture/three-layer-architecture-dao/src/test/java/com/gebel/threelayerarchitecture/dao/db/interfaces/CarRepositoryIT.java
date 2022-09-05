@@ -12,9 +12,9 @@ class CarRepositoryIT {
 	@Autowired
 	private CarRepository carRepository;
 	
-	@Test
-	void test() {
-		System.out.println("ok");
-	}
+//	@Test
+//	void test() {
+//		System.out.println("ok");
+//	}
 
 }

@@ -1,34 +1,32 @@
 package com.gebel.threelayerarchitecture.sandbox.component;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class) // Ensure to create the datasource after db creation.
 class MysqlDatabaseContainerIT {
 
-	@Autowired
-	private DataSource dataSource;
-
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/cars_db";
+	private static final String DB_USER = "test_user";
+	private static final String DB_PASSWORD = "test_password";
+	private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	
 	@Test
-	void givenDatabaseCreated_whenQueryingAllCars_thenNoCars() throws SQLException {
+	void givenDatabaseCreated_whenQueryingAllCars_thenNoCars() throws SQLException, ClassNotFoundException {
 		// Given
 		// Database created
+		Class.forName(DB_DRIVER);
 		
-		// When
-		try (Connection connection = dataSource.getConnection()) {
+		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 			Statement statement = connection.createStatement();
+			// When
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM car");
 			while (resultSet.next()) {
 				// Then

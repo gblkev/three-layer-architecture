@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>three-layer-architecture</artifactId>
-	
+
 	<properties>
 		<!-- Do not declare any version in this pom (only in the bom). -->
 	</properties>
@@ -28,9 +28,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 	</dependencies>
-	
-	<!-- TODO exclude export of application-local.properties -->
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<!-- This is the local configuration of the application (made to work with the sandbox). -->
+					<!-- This file is excluded when building the jar. -->
+					<exclude>application.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
 
 </project>
