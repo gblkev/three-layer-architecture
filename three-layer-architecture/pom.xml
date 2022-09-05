@@ -20,8 +20,18 @@
 	</modules>
 
 	<properties>
+
+		<!-- Spring -->
 		<spring-boot.version>2.7.3</spring-boot.version>
+
+		<!-- Miscellaneous -->
+		<lombok.version>1.18.24</lombok.version>
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
+		<jaxb.version>2.3.2</jaxb.version>
+
+		<!-- Test -->
+		<junit-jupiter-engine.version>5.9.0</junit-jupiter-engine.version>
+
 	</properties>
 
 	<dependencyManagement>
@@ -47,7 +57,7 @@
 			<!-- Spring -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter</artifactId>
+				<artifactId>spring-boot-starter-web</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
 			<dependency>
@@ -57,16 +67,37 @@
 			</dependency>
 
 			<!-- Miscellaneous -->
-<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jakarta.xml.bind</groupId>
+				<artifactId>jakarta.xml.bind-api</artifactId>
+				<version>${jaxb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jaxb</groupId>
+				<artifactId>jaxb-runtime</artifactId>
+				<version>${jaxb.version}</version>
+			</dependency>
 
 			<!-- Test -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 				<version>${spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit-jupiter-engine.version}</version>
 			</dependency>
 
 		</dependencies>

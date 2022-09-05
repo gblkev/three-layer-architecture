@@ -17,18 +17,20 @@
 
 	<dependencies>
 
-		<!-- Project. -->
+		<!-- Project -->
 		<dependency>
 			<groupId>com.gebel.threelayerarchitecture</groupId>
 			<artifactId>three-layer-architecture-controller</artifactId>
 		</dependency>
 
-		<!-- Miscellaneous -->
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		
 	</dependencies>
+	
+	<!-- TODO exclude export of application-local.properties -->
 
 </project>

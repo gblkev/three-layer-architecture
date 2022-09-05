@@ -17,10 +17,17 @@
 
 	<dependencies>
 
-		<!-- Project. -->
+		<!-- Project -->
 		<dependency>
 			<groupId>com.gebel.threelayerarchitecture</groupId>
 			<artifactId>three-layer-architecture-business</artifactId>
+		</dependency>
+		
+		<!-- Miscellaneous -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>
