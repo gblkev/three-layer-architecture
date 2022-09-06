@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v1.converter.V1ApiBusinessErrorConverter;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
@@ -24,19 +26,19 @@ public class V1ApiExceptionHandler {
 	private V1ApiBusinessErrorConverter businessErrorConverter;
 	
 	@ExceptionHandler(Throwable.class)
-	@ApiResponse(responseCode = "500", description = "A technical error occured - a new attempt can be made")
-	protected ResponseEntity<ApiTechnicalError> handleGenericException(Throwable t) {
-		ApiTechnicalError apiError = new ApiTechnicalError(GENERIC_TECHNICAL_ERROR_MESSAGE);
+	@ApiResponseTechnicalError(responseCode = ApiTechnicalErrorDto.GENERIC_ERROR_HTTP_CODE, description = "A technical error occured - a new attempt can be made")
+	protected ResponseEntity<ApiTechnicalErrorDto> handleGenericException(Throwable t) {
+		ApiTechnicalErrorDto apiError = new ApiTechnicalErrorDto(GENERIC_TECHNICAL_ERROR_MESSAGE, ApiTechnicalErrorDto.GENERIC_ERROR_HTTP_CODE);
 		LOGGER.error(GENERIC_TECHNICAL_ERROR_MESSAGE, t);
-		return new ResponseEntity<ApiTechnicalError>(apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+		return new ResponseEntity<ApiTechnicalErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
 	}
 	
 	@ExceptionHandler(ApiBusinessException.class)
-	protected ResponseEntity<ApiBusinessError> handleBusinessException(ApiBusinessException apiBusinessException) {
+	protected ResponseEntity<ApiBusinessErrorDto> handleBusinessException(ApiBusinessException apiBusinessException) {
 		BusinessException businessException = apiBusinessException.getBusinessException();
-		ApiBusinessError apiError = new ApiBusinessError(GENERIC_BUSINESS_ERROR_MESSAGE, businessErrorConverter.toDto(businessException.getBusinessError()));
+		ApiBusinessErrorDto apiError = new ApiBusinessErrorDto(GENERIC_BUSINESS_ERROR_MESSAGE, businessErrorConverter.toDto(businessException.getBusinessError()));
 		LOGGER.info(GENERIC_BUSINESS_ERROR_MESSAGE + " - " + apiError.getErrorCode());
-		return new ResponseEntity<ApiBusinessError>(apiError, new HttpHeaders(), HttpStatus.CONFLICT.value());
+		return new ResponseEntity<ApiBusinessErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
 	}
 	
 }

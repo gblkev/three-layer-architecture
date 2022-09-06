@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessErrorCode;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +28,8 @@ public interface ColorV1Endpoint {
 	@PostMapping
 	@Operation(summary = "Create a new color")
 	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "OK"),
-		@ApiResponseApiBusinessError(ApiBusinessErrorCode.COLOR_INVALID_HEXA_CODE)
+		@ApiResponseOk200(responseCode = "200", description = "OK"),
+		@ApiResponseBusinessError(ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE)
 	})
 	ColorDto createColor(@RequestBody String hexaCode);
 	
