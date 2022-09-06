@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>three-layer-architecture-controller</artifactId>
-	
+
 	<properties>
 		<!-- Do not declare any version in this pom (only in the bom). -->
 	</properties>
@@ -22,12 +22,30 @@
 			<groupId>com.gebel.threelayerarchitecture</groupId>
 			<artifactId>three-layer-architecture-business</artifactId>
 		</dependency>
-		
+
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- Miscellaneous -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
 		</dependency>
 
 	</dependencies>

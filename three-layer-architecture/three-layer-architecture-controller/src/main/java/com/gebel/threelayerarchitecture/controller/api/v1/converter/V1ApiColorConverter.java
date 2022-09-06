@@ -1,16 +1,16 @@
-package com.gebel.threelayerarchitecture.controller.api.converter;
+package com.gebel.threelayerarchitecture.controller.api.v1.converter;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gebel.threelayerarchitecture.business.domain.Color;
-import com.gebel.threelayerarchitecture.controller.api.dto.ColorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
 
 @Component
-public class ApiColorConverter {
+public class V1ApiColorConverter {
 	
 	public ColorDto toDto(Color domainColor) {
 		return ColorDto.builder()
@@ -20,9 +20,10 @@ public class ApiColorConverter {
 	}
 
 	public List<ColorDto> toDto(List<Color> domainColors) {
-		return Optional.ofNullable(domainColors)
+		return CollectionUtils.emptyIfNull(domainColors)
+			.stream()
 			.map(this::toDto)
-			.orElse(Collections.emptyList());
+			.collect(Collectors.toList());
 	}
 
 }

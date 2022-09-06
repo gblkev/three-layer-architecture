@@ -7,10 +7,8 @@ import lombok.Data;
 @Builder
 public class Driver {
 	
-	private Long id;
-	
+	private String id;
 	private String firstName;
-	
 	private String lastName;
 
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
 
 @Repository
-public interface ColorRepository extends JpaRepository<ColorEntity, Integer> {
+public interface ColorRepository extends JpaRepository<ColorEntity, String> {
 
 }

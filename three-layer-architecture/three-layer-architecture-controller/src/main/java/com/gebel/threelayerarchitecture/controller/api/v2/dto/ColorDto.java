@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.dto;
+package com.gebel.threelayerarchitecture.controller.api.v2.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class ColorDto {
 
-	private Long id;
+	private String id;
 	private String hexaCode;
 	
 }

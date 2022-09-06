@@ -7,11 +7,8 @@ import lombok.Data;
 @Builder
 public class Car {
 
-	private Long id;
-	
+	private String id;
 	private Color color;
-	
 	private Driver driver;
-	
 	
 }
