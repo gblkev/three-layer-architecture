@@ -11,7 +11,7 @@ public class ColorDto {
 	@Schema(required = true)
 	private String id;
 	
-	@Schema(required = true)
+	@Schema(required = true, example = "#000000")
 	private String hexaCode;
 	
 }

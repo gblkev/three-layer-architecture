@@ -8,11 +8,15 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "color")
 public class ColorEntity {
@@ -23,7 +27,7 @@ public class ColorEntity {
 	@Column(name = "id", columnDefinition = "VARCHAR(255)")
 	private String id;
 	
-	@Column(name = "hexa_code", nullable = false)
+	@Column(name = "hexa_code", nullable = false, unique = true)
 	private String hexaCode;
 
 }

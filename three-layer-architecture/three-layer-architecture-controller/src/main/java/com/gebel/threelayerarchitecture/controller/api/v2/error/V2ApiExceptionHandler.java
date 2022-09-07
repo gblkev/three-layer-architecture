@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v2.converter.V2ApiBusinessErrorConverter;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnicalErrorDto;
 
@@ -22,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class V2ApiExceptionHandler {
 
 	private static final String GENERIC_TECHNICAL_ERROR_MESSAGE = "An unexpected error occured";
-	private static final String GENERIC_BUSINESS_ERROR_MESSAGE = "A business error occured";
 	
 	private V2ApiBusinessErrorConverter businessErrorConverter;
 	
@@ -43,8 +43,9 @@ public class V2ApiExceptionHandler {
 	@ExceptionHandler(ApiBusinessException.class)
 	protected ResponseEntity<ApiBusinessErrorDto> handleBusinessException(ApiBusinessException apiBusinessException) {
 		BusinessException businessException = apiBusinessException.getBusinessException();
-		ApiBusinessErrorDto apiError = new ApiBusinessErrorDto(GENERIC_BUSINESS_ERROR_MESSAGE, businessErrorConverter.toDto(businessException.getBusinessError()));
-		LOGGER.info(GENERIC_BUSINESS_ERROR_MESSAGE + " - " + apiError.getErrorCode());
+		ApiBusinessErrorCodeDto apiBusinessErrorCodeDto = businessErrorConverter.toDto(businessException.getBusinessError());
+		ApiBusinessErrorDto apiError = new ApiBusinessErrorDto(apiBusinessErrorCodeDto.getDescription(), apiBusinessErrorCodeDto);
+		LOGGER.info("Business error " + apiBusinessErrorCodeDto + " - " + businessException.getMessage());
 		return new ResponseEntity<ApiBusinessErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
 	}
 	

@@ -12,7 +12,9 @@ import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessExcep
 import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.ColorV1Endpoint;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 public class ColorV1EndpointImpl implements ColorV1Endpoint {
@@ -22,12 +24,14 @@ public class ColorV1EndpointImpl implements ColorV1Endpoint {
 	
 	@Override
 	public List<ColorDto> getAllAvailableColors() {
+		LOGGER.info("Listing all available colors");
 		return colorConverter.toDto(colorService.getAllAvailableColors());
 	}
 
 	@Override
 	public ColorDto createColor(String hexaCode) {
 		try {
+			LOGGER.info("Creating color with hexaCode={}", hexaCode);
 			return colorConverter.toDto(colorService.createColor(hexaCode));
 		}
 		catch (BusinessException businessException) {
@@ -36,8 +40,9 @@ public class ColorV1EndpointImpl implements ColorV1Endpoint {
 	}
 
 	@Override
-	public void deleteColor(String id) {
-		colorService.deleteColor(id);
+	public void deleteColor(String colorId) {
+		LOGGER.info("Deleting color with id={}", colorId);
+		colorService.deleteColor(colorId);
 	}
 
 }

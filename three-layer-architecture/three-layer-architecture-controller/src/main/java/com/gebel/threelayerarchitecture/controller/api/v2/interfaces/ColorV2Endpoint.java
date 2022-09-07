@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.ColorDto;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,16 +26,17 @@ public interface ColorV2Endpoint {
 	@Operation(summary = "List all the available colors")
 	List<ColorDto> getAllAvailableColors();
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a new color")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "OK"),
-		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE")
+		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE"),
+		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_SAME_HEXA_CODE_ALREADY_EXISTS")
 	})
-	ColorDto createColor(@RequestBody String hexaCode);
+	ColorDto createColor(@RequestBody @Schema(required = true, example = "#000000") String hexaCode);
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{colorId}")
 	@Operation(summary = "Delete an existing color")
-	void deleteColor(@PathVariable("id") String id);
+	void deleteColor(@PathVariable("colorId") String colorId);
 	
 }

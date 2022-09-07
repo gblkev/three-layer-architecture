@@ -11,6 +11,6 @@ public interface ColorService {
 	
 	Color createColor(String hexaCode) throws BusinessException;
 	
-	void deleteColor(String id);
+	void deleteColor(String colorId);
 
 }

@@ -13,6 +13,11 @@ public class BusinessException extends Exception {
 	private static final long serialVersionUID = 1348916528015303292L;
 	
 	@NonNull
-	private BusinessError businessError;
+	private BusinessErrorCode businessError;
+	
+	public BusinessException(String message, BusinessErrorCode businessError) {
+		super(message);
+		this.businessError = businessError;
+	}
 
 }
