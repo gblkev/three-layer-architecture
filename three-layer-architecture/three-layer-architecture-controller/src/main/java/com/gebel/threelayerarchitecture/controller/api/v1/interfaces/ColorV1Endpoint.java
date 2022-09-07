@@ -2,6 +2,7 @@ package com.gebel.threelayerarchitecture.controller.api.v1.interfaces;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,15 +21,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Colors")
 public interface ColorV1Endpoint {
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "List all the available colors")
 	List<ColorDto> getAllAvailableColors();
 	
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a new color")
 	@ApiResponses({
-		@ApiResponseOk200(responseCode = "200", description = "OK"),
-		@ApiResponseBusinessError(ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE)
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE")
 	})
 	ColorDto createColor(@RequestBody String hexaCode);
 	

@@ -2,6 +2,7 @@ package com.gebel.threelayerarchitecture.controller.api.v1.interfaces;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,7 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Drivers")
 public interface DriverV1Endpoint {
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "List all the drivers")
 	List<DriverDto> getAllDrivers();
 	

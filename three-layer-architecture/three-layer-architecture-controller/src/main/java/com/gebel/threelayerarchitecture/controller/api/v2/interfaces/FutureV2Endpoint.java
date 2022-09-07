@@ -1,5 +1,6 @@
 package com.gebel.threelayerarchitecture.controller.api.v2.interfaces;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Future", description = "Soon to be released")
 public interface FutureV2Endpoint {
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Give a int about the future")
 	FutureDto readFuture();
 	
