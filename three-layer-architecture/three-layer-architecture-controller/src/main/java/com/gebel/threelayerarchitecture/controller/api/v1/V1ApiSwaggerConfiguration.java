@@ -47,7 +47,7 @@ class V1ApiSwaggerConfiguration {
 	
 	private class ReplaceApiBusinessErrorCodeEnumValuesInApiResponses implements OperationCustomizer {
 		
-		private static final String API_BUSINESS_ERROR_CODE_PREFIX = ApiBusinessErrorCodeDto.class.getSimpleName() + ".";
+		private final String API_BUSINESS_ERROR_CODE_PREFIX = ApiBusinessErrorCodeDto.class.getSimpleName() + ".";
 		
 		@Override
 		public Operation customize(Operation operation, HandlerMethod handlerMethod) {

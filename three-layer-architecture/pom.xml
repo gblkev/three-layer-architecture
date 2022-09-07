@@ -31,15 +31,12 @@
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
 		<springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
 
-		<!-- Plugins -->
-		<maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
-
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 
-			<!-- Project. -->
+			<!-- Project -->
 			<dependency>
 				<groupId>com.gebel.threelayerarchitecture</groupId>
 				<artifactId>three-layer-architecture-dao</artifactId>
@@ -96,6 +93,7 @@
 	</dependencyManagement>
 
 	<build>
+	
 		<pluginManagement>
 			<plugins>
 			
@@ -105,14 +103,17 @@
 					<version>${spring-boot.version}</version>
 				</plugin>
 				
-				<!-- Used for integration tests. -->
-				<plugin>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${maven-failsafe-plugin.version}</version>
-				</plugin>
-				
 			</plugins>
 		</pluginManagement>
+		
+		<plugins>
+			<!-- Must remain empty -->
+		</plugins>
+		
 	</build>
+	
+	<dependencies>
+		<!-- Must remain empty -->
+	</dependencies>
 
 </project>

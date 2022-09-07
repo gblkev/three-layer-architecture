@@ -12,7 +12,7 @@
 	<artifactId>three-layer-architecture-business</artifactId>
 
 	<properties>
-		<!-- Do not declare any version in this pom (only in the bom). -->
+		<!-- Do not declare any version in this pom (only in the bom) -->
 	</properties>
 
 	<dependencies>
