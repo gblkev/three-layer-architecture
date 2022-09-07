@@ -1,5 +1,7 @@
 package com.gebel.threelayerarchitecture.sandbox.component;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,23 +10,44 @@ import java.sql.Statement;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@TestPropertySource("classpath:application-test.properties")
 class MysqlDatabaseContainerIT {
 
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/cars_db";
-	private static final String DB_USER = "test_user";
-	private static final String DB_PASSWORD = "test_password";
-	private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	private static final int FREE_TCP_PORT;
+	
+	@Value("${db.port}")
+	private int dbPort;
+	
+	static {
+		try (ServerSocket freeServerSocket = new ServerSocket(0)) {
+			FREE_TCP_PORT = freeServerSocket.getLocalPort();
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@DynamicPropertySource
+    static void mysqlDynamicPortProperties(DynamicPropertyRegistry registry) throws IOException {
+        registry.add("db.port", () -> String.valueOf(FREE_TCP_PORT));
+    }
 	
 	@Test
 	void givenDatabaseCreated_whenQueryingAllCars_thenNoCars() throws SQLException, ClassNotFoundException {
 		// Given
 		// Database created
-		Class.forName(DB_DRIVER);
-		
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		String dbUrl = "jdbc:mysql://localhost:" + dbPort + "/cars_db";
+
+		try (Connection connection = DriverManager.getConnection(dbUrl, "test_user", "test_password")) {
 			Statement statement = connection.createStatement();
 			// When
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM car");
@@ -34,5 +57,5 @@ class MysqlDatabaseContainerIT {
 			}
 		}
 	}
-
+	
 }

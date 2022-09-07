@@ -13,6 +13,9 @@ import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
 public class DomainColorConverter {
 	
 	public Color toDomain(ColorEntity entityColor) {
+		if (entityColor == null) {
+			return null;
+		}
 		return Color.builder()
 			.id(entityColor.getId())
 			.hexaCode(entityColor.getHexaCode())
@@ -27,6 +30,9 @@ public class DomainColorConverter {
 	}
 	
 	public ColorEntity toEntity(Color domainColor) {
+		if (domainColor == null) {
+			return null;
+		}
 		return ColorEntity.builder()
 			.id(domainColor.getId())
 			.hexaCode(domainColor.getHexaCode())

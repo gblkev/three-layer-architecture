@@ -26,6 +26,7 @@
 
 		<!-- Miscellaneous -->
 		<lombok.version>1.18.24</lombok.version>
+		<commons-lang3>3.12.0</commons-lang3>
 		<commons-collections4.version>4.4</commons-collections4.version>
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
 		<springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
@@ -72,6 +73,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-collections4</artifactId>
 				<version>${commons-collections4.version}</version>
 			</dependency>
@@ -85,18 +91,26 @@
 				<artifactId>springdoc-openapi-ui</artifactId>
 				<version>${springdoc-openapi-ui.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
 			<plugins>
+			
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+				</plugin>
+				
 				<!-- Used for integration tests. -->
 				<plugin>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${maven-failsafe-plugin.version}</version>
 				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 	</build>

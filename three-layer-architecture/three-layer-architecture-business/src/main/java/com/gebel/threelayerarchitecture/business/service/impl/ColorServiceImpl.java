@@ -52,7 +52,7 @@ public class ColorServiceImpl implements ColorService {
 	
 	private Color createColorInDb(Color color) {
 		ColorEntity colorEntity = colorConverter.toEntity(color);
-		colorRepository.save(colorEntity);
+		colorEntity = colorRepository.save(colorEntity);
 		return colorConverter.toDomain(colorEntity);
 	}
 

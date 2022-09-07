@@ -13,6 +13,9 @@ import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
 public class DomainDriverConverter {
 	
 	public Driver toDomain(DriverEntity entityDriver) {
+		if (entityDriver == null) {
+			return null;
+		}
 		return Driver.builder()
 			.id(entityDriver.getId())
 			.firstName(entityDriver.getFirstName())
@@ -25,6 +28,17 @@ public class DomainDriverConverter {
 			.stream()
 			.map(this::toDomain)
 			.collect(Collectors.toList());
+	}
+	
+	public DriverEntity toEntity(Driver domainDriver) {
+		if (domainDriver == null) {
+			return null;
+		}
+		return DriverEntity.builder()
+			.id(domainDriver.getId())
+			.firstName(domainDriver.getFirstName())
+			.lastName(domainDriver.getLastName())
+			.build();
 	}
 
 }

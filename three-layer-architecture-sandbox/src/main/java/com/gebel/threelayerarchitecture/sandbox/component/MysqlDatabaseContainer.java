@@ -3,6 +3,7 @@ package com.gebel.threelayerarchitecture.sandbox.component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.testcontainers.containers.MySQLContainer;
 
@@ -17,31 +18,44 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class MysqlDatabaseContainer {
 
-	private static final String MYSQL_VERSION = "8.0.11";
-	private static final String DB_NAME = "cars_db";
-	private static final String DB_USER = "test_user";
-	private static final String DB_PASSWORD = "test_password";
-	private static final int DB_PORT = 3306;
+	private static final int CONTAINER_MAPPED_PORT = 3306;
 	private static final String INIT_SCRIPT_PATH = "create-mysql-database.sql";
 	
-	private static final MySQLContainer<?> CONTAINER = (MySQLContainer<?>) new MySQLContainer<>("mysql:" + MYSQL_VERSION)
-		.withDatabaseName(DB_NAME)
-		.withUsername(DB_USER)
-		.withPassword(DB_PASSWORD)
-		.withExposedPorts(DB_PORT)
-		.withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-			new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(DB_PORT), new ExposedPort(DB_PORT)))))
-		.withInitScript(INIT_SCRIPT_PATH);
-
+	@Value("${db.mysql.version}")
+	private String mysqlVersion;
+	
+	@Value("${db.name}")
+	private String dbName;
+	
+	@Value("${db.port}")
+	private int dbPort;
+	
+	@Value("${db.user}")
+	private String dbUser;
+	
+	@Value("${db.password}")
+	private String dbPassword;
+	
+	private MySQLContainer<?> container;
+	
 	@PostConstruct
+	@SuppressWarnings("resource") // Resource closed by "stop()"
 	public void start() {
+		container = (MySQLContainer<?>) new MySQLContainer<>("mysql:" + mysqlVersion)
+			.withDatabaseName(dbName)
+			.withUsername(dbUser)
+			.withPassword(dbPassword)
+			.withExposedPorts(CONTAINER_MAPPED_PORT)
+			.withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
+				new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(dbPort), new ExposedPort(CONTAINER_MAPPED_PORT)))))
+			.withInitScript(INIT_SCRIPT_PATH);
 		LOGGER.info("Starting MySQL database...");
-		CONTAINER.start();
+		container.start();
 	}
 
 	@PreDestroy
 	public void stop() {
-		CONTAINER.stop();
+		container.stop();
 	}
 
 }

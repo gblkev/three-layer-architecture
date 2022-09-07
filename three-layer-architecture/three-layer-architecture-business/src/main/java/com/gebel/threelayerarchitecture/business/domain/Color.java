@@ -2,6 +2,8 @@ package com.gebel.threelayerarchitecture.business.domain;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,12 +17,15 @@ public class Color {
 	private String hexaCode;
 	
 	public void validate() throws BusinessException {
-		if (!isValidHexaCode(hexaCode)) {
+		if (!isValidHexaCode()) {
 			throw new BusinessException(hexaCode + " is not a valid hexadecimal color value", BusinessErrorCode.COLOR_INVALID_HEXA_CODE);
 		}
 	}
 
-	public boolean isValidHexaCode(String hexaCode) {
+	public boolean isValidHexaCode() {
+		if (StringUtils.isBlank(hexaCode)) {
+			return false;
+		}
 		return Pattern.compile(HEXADECIMAL_COLOR_REGEX)
 				.matcher(hexaCode)
 				.matches();
