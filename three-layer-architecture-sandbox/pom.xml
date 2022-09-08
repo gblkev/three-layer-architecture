@@ -12,15 +12,15 @@
 	<artifactId>three-layer-architecture-sandbox</artifactId>
 
 	<properties>
-	
+
 		<!-- Spring -->
 		<spring-boot.version>2.7.3</spring-boot.version>
-		
+
 		<!-- Miscellaneous -->
 		<lombok.version>1.18.24</lombok.version>
 		<testcontainers-mysql.version>1.17.3</testcontainers-mysql.version>
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
-		
+
 	</properties>
 
 	<dependencies>
@@ -62,24 +62,5 @@
 		<!-- TODO add mock for an external api -->
 
 	</dependencies>
-
-	<build>
-		<plugins>
-		
-			<!-- Run integration tests -->
-			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-		</plugins>
-	</build>
 
 </project>
