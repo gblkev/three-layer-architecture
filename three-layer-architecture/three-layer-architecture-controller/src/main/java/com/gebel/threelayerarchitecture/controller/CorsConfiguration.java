@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api;
+package com.gebel.threelayerarchitecture.controller;
 
 import java.util.List;
 

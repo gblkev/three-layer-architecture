@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "A technical error occured - a new attempt can be made")
 public class ApiTechnicalErrorDto extends ApiErrorDto {
 	
-	public static final HttpStatus GENERIC_ERROR_HTTP_CODE = HttpStatus.INTERNAL_SERVER_ERROR;
 	private static final int MIN_HTTP_CODE = 400;
 	private static final int MAX_HTTP_CODE = 599;
 	

@@ -2,13 +2,18 @@ package com.gebel.threelayerarchitecture.controller.api.v1.error;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v1.converter.V1ApiBusinessErrorConverter;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiGenericErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiHttpRequestMethodNotSupportedErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiNotFoundErrorDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,12 +24,24 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-@RestControllerAdvice
+@ControllerAdvice
 public class V1ApiExceptionHandler {
 
-	private static final String GENERIC_TECHNICAL_ERROR_MESSAGE = "An unexpected error occured";
-	
 	private V1ApiBusinessErrorConverter businessErrorConverter;
+	
+	@ExceptionHandler(NoHandlerFoundException.class)
+	protected ResponseEntity<ApiTechnicalErrorDto> handleNotFoundException(HttpRequestMethodNotSupportedException e) {
+		ApiTechnicalErrorDto apiError = new ApiNotFoundErrorDto();
+		LOGGER.info(e.getMessage());
+		return new ResponseEntity<ApiTechnicalErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
+	}
+	
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	protected ResponseEntity<ApiTechnicalErrorDto> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+		ApiTechnicalErrorDto apiError = new ApiHttpRequestMethodNotSupportedErrorDto();
+		LOGGER.info(e.getMessage());
+		return new ResponseEntity<ApiTechnicalErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
+	}
 	
 	@ExceptionHandler(Throwable.class)
 	@ApiResponse(
@@ -34,8 +51,8 @@ public class V1ApiExceptionHandler {
 			mediaType = "application/json",
 			schema = @Schema(implementation = ApiTechnicalErrorDto.class)))
 	protected ResponseEntity<ApiTechnicalErrorDto> handleGenericException(Throwable t) {
-		ApiTechnicalErrorDto apiError = new ApiTechnicalErrorDto(GENERIC_TECHNICAL_ERROR_MESSAGE, ApiTechnicalErrorDto.GENERIC_ERROR_HTTP_CODE);
-		LOGGER.error(GENERIC_TECHNICAL_ERROR_MESSAGE, t);
+		ApiTechnicalErrorDto apiError = new ApiGenericErrorDto();
+		LOGGER.error(apiError.getMessage(), t);
 		return new ResponseEntity<ApiTechnicalErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());
 	}
 	
