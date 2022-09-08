@@ -30,7 +30,7 @@ public class V1ApiExceptionHandler {
 	private V1ApiBusinessErrorConverter businessErrorConverter;
 	
 	@ExceptionHandler(NoHandlerFoundException.class)
-	protected ResponseEntity<ApiTechnicalErrorDto> handleNotFoundException(HttpRequestMethodNotSupportedException e) {
+	protected ResponseEntity<ApiTechnicalErrorDto> handleNotFoundException(NoHandlerFoundException e) {
 		ApiTechnicalErrorDto apiError = new ApiNotFoundErrorDto();
 		LOGGER.info(e.getMessage());
 		return new ResponseEntity<ApiTechnicalErrorDto>(apiError, new HttpHeaders(), apiError.getHttpCode());

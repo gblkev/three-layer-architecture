@@ -31,6 +31,9 @@
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
 		<springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
 
+		<!-- Test -->
+		<testcontainers.version>1.17.3</testcontainers.version>
+
 	</properties>
 
 	<dependencyManagement>
@@ -89,29 +92,38 @@
 				<version>${springdoc-openapi-ui.version}</version>
 			</dependency>
 
+			<!-- Test -->
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
-	
+
 		<pluginManagement>
 			<plugins>
-			
+
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot.version}</version>
 				</plugin>
-				
+
 			</plugins>
 		</pluginManagement>
-		
+
 		<plugins>
 			<!-- Must remain empty -->
 		</plugins>
-		
+
 	</build>
-	
+
 	<dependencies>
 		<!-- Must remain empty -->
 	</dependencies>
