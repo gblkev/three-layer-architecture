@@ -30,20 +30,20 @@ class DriverRepositoryIT {
 	// Ex: c2bba799-02db-4b4b-8782-0df1517bbe1d
 	private static final String UUID_REGEX = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
 	
-	private static MysqlDatabaseContainer mysqlContainer = new MysqlDatabaseContainer(); // Shared between all methods.
+	private static final MysqlDatabaseContainer MYSQL_CONTAINER = new MysqlDatabaseContainer(); // Shared between all methods.
 
 	@Autowired
 	private DriverRepository driverRepository;
 
 	@DynamicPropertySource
 	private static void mysqlDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
-		mysqlContainer.start();
-		registry.add("spring.datasource.url", () -> mysqlContainer.getJdbcUrl());
+		MYSQL_CONTAINER.start();
+		registry.add("spring.datasource.url", () -> MYSQL_CONTAINER.getJdbcUrl());
 	}
 
 	@AfterAll
 	private static void clearAll() {
-		mysqlContainer.stop();
+		MYSQL_CONTAINER.stop();
 	}
 
 	@Test

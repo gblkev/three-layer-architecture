@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.dao.db.interfaces;
+package com.gebel.threelayerarchitecture.controller.test;
 
 import org.testcontainers.containers.MySQLContainer;
 

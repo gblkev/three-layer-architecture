@@ -16,7 +16,6 @@
 		<module>three-layer-architecture-dao</module>
 		<module>three-layer-architecture-business</module>
 		<module>three-layer-architecture-controller</module>
-		<module>three-layer-architecture</module>
 	</modules>
 
 	<properties>

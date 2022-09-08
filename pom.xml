@@ -23,7 +23,6 @@
 	<modules>
 		<module>three-layer-architecture</module>
 		<module>three-layer-architecture-sandbox</module>
-		<module>three-layer-architecture-e2e-tests</module>
 	</modules>
 
 	<build>
