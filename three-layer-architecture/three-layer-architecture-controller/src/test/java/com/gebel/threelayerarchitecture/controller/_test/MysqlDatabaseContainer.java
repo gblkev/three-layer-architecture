@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.test;
+package com.gebel.threelayerarchitecture.controller._test;
 
 import org.testcontainers.containers.MySQLContainer;
 
