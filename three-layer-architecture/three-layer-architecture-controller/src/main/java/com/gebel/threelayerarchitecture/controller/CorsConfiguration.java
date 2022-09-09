@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import lombok.AllArgsConstructor;
+
 @Configuration
+@AllArgsConstructor
 public class CorsConfiguration {
 	
 	@Value("#{'${web.cors.allowed-origins}'.split(',')}")

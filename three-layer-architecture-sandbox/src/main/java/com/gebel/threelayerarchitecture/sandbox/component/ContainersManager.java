@@ -1,19 +1,24 @@
-package com.gebel.threelayerarchitecture.controller._test;
+package com.gebel.threelayerarchitecture.sandbox.component;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.stream.Stream;
 
-import org.springframework.test.context.DynamicPropertyRegistry;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TestContainersManager {
+@Component
+class ContainersManager {
 
 	private MysqlDatabaseContainer mysqlDatabaseContainer = new MysqlDatabaseContainer();
 	
-	public void startContainers() {
+	@PostConstruct
+	void startContainers() {
 		LOGGER.info("Starting containers in parallel...");
 		Instant start = Instant.now();
 		Stream.of(mysqlDatabaseContainer)
@@ -23,13 +28,10 @@ public class TestContainersManager {
 		LOGGER.info("Containers started in {}", Duration.between(start, end));
 	}
 	
-	public void stopContainers() {
+	@PreDestroy
+	void stopContainers() {
 		LOGGER.info("Stopping containers...");
 		mysqlDatabaseContainer.stop();
-	}
-	
-	public void setDynamicContainersConfiguration(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", () -> mysqlDatabaseContainer.getJdbcUrl());
 	}
 	
 }

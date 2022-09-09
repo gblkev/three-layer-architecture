@@ -23,7 +23,7 @@ import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
 class SpringActuatorIT {
 	
 	private static final TestContainersManager TEST_CONTAINERS_MANAGER = new TestContainersManager(); // Shared between all methods.
-	private static final String ACTUATOR_URL = "http://localhost:%d/actuator/health";
+	private static final String ACTUATOR_URL_PATTERN = "http://localhost:%d/actuator/health";
 	
 	@LocalServerPort
 	private int serverPort;
@@ -45,7 +45,7 @@ class SpringActuatorIT {
 	@Test
 	void givenActuatorExposedOnManagementPort_whenCallingActuator_thenActuatorAvailableOnManagementPort() throws Exception {
 		// Given
-		String managementPortUrl = String.format(ACTUATOR_URL, managementPort);
+		String managementPortUrl = String.format(ACTUATOR_URL_PATTERN, managementPort);
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -60,7 +60,7 @@ class SpringActuatorIT {
 	@Test
 	void givenActuatorExposedOnManagementPort_whenCallingActuator_thenActuatorNotAvailableOnServerPort() throws Exception {
 		// Given
-		String serverPortUrl = String.format(ACTUATOR_URL, serverPort);
+		String serverPortUrl = String.format(ACTUATOR_URL_PATTERN, serverPort);
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();

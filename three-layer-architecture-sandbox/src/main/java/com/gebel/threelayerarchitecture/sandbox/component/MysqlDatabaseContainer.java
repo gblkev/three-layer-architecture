@@ -1,10 +1,6 @@
 package com.gebel.threelayerarchitecture.sandbox.component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.testcontainers.containers.MySQLContainer;
 
 import com.github.dockerjava.api.model.ExposedPort;
@@ -15,8 +11,7 @@ import com.github.dockerjava.api.model.Ports;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
-public class MysqlDatabaseContainer {
+class MysqlDatabaseContainer implements GenericContainer {
 
 	private static final int CONTAINER_MAPPED_PORT = 3306;
 	private static final String INIT_SCRIPT_PATH = "create-mysql-database.sql";
@@ -38,7 +33,7 @@ public class MysqlDatabaseContainer {
 	
 	private MySQLContainer<?> container;
 	
-	@PostConstruct
+	@Override
 	@SuppressWarnings("resource") // Resource closed by "stop()"
 	public void start() {
 		container = (MySQLContainer<?>) new MySQLContainer<>("mysql:" + mysqlVersion)
@@ -53,7 +48,7 @@ public class MysqlDatabaseContainer {
 		container.start();
 	}
 
-	@PreDestroy
+	@Override
 	public void stop() {
 		container.stop();
 	}

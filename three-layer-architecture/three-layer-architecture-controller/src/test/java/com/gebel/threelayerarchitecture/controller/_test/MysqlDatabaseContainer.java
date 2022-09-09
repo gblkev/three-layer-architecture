@@ -2,7 +2,7 @@ package com.gebel.threelayerarchitecture.controller._test;
 
 import org.testcontainers.containers.MySQLContainer;
 
-class MysqlDatabaseContainer {
+class MysqlDatabaseContainer implements GenericContainer {
 
 	private static final String MYSQL_VERSION = "mysql:8.0.11";
 	private static final String DB_NAME = "cars_db";
@@ -21,11 +21,13 @@ class MysqlDatabaseContainer {
 			.withInitScript(INIT_SCRIPT_PATH);
 	}
 	
-	void start() {
+	@Override
+	public void start() {
 		container.start();
 	}
 	
-	void stop() {
+	@Override
+	public void stop() {
 		container.stop();
 	}
 	
