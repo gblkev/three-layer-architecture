@@ -9,8 +9,24 @@
 	<packaging>pom</packaging>
 
 	<properties>
+	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
+		
+		<!-- Spring -->
+		<spring-boot.version>2.7.3</spring-boot.version>
+
+		<!-- Miscellaneous -->
+		<lombok.version>1.18.24</lombok.version>
+		<commons-lang3>3.12.0</commons-lang3>
+		<commons-collections4.version>4.4</commons-collections4.version>
+		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
+		<springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
+
+		<!-- Test -->
+		<testcontainers.version>1.17.3</testcontainers.version>
+		
+		<!-- Plugins -->
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
 		<maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
@@ -18,12 +34,81 @@
 		<maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
 		<maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
+		
 	</properties>
 
 	<modules>
-		<module>three-layer-architecture</module>
 		<module>three-layer-architecture-sandbox</module>
+		<module>three-layer-architecture-dao</module>
+		<module>three-layer-architecture-business</module>
+		<module>three-layer-architecture-controller</module>
 	</modules>
+	
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Spring -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Miscellaneous -->
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-dao</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-business</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commons-collections4.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc-openapi-ui.version}</version>
+			</dependency>
+
+			<!-- Test -->
+			<dependency>
+				<groupId>com.gebel.threelayerarchitecture</groupId>
+				<artifactId>three-layer-architecture-sandbox</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
@@ -60,6 +145,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${maven-jar-plugin.version}</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
 				</plugin>
 
 				<plugin>

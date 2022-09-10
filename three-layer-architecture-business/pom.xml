@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>three-layer-architecture-sandbox</artifactId>
+	<artifactId>three-layer-architecture-business</artifactId>
 
 	<properties>
 		<!-- Do not declare any version in this pom (only in the parent) -->
@@ -17,10 +17,10 @@
 
 	<dependencies>
 
-		<!-- Spring -->
+		<!-- Project -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>com.gebel.threelayerarchitecture</groupId>
+			<artifactId>three-layer-architecture-dao</artifactId>
 		</dependency>
 
 		<!-- Miscellaneous -->
@@ -30,13 +30,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mysql</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
 		</dependency>
 
 		<!-- Test -->
@@ -45,8 +44,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- TODO add mock for an external api -->
 
 	</dependencies>
 
