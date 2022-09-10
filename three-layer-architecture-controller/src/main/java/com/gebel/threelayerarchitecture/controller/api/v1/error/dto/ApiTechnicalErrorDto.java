@@ -10,6 +10,10 @@ public class ApiTechnicalErrorDto extends ApiErrorDto {
 	private static final int MIN_HTTP_CODE = 400;
 	private static final int MAX_HTTP_CODE = 599;
 	
+	public ApiTechnicalErrorDto() {
+		super();
+	}
+	
 	public ApiTechnicalErrorDto(String message, HttpStatus httpCode) {
 		super(message, httpCode);
 		checkHttpCode(httpCode);

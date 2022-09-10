@@ -2,15 +2,17 @@ package com.gebel.threelayerarchitecture.controller._test;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 
+import lombok.Getter;
 import test.com.gebel.threelayerarchitecture.sandbox.container.TestContainers;
 
+@Getter
 public class TestContainersManager {
 	
 	private static final String DB_MYSQL_VERSION = "8.0.11";
 	private static final String DB_NAME = "cars_db";
 	private static final String DB_USER = "test_user";
 	private static final String DB_PASSWORD = "test_password";
-	
+
 	private TestContainers testContainers;
 	
 	public TestContainersManager() {

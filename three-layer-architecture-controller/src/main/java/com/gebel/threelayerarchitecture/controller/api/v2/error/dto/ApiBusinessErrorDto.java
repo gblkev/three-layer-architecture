@@ -14,6 +14,10 @@ public class ApiBusinessErrorDto extends ApiErrorDto {
 	@Schema(required = true)
 	private ApiBusinessErrorCodeDto errorCode;
 	
+	public ApiBusinessErrorDto() {
+		super(null, CONFLICT_HTTP_CODE);
+	}
+	
 	public ApiBusinessErrorDto(String message, ApiBusinessErrorCodeDto errorCode) {
 		super(message, CONFLICT_HTTP_CODE);
 		this.errorCode = errorCode;

@@ -51,7 +51,7 @@ class ColorRepositoryIT {
 
 	@Test
 	@Sql("classpath:db/color/findById_severalColors.sql")
-	void givenSeveralColors_whenFindById_thenOneResult() {
+	void givenSeveralColors_whenFindById_thenOneColorRetrieved() {
 		// Given + sql
 		String id = "id_1";
 
@@ -66,7 +66,7 @@ class ColorRepositoryIT {
 
 	@Test
 	@Sql("classpath:db/color/findAll_severalColors.sql")
-	void givenSeveralColors_whenFindAll_thenAllResults() {
+	void givenSeveralColors_whenFindAll_thenAllColorsRetrieved() {
 		// Given sql
 
 		// When

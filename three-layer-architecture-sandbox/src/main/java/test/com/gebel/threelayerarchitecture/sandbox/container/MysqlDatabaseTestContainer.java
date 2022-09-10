@@ -1,6 +1,12 @@
 package test.com.gebel.threelayerarchitecture.sandbox.container;
 
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.ext.ScriptUtils;
+import org.testcontainers.jdbc.JdbcDatabaseDelegate;
+import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
@@ -62,6 +68,13 @@ public class MysqlDatabaseTestContainer extends GenericTestContainer {
 	@Override
 	public void stop() {
 		container.stop();
+	}
+	
+	public void executeSqlScript(String scriptPath) throws Exception {
+		JdbcDatabaseDelegate jdbcDatabaseDelegate = new JdbcDatabaseDelegate(container, "");
+		URL resource = MysqlDatabaseTestContainer.class.getClassLoader().getResource(scriptPath);
+		String scripts = IOUtils.toString(resource, StandardCharsets.UTF_8);
+		ScriptUtils.executeDatabaseScript(jdbcDatabaseDelegate, scriptPath, scripts);
 	}
 	
 	public String getJdbcUrl() {

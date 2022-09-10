@@ -51,7 +51,7 @@ class DriverRepositoryIT {
 
 	@Test
 	@Sql("classpath:db/driver/findById_severalDrivers.sql")
-	void givenSeveralDrivers_whenFindById_thenOneResult() {
+	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() {
 		// Given + sql
 		String id = "id_1";
 
@@ -67,7 +67,7 @@ class DriverRepositoryIT {
 
 	@Test
 	@Sql("classpath:db/driver/findAll_severalDrivers.sql")
-	void givenSeveralDrivers_whenFindAll_thenAllResults() {
+	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() {
 		// Given sql
 
 		// When
