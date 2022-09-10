@@ -67,8 +67,9 @@ class SpringActuatorIT {
 		ResponseEntity<String> response = restTemplate.getForEntity(serverPortUrl, String.class);
 		
 		// Then
-		ObjectMapper mapper = new ObjectMapper();
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		
+		ObjectMapper mapper = new ObjectMapper();
 		String expectedJson = "{\"message\":\"Page not found\"}";
 		assertEquals(mapper.readTree(expectedJson), mapper.readTree(response.getBody()));
 	}
