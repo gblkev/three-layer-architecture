@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gebel.threelayerarchitecture.business.domain.BusinessErrorCode;
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
-import com.gebel.threelayerarchitecture.business.domain.Color;
 import com.gebel.threelayerarchitecture.business.domain.Driver;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainDriverConverter;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
@@ -31,7 +29,7 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	@Transactional
-	public Driver createDriver(String firstName, String lastName) {
+	public Driver createDriver(String firstName, String lastName) throws BusinessException {
 		Driver driver = Driver.builder()
 			.firstName(firstName)
 			.lastName(lastName)
@@ -41,7 +39,7 @@ public class DriverServiceImpl implements DriverService {
 	}
 	
 	private void checkDriverCreationPrerequisites(Driver driver) throws BusinessException {
-		driver.validate();
+		driver.cleanAndValidate();
 	}
 	
 	private Driver createDriverInDb(Driver driver) {

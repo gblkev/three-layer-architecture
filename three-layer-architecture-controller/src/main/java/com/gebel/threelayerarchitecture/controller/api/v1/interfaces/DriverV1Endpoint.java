@@ -15,6 +15,8 @@ import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping(V1ApiBaseUri.API_V1_BASE_URI + "/drivers")
@@ -25,9 +27,14 @@ public interface DriverV1Endpoint {
 	@Operation(summary = "List all the drivers")
 	List<DriverDto> getAllDrivers();
 	
-	@PostMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a new driver")
-	DriverDto createDriver(@RequestBody @Schema(required = true) CreateDriverDto createDriverDto);
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.DRIVER_INVALID_FIRST_NAME"),
+		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.DRIVER_INVALID_LAST_NAME")
+	})
+	DriverDto createDriver(@RequestBody @Schema(required = true, implementation = CreateDriverDto.class) CreateDriverDto createDriverDto);
 	
 	@DeleteMapping("/{driverId}")
 	@Operation(summary = "Delete an existing driver")

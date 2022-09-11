@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gebel.threelayerarchitecture.business.domain.BusinessException;
+import com.gebel.threelayerarchitecture.business.domain.Driver;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
 import com.gebel.threelayerarchitecture.controller.api.v1.converter.V1ApiDriverConverter;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateDriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.DriverV1Endpoint;
 
 import lombok.AllArgsConstructor;
@@ -30,13 +33,27 @@ public class DriverV1EndpointImpl implements DriverV1Endpoint {
 
 	@Override
 	public DriverDto createDriver(CreateDriverDto createDriverDto) {
-		LOGGER.info("Creating driver with firstName={}", hexaCode);
-		return colorConverter.toDto(colorService.createColor(hexaCode));
+		try {
+			LOGGER.info("Creating driver with firstName='{}' and lastName='{}'",
+				getCidCompliantName(createDriverDto.getFirstName()),
+				getCidCompliantName(createDriverDto.getLastName()));
+			Driver createdDriver = driverService.createDriver(createDriverDto.getFirstName(), createDriverDto.getLastName());
+			return driverConverter.toDto(createdDriver);
+		}
+		catch (BusinessException businessException) {
+			throw new ApiBusinessException(businessException);
+		}
 	}
 	
-	private String replaceAllCharactersWithWildcardExceptFirstLetter(String s) {
-		if (StringUtils.length(s) )
-		return s.charAt(0) + s.substring(1).replaceAll("*", "*");
+	private String getCidCompliantName(String name) {
+		return replaceAllCharactersWithWildcardExceptFirstLetter(name);
+	}
+	
+	private static String replaceAllCharactersWithWildcardExceptFirstLetter(String s) {
+		if (StringUtils.isEmpty(s)) {
+			return s;
+		}
+		return s.charAt(0) + "******";
 	}
 
 	@Override

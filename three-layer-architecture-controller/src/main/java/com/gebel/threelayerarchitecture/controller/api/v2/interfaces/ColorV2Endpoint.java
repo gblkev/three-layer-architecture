@@ -33,7 +33,7 @@ public interface ColorV2Endpoint {
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE"),
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_SAME_HEXA_CODE_ALREADY_EXISTS")
 	})
-	ColorDto createColor(@RequestBody @Schema(required = true, example = "#000000") String hexaCode);
+	ColorDto createColor(@RequestBody @Schema(description = "Hexadecimal code", required = true, example = "#000000") String hexaCode);
 	
 	@DeleteMapping("/{colorId}")
 	@Operation(summary = "Delete an existing color")

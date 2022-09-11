@@ -87,7 +87,8 @@ class SwaggerIT {
 		List<String> paths = List.of(
 			"/api/v1/colors",
 			"/api/v1/colors/{colorId}",
-			"/api/v1/drivers");
+			"/api/v1/drivers",
+			"/api/v1/drivers/{driverId}");
 		assertEquals(paths, IteratorUtils.toList(pathsNode.fieldNames()));
 	}
 	
@@ -97,6 +98,7 @@ class SwaggerIT {
 			"ApiBusinessErrorDto",
 			"ApiTechnicalErrorDto",
 			"ColorDto",
+			"CreateDriverDto",
 			"DriverDto");
 		assertEquals(schemas, IteratorUtils.toList(schemasNode.fieldNames()));
 	}
