@@ -16,15 +16,14 @@ class ColorTest {
 	void givenValidHexadecimalCode_whenIsValidHexaCode_thenReturnTrue(String validHexadecimalCode) {
 		// Given
 		Color color = Color.builder()
-			.id("test_id")
 			.hexaCode(validHexadecimalCode)
 			.build();
 		
 		// When
-		boolean isValid = color.isValidHexaCode();
+		boolean isValidHexaCode = color.isValidHexaCode();
 		
 		// Then
-		assertTrue(isValid);
+		assertTrue(isValidHexaCode);
 	}
 	
 	@ParameterizedTest
@@ -33,15 +32,14 @@ class ColorTest {
 	void givenInvalidHexadecimalCode_whenIsValidHexaCode_thenReturnFalse(String validHexadecimalCode) {
 		// Given
 		Color color = Color.builder()
-			.id("test_id")
 			.hexaCode(validHexadecimalCode)
 			.build();
 		
 		// When
-		boolean isValid = color.isValidHexaCode();
+		boolean isValidHexaCode = color.isValidHexaCode();
 		
 		// Then
-		assertFalse(isValid);
+		assertFalse(isValidHexaCode);
 	}
 	
 	@ParameterizedTest
@@ -49,7 +47,6 @@ class ColorTest {
 	void givenValidHexadecimalCode_whenValidate_thenNoException(String validHexadecimalCode) throws BusinessException {
 		// Given
 		Color color = Color.builder()
-			.id("test_id")
 			.hexaCode(validHexadecimalCode)
 			.build();
 		
@@ -65,7 +62,6 @@ class ColorTest {
 	void givenInvalidHexadecimalCode_whenValidate_thenThrowBusinessException(String validHexadecimalCode) {
 		// Given
 		Color color = Color.builder()
-			.id("test_id")
 			.hexaCode(validHexadecimalCode)
 			.build();
 		

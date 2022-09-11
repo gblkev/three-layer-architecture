@@ -71,6 +71,7 @@ public class MysqlDatabaseTestContainer extends GenericTestContainer {
 	}
 	
 	public void executeSqlScript(String scriptPath) throws Exception {
+		LOGGER.info("Running script {}", scriptPath);
 		JdbcDatabaseDelegate jdbcDatabaseDelegate = new JdbcDatabaseDelegate(container, "");
 		URL resource = MysqlDatabaseTestContainer.class.getClassLoader().getResource(scriptPath);
 		String scripts = IOUtils.toString(resource, StandardCharsets.UTF_8);

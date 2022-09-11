@@ -18,7 +18,7 @@ public class Color {
 	
 	public void validate() throws BusinessException {
 		if (!isValidHexaCode()) {
-			throw new BusinessException(hexaCode + " is not a valid hexadecimal color value", BusinessErrorCode.COLOR_INVALID_HEXA_CODE);
+			throw new BusinessException("'" + hexaCode + "' is not a valid hexadecimal color value", BusinessErrorCode.COLOR_INVALID_HEXA_CODE);
 		}
 	}
 

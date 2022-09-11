@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DriverDto {
-
-	@Schema(required = true)
-	private String id;
+public class CreateDriverDto {
 	
 	@Schema(required = true, example = "Forrest")
 	private String firstName;
 	
 	@Schema(required = true, example = "Gump")
 	private String lastName;
-	
+
 }

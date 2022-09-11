@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v1;
+package com.gebel.threelayerarchitecture.controller.api.v2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,24 +27,24 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.ColorV1Endpoint;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.ColorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnicalErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.ColorV2Endpoint;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class ColorV1EndpointIT {
+class ColorV2EndpointIT {
 	
 	private static final TestContainersManager TEST_CONTAINERS_MANAGER = new TestContainersManager(); // Shared between all methods.
-	private static final String API_URL_PATTERN = "http://localhost:%d/api/v1/colors";
+	private static final String API_URL_PATTERN = "http://localhost:%d/api/v2/colors";
 	private static final String DELETE_BY_ID_API_URL_PATTERN = API_URL_PATTERN + "/{colorId}";
 	
 	@LocalServerPort
 	private int serverPort;
 	
 	@SpyBean
-	private ColorV1Endpoint colorV1Endpoint;
+	private ColorV2Endpoint colorV2Endpoint;
 	
 	@DynamicPropertySource
 	private static void setupContainersDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
@@ -59,11 +59,11 @@ class ColorV1EndpointIT {
 	
 	@AfterEach
 	void clear() throws Exception {
-		TEST_CONTAINERS_MANAGER.getTestContainers().getMysqlDatabaseTestContainer().executeSqlScript("api-v1/color/deleteAllColors.sql");
+		TEST_CONTAINERS_MANAGER.getTestContainers().getMysqlDatabaseTestContainer().executeSqlScript("api-v2/color/deleteAllColors.sql");
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/color/get_findAll_createSeveralColors.sql")
+	@Sql("classpath:api-v2/color/get_findAll_createSeveralColors.sql")
 	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() {
 		// Given + sql
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
@@ -95,7 +95,7 @@ class ColorV1EndpointIT {
 	void givenInternalError_whenGetFindAll_thenGenericError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
-		when(colorV1Endpoint.getAllAvailableColors())
+		when(colorV2Endpoint.getAllAvailableColors())
 			.thenThrow(new IllegalArgumentException("Test"));
 		
 		// When
@@ -150,7 +150,7 @@ class ColorV1EndpointIT {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/color/post_create_createColor.sql")
+	@Sql("classpath:api-v2/color/post_create_createColor.sql")
 	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
@@ -178,7 +178,7 @@ class ColorV1EndpointIT {
 		String hexaCodeToCreate = "#000000";
 		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
 		
-		when(colorV1Endpoint.createColor(hexaCodeToCreate))
+		when(colorV2Endpoint.createColor(hexaCodeToCreate))
 			.thenThrow(new IllegalArgumentException("Test"));
 		
 		// When
@@ -193,7 +193,7 @@ class ColorV1EndpointIT {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/color/delete_deleteById_createSeveralColors.sql")
+	@Sql("classpath:api-v2/color/delete_deleteById_createSeveralColors.sql")
 	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() {
 		// Given
 		String serverPortUrl = String.format(DELETE_BY_ID_API_URL_PATTERN, serverPort);
@@ -207,7 +207,7 @@ class ColorV1EndpointIT {
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
-		List<ColorDto> allReminaingColors = colorV1Endpoint.getAllAvailableColors();
+		List<ColorDto> allReminaingColors = colorV2Endpoint.getAllAvailableColors();
 		assertEquals(1, allReminaingColors.size());
 
 		ColorDto remainingColor = allReminaingColors.get(0);
@@ -223,7 +223,7 @@ class ColorV1EndpointIT {
 		String colorIdToDelete = "anything";
 		
 		doThrow(new IllegalArgumentException("Test"))
-			.when(colorV1Endpoint)
+			.when(colorV2Endpoint)
 			.deleteColor(anyString());
 		
 		// When
