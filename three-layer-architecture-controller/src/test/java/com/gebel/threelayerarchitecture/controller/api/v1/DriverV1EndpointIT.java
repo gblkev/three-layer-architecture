@@ -27,6 +27,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
+import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateDriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
@@ -80,22 +81,25 @@ class DriverV1EndpointIT {
 
 		DriverDto driver1 = drivers[0];
 		assertEquals("id_1", driver1.getId());
-		assertEquals("#000000", driver1.getHexaCode());
+		assertEquals("Forrest", driver1.getFirstName());
+		assertEquals("Gump", driver1.getLastName());
 
 		DriverDto driver2 = drivers[1];
 		assertEquals("id_2", driver2.getId());
-		assertEquals("#000001", driver2.getHexaCode());
+		assertEquals("Tom", driver2.getFirstName());
+		assertEquals("Hanks", driver2.getLastName());
 
 		DriverDto driver3 = drivers[2];
 		assertEquals("id_3", driver3.getId());
-		assertEquals("#000002", driver3.getHexaCode());
+		assertEquals("Robert", driver3.getFirstName());
+		assertEquals("Zemeckis", driver3.getLastName());
 	}
 	
 	@Test
 	void givenInternalError_whenGetFindAll_thenGenericError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
-		when(driverV1Endpoint.getAllAvailableDrivers())
+		when(driverV1Endpoint.getAllDrivers())
 			.thenThrow(new IllegalArgumentException("Test"));
 		
 		// When
@@ -114,8 +118,11 @@ class DriverV1EndpointIT {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
-		String hexaCodeToCreate = "#ABCDEF";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		CreateDriverDto createDriverDto = CreateDriverDto.builder()
+			.firstName("Forrest")
+			.lastName("Gump")
+			.build();
+		HttpEntity<CreateDriverDto> request = new HttpEntity<>(createDriverDto, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -126,16 +133,20 @@ class DriverV1EndpointIT {
 		
 		DriverDto createdDriver = response.getBody();
 		assertNotNull(createdDriver.getId());
-		assertEquals("#ABCDEF", createdDriver.getHexaCode());
+		assertEquals("Forrest", createdDriver.getFirstName());
+		assertEquals("Gump", createdDriver.getLastName());
 	}
 	
 	@Test
-	void givenInvalidDriver_whenPostCreate_thenInvalidHexaCodeError() {
+	void givenInvalidFirstName_whenPostCreate_thenInvalidFirstNameError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
-		String hexaCodeToCreate = "#ZZZZZZ";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		CreateDriverDto createDriverDto = CreateDriverDto.builder()
+			.firstName(null)
+			.lastName("Gump")
+			.build();
+		HttpEntity<CreateDriverDto> request = new HttpEntity<>(createDriverDto, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -145,18 +156,20 @@ class DriverV1EndpointIT {
 		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
 		
 		ApiBusinessErrorDto error = response.getBody();
-		assertEquals(ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE, error.getErrorCode());
-		assertEquals(ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE.getDescription(), error.getMessage());
+		assertEquals(ApiBusinessErrorCodeDto.DRIVER_INVALID_FIRST_NAME, error.getErrorCode());
+		assertEquals(ApiBusinessErrorCodeDto.DRIVER_INVALID_FIRST_NAME.getDescription(), error.getMessage());
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/driver/post_create_createDriver.sql")
-	void givenDriverAlreadyExists_whenPostCreate_thenDriverAlreadyExistsError() {
+	void givenInvalidLastName_whenPostCreate_thenInvalidLastNameError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
-		String hexaCodeToCreate = "#000000";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		CreateDriverDto createDriverDto = CreateDriverDto.builder()
+			.firstName("Forrest")
+			.lastName(null)
+			.build();
+		HttpEntity<CreateDriverDto> request = new HttpEntity<>(createDriverDto, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -166,8 +179,8 @@ class DriverV1EndpointIT {
 		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
 		
 		ApiBusinessErrorDto error = response.getBody();
-		assertEquals(ApiBusinessErrorCodeDto.COLOR_SAME_HEXA_CODE_ALREADY_EXISTS, error.getErrorCode());
-		assertEquals(ApiBusinessErrorCodeDto.COLOR_SAME_HEXA_CODE_ALREADY_EXISTS.getDescription(), error.getMessage());
+		assertEquals(ApiBusinessErrorCodeDto.DRIVER_INVALID_LAST_NAME, error.getErrorCode());
+		assertEquals(ApiBusinessErrorCodeDto.DRIVER_INVALID_LAST_NAME.getDescription(), error.getMessage());
 	}
 	
 	@Test
@@ -175,10 +188,13 @@ class DriverV1EndpointIT {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
-		String hexaCodeToCreate = "#000000";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		CreateDriverDto createDriverDto = CreateDriverDto.builder()
+			.firstName("Forrest")
+			.lastName("Gump")
+			.build();
+		HttpEntity<CreateDriverDto> request = new HttpEntity<>(createDriverDto, new HttpHeaders());
 		
-		when(driverV1Endpoint.createDriver(hexaCodeToCreate))
+		when(driverV1Endpoint.createDriver(createDriverDto))
 			.thenThrow(new IllegalArgumentException("Test"));
 		
 		// When
@@ -207,12 +223,13 @@ class DriverV1EndpointIT {
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
-		List<DriverDto> allReminaingDrivers = driverV1Endpoint.getAllAvailableDrivers();
+		List<DriverDto> allReminaingDrivers = driverV1Endpoint.getAllDrivers();
 		assertEquals(1, allReminaingDrivers.size());
 
 		DriverDto remainingDriver = allReminaingDrivers.get(0);
 		assertEquals("id_2", remainingDriver.getId());
-		assertEquals("#000001", remainingDriver.getHexaCode());
+		assertEquals("Tom", remainingDriver.getFirstName());
+		assertEquals("Hanks", remainingDriver.getLastName());
 	}
 	
 	@Test

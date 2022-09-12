@@ -115,7 +115,7 @@ class ColorV1EndpointIT {
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
 		String hexaCodeToCreate = "#ABCDEF";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -135,7 +135,7 @@ class ColorV1EndpointIT {
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
 		String hexaCodeToCreate = "#ZZZZZZ";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -156,7 +156,7 @@ class ColorV1EndpointIT {
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
 		String hexaCodeToCreate = "#000000";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -176,7 +176,7 @@ class ColorV1EndpointIT {
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
 		
 		String hexaCodeToCreate = "#000000";
-		HttpEntity<String> request = new HttpEntity<String>(hexaCodeToCreate, new HttpHeaders());
+		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		when(colorV1Endpoint.createColor(hexaCodeToCreate))
 			.thenThrow(new IllegalArgumentException("Test"));

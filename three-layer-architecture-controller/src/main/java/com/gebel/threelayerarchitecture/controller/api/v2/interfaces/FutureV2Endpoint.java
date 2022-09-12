@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface FutureV2Endpoint {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Give a int about the future")
+	@Operation(summary = "Give a hint about the future")
 	FutureDto readFuture();
 	
 }
