@@ -23,9 +23,9 @@ public class ColorV2EndpointImpl implements ColorV2Endpoint {
 	private final V2ApiColorConverter colorConverter;
 	
 	@Override
-	public List<ColorDto> getAllAvailableColors() {
+	public List<ColorDto> getAllColors() {
 		LOGGER.info("Listing all available colors");
-		return colorConverter.toDto(colorService.getAllAvailableColors());
+		return colorConverter.toDto(colorService.getAllColors());
 	}
 
 	@Override

@@ -39,9 +39,42 @@ class ColorServiceImplTest {
 	void setup() {
 		colorService = new ColorServiceImpl(colorRepository, new DomainColorConverter());
 	}
+	
+	@Test
+	void givenExistingColor_whenGetById_thenColorRetrieved() {
+		// Given
+		String colorId = "test_id1";
+		ColorEntity entityColor = ColorEntity.builder()
+			.id(colorId)
+			.hexaCode("#000001")
+			.build();
+		when(colorRepository.findById(colorId))
+			.thenReturn(Optional.of(entityColor));
+		
+		// When
+		Color domainColor = colorService.getColorById(colorId);
+		
+		// Then
+		assertEquals("test_id1", domainColor.getId());
+		assertEquals("#000001", domainColor.getHexaCode());
+	}
+	
+	@Test
+	void givenNonExistingColor_whenGetById_thenNullReturned() {
+		// Given
+		String colorId = "test_id1";
+		when(colorRepository.findById(colorId))
+			.thenReturn(Optional.empty());
+		
+		// When
+		Color domainColor = colorService.getColorById(colorId);
+		
+		// Then
+		assertNull(domainColor);
+	}
 
 	@Test
-	void given_whenGetAllAvailableColors_then() {
+	void givenSeveralColors_whenGetAllColors_thenAllColorsRetrieved() {
 		// Given
 		ColorEntity entityColor1 = ColorEntity.builder()
 			.id("test_id1")
@@ -56,7 +89,7 @@ class ColorServiceImplTest {
 			.thenReturn(entitiesColors);
 		
 		// When
-		List<Color> domainColors = colorService.getAllAvailableColors();
+		List<Color> domainColors = colorService.getAllColors();
 		
 		// Then
 		assertEquals(2, domainColors.size());

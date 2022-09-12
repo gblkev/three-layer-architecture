@@ -11,6 +11,8 @@ import com.gebel.threelayerarchitecture.business.domain.Color;
 import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
 
 class DomainColorConverterTest {
+
+	private final DomainColorConverter domainColorConverter = new DomainColorConverter();
 	
 	@Test
 	void givenOneColorEntity_whenToDomain_thenValidColorDomain() {
@@ -21,7 +23,6 @@ class DomainColorConverterTest {
 			.build();
 		
 		// When
-		DomainColorConverter domainColorConverter = new DomainColorConverter();
 		Color domainColor = domainColorConverter.toDomain(entityColor);
 		
 		// Then
@@ -35,7 +36,6 @@ class DomainColorConverterTest {
 		ColorEntity entityColor = null;
 		
 		// When
-		DomainColorConverter domainColorConverter = new DomainColorConverter();
 		Color domainColor = domainColorConverter.toDomain(entityColor);
 		
 		// Then
@@ -56,7 +56,6 @@ class DomainColorConverterTest {
 		List<ColorEntity> entitiesColors = List.of(entityColor1, entityColor2);
 		
 		// When
-		DomainColorConverter domainColorConverter = new DomainColorConverter();
 		List<Color> domainColors = domainColorConverter.toDomain(entitiesColors);
 		
 		// Then
@@ -80,7 +79,6 @@ class DomainColorConverterTest {
 			.build();
 		
 		// When
-		DomainColorConverter domainColorConverter = new DomainColorConverter();
 		ColorEntity entityColor = domainColorConverter.toEntity(domainColor);
 		
 		// Then
@@ -94,7 +92,6 @@ class DomainColorConverterTest {
 		Color domainColor = null;
 		
 		// When
-		DomainColorConverter domainColorConverter = new DomainColorConverter();
 		ColorEntity entityColor = domainColorConverter.toEntity(domainColor);
 		
 		// Then

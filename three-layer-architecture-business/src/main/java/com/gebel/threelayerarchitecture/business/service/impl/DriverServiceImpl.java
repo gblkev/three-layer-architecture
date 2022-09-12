@@ -1,6 +1,7 @@
 package com.gebel.threelayerarchitecture.business.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +13,24 @@ import com.gebel.threelayerarchitecture.business.service.interfaces.DriverServic
 import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
 import com.gebel.threelayerarchitecture.dao.db.interfaces.DriverRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DriverServiceImpl implements DriverService {
 
 	private final DriverRepository driverRepository;
 	private final DomainDriverConverter driverConverter;
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Driver getDriverById(String id) {
+		Optional<DriverEntity> optionalEntity = driverRepository.findById(id);
+		if (optionalEntity.isEmpty()) {
+			return null;
+		}
+		return driverConverter.toDomain(optionalEntity.get());
+	}
 	
 	@Override
 	@Transactional(readOnly = true)

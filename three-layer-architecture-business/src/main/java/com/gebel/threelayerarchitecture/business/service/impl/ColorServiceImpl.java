@@ -1,6 +1,7 @@
 package com.gebel.threelayerarchitecture.business.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,10 @@ import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService
 import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
 import com.gebel.threelayerarchitecture.dao.db.interfaces.ColorRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ColorServiceImpl implements ColorService {
 
 	private final ColorRepository colorRepository;
@@ -24,7 +25,17 @@ public class ColorServiceImpl implements ColorService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Color> getAllAvailableColors() {
+	public Color getColorById(String id) {
+		Optional<ColorEntity> optionalEntity = colorRepository.findById(id);
+		if (optionalEntity.isEmpty()) {
+			return null;
+		}
+		return colorConverter.toDomain(optionalEntity.get());
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Color> getAllColors() {
 		return colorConverter.toDomain(colorRepository.findAll());
 	}
 
@@ -63,5 +74,5 @@ public class ColorServiceImpl implements ColorService {
 			colorRepository.deleteById(colorId);
 		}
 	}
-	
+
 }

@@ -11,6 +11,8 @@ import com.gebel.threelayerarchitecture.business.domain.Driver;
 import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
 
 class DomainDriverConverterTest {
+
+	private final DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 	
 	@Test
 	void givenOneDriverEntity_whenToDomain_thenValidDriverDomain() {
@@ -22,7 +24,6 @@ class DomainDriverConverterTest {
 			.build();
 		
 		// When
-		DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 		Driver domainDriver = domainDriverConverter.toDomain(entityDriver);
 		
 		// Then
@@ -37,7 +38,6 @@ class DomainDriverConverterTest {
 		DriverEntity entityDriver = null;
 		
 		// When
-		DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 		Driver domainDriver = domainDriverConverter.toDomain(entityDriver);
 		
 		// Then
@@ -60,7 +60,6 @@ class DomainDriverConverterTest {
 		List<DriverEntity> entitiesDrivers = List.of(entityDriver1, entityDriver2);
 		
 		// When
-		DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 		List<Driver> domainDrivers = domainDriverConverter.toDomain(entitiesDrivers);
 		
 		// Then
@@ -87,7 +86,6 @@ class DomainDriverConverterTest {
 			.build();
 		
 		// When
-		DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 		DriverEntity entityDriver = domainDriverConverter.toEntity(domainDriver);
 		
 		// Then
@@ -102,7 +100,6 @@ class DomainDriverConverterTest {
 		Driver domainDriver = null;
 		
 		// When
-		DomainDriverConverter domainDriverConverter = new DomainDriverConverter();
 		DriverEntity entityDriver = domainDriverConverter.toEntity(domainDriver);
 		
 		// Then

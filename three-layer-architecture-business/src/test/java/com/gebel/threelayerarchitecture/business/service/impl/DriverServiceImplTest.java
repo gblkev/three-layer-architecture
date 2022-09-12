@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,9 +39,44 @@ class DriverServiceImplTest {
 	void setup() {
 		driverService = new DriverServiceImpl(driverRepository, new DomainDriverConverter());
 	}
+	
+	@Test
+	void givenExistingDriver_whenGetById_thenDriverRetrieved() {
+		// Given
+		String driverId = "test_id1";
+		DriverEntity entityDriver = DriverEntity.builder()
+			.id(driverId)
+			.firstName("Forrest")
+			.lastName("Gump")
+			.build();
+		when(driverRepository.findById(driverId))
+			.thenReturn(Optional.of(entityDriver));
+		
+		// When
+		Driver domainDriver = driverService.getDriverById(driverId);
+		
+		// Then
+		assertEquals("test_id1", domainDriver.getId());
+		assertEquals("Forrest", domainDriver.getFirstName());
+		assertEquals("Gump", domainDriver.getLastName());
+	}
+	
+	@Test
+	void givenNonExistingDriver_whenGetById_thenNullReturned() {
+		// Given
+		String driverId = "test_id1";
+		when(driverRepository.findById(driverId))
+			.thenReturn(Optional.empty());
+		
+		// When
+		Driver domainDriver = driverService.getDriverById(driverId);
+		
+		// Then
+		assertNull(domainDriver);
+	}
 
 	@Test
-	void given_whenGetAllDrivers_then() {
+	void givenSeveralDrivers_whenGetAllDrivers_thenAllDriversRetrieved() {
 		// Given
 		DriverEntity entityDriver1 = DriverEntity.builder()
 			.id("test_id1")

@@ -4,11 +4,13 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Driver {
 	
 	private static final String NAME_REGEX = "^(.{1,30})$"; // Any character except new line

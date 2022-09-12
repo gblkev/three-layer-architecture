@@ -7,6 +7,8 @@ import com.gebel.threelayerarchitecture.business.domain.Driver;
 
 public interface DriverService {
 	
+	Driver getDriverById(String id);
+	
 	List<Driver> getAllDrivers();
 	
 	Driver createDriver(String firstName, String lastName) throws BusinessException;

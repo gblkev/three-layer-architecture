@@ -23,8 +23,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ColorV2Endpoint {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "List all the available colors")
-	List<ColorDto> getAllAvailableColors();
+	@Operation(summary = "List all the colors")
+	List<ColorDto> getAllColors();
 	
 	@PostMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a new color")

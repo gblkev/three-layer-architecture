@@ -7,7 +7,9 @@ import com.gebel.threelayerarchitecture.business.domain.Color;
 
 public interface ColorService {
 	
-	List<Color> getAllAvailableColors();
+	Color getColorById(String id);
+	
+	List<Color> getAllColors();
 	
 	Color createColor(String hexaCode) throws BusinessException;
 	

@@ -95,7 +95,7 @@ class ColorV1EndpointIT {
 	void givenInternalError_whenGetFindAll_thenGenericError() {
 		// Given
 		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
-		when(colorV1Endpoint.getAllAvailableColors())
+		when(colorV1Endpoint.getAllColors())
 			.thenThrow(new IllegalArgumentException("Test"));
 		
 		// When
@@ -207,7 +207,7 @@ class ColorV1EndpointIT {
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
-		List<ColorDto> allReminaingColors = colorV1Endpoint.getAllAvailableColors();
+		List<ColorDto> allReminaingColors = colorV1Endpoint.getAllColors();
 		assertEquals(1, allReminaingColors.size());
 
 		ColorDto remainingColor = allReminaingColors.get(0);
