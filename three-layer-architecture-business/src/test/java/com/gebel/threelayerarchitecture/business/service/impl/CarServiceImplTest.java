@@ -98,6 +98,19 @@ class CarServiceImplTest {
 	}
 	
 	@Test
+	void givenSeveralCars_whenCountCars_thenRightCount() {
+		// Given
+		when(carRepository.count())
+			.thenReturn(128L);
+		
+		// When
+		long count = carService.countCars();
+		
+		// Then
+		assertEquals(128, count);
+	}
+	
+	@Test
 	void givenValidCar_whenCreateCar_thenCarCreated() throws BusinessException {
 		// Given
 		ColorEntity createdCarEntityColor = new ColorEntity("test_color_id", "#000000");

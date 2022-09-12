@@ -42,6 +42,12 @@ public class ColorServiceImpl implements ColorService {
 	public List<Color> getAllColors() {
 		return colorConverter.toDomain(colorRepository.findAll());
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public long countColors() {
+		return colorRepository.count();
+	}
 
 	@Override
 	@Transactional

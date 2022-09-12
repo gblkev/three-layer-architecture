@@ -110,6 +110,19 @@ class DriverServiceImplTest {
 	}
 	
 	@Test
+	void givenSeveralDrivers_whenCountDrivers_thenRightCount() {
+		// Given
+		when(driverRepository.count())
+			.thenReturn(13L);
+		
+		// When
+		long count = driverService.countDrivers();
+		
+		// Then
+		assertEquals(13, count);
+	}
+	
+	@Test
 	void givenValidDriver_whenCreateDriver_thenDriverCreated() throws BusinessException {
 		// Given
 		DriverEntity createdEntityDriver = DriverEntity.builder()

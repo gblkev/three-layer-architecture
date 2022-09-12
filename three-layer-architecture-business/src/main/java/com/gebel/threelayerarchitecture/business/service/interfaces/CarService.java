@@ -9,6 +9,8 @@ public interface CarService {
 	
 	List<Car> getAllCars();
 	
+	long countCars();
+	
 	Car createCar(String colorId, String driverId) throws BusinessException;
 	
 	void deleteCar(String carId);

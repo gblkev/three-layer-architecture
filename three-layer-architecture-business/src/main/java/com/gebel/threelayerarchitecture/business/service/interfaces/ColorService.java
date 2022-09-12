@@ -11,6 +11,8 @@ public interface ColorService {
 	
 	List<Color> getAllColors();
 	
+	long countColors();
+	
 	Color createColor(String hexaCode) throws BusinessException;
 	
 	void deleteColor(String colorId);

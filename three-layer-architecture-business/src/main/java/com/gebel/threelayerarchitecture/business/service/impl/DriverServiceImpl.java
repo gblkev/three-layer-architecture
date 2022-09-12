@@ -41,6 +41,12 @@ public class DriverServiceImpl implements DriverService {
 	public List<Driver> getAllDrivers() {
 		return driverConverter.toDomain(driverRepository.findAll());
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public long countDrivers() {
+		return driverRepository.count();
+	}
 
 	@Override
 	@Transactional
@@ -70,5 +76,5 @@ public class DriverServiceImpl implements DriverService {
 			driverRepository.deleteById(driverId);
 		}
 	}
-	
+
 }

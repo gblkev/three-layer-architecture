@@ -33,6 +33,12 @@ public class CarServiceImpl implements CarService {
 	public List<Car> getAllCars() {
 		return carConverter.toDomain(carRepository.findAll());
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public long countCars() {
+		return carRepository.count();
+	}
 
 	@Override
 	@Transactional

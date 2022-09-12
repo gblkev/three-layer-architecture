@@ -104,6 +104,19 @@ class ColorServiceImplTest {
 	}
 	
 	@Test
+	void givenSeveralColors_whenCountColors_thenRightCount() {
+		// Given
+		when(colorRepository.count())
+			.thenReturn(17L);
+		
+		// When
+		long count = colorService.countColors();
+		
+		// Then
+		assertEquals(17, count);
+	}
+	
+	@Test
 	void givenValidColor_whenCreateColor_thenColorCreated() throws BusinessException {
 		// Given
 		ColorEntity createdEntityColor = ColorEntity.builder()

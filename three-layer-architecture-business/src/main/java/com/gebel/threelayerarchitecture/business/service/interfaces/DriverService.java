@@ -11,6 +11,8 @@ public interface DriverService {
 	
 	List<Driver> getAllDrivers();
 	
+	long countDrivers();
+	
 	Driver createDriver(String firstName, String lastName) throws BusinessException;
 	
 	void deleteDriver(String driverId);
