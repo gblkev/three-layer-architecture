@@ -162,7 +162,7 @@
 							<include>**/*Test.java</include> <!-- Unit tests -->
 							<include>**/*IT.java</include> <!-- Integration tests -->
 						</includes>
-						<forkCount>1C</forkCount> <!-- Parallelize tests classes (not methods within a given class) -->
+						<forkCount>0.5C</forkCount> <!-- Parallelize tests classes (not methods within a given class) -->
 					</configuration>
 				</plugin>
 

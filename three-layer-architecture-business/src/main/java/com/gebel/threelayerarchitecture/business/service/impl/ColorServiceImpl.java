@@ -3,6 +3,7 @@ package com.gebel.threelayerarchitecture.business.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ public class ColorServiceImpl implements ColorService {
 	@Override
 	@Transactional(readOnly = true)
 	public Color getColorById(String id) {
+		if (StringUtils.isEmpty(id)) {
+			return null;
+		}
 		Optional<ColorEntity> optionalEntity = colorRepository.findById(id);
 		if (optionalEntity.isEmpty()) {
 			return null;

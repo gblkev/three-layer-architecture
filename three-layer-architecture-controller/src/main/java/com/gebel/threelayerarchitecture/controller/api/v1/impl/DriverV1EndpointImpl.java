@@ -2,7 +2,6 @@ package com.gebel.threelayerarchitecture.controller.api.v1.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
@@ -34,10 +33,10 @@ public class DriverV1EndpointImpl implements DriverV1Endpoint {
 	@Override
 	public DriverDto createDriver(CreateDriverDto createDriverDto) {
 		try {
-			LOGGER.info("Creating driver with firstName='{}' and lastName='{}'",
-				getCidCompliantName(createDriverDto.getFirstName()),
-				getCidCompliantName(createDriverDto.getLastName()));
-			Driver createdDriver = driverService.createDriver(createDriverDto.getFirstName(), createDriverDto.getLastName());
+			LOGGER.info("Creating driver with data={}", createDriverDto);
+			String firstName = (createDriverDto != null ? createDriverDto.getFirstName() : null);
+			String lastName = (createDriverDto != null ? createDriverDto.getLastName() : null);
+			Driver createdDriver = driverService.createDriver(firstName, lastName);
 			return driverConverter.toDto(createdDriver);
 		}
 		catch (BusinessException businessException) {
@@ -45,17 +44,6 @@ public class DriverV1EndpointImpl implements DriverV1Endpoint {
 		}
 	}
 	
-	private String getCidCompliantName(String name) {
-		return replaceAllCharactersWithWildcardExceptFirstLetter(name);
-	}
-	
-	private static String replaceAllCharactersWithWildcardExceptFirstLetter(String s) {
-		if (StringUtils.isEmpty(s)) {
-			return s;
-		}
-		return s.charAt(0) + "******";
-	}
-
 	@Override
 	public void deleteDriver(String driverId) {
 		LOGGER.info("Deleting driver with id={}", driverId);

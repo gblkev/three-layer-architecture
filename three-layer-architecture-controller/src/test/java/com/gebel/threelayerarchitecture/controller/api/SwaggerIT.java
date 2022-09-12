@@ -85,6 +85,8 @@ class SwaggerIT {
 	private void assertV1ApiPaths(JsonNode responseAsJsonNode) {
 		JsonNode pathsNode = responseAsJsonNode.get("paths");
 		List<String> paths = List.of(
+			"/api/v1/cars",
+			"/api/v1/cars/{carId}",
 			"/api/v1/colors",
 			"/api/v1/colors/{colorId}",
 			"/api/v1/drivers",
@@ -97,7 +99,9 @@ class SwaggerIT {
 		List<String> schemas = List.of(
 			"ApiBusinessErrorDto",
 			"ApiTechnicalErrorDto",
+			"CarDto",
 			"ColorDto",
+			"CreateCarDto",
 			"CreateDriverDto",
 			"DriverDto");
 		assertEquals(schemas, IteratorUtils.toList(schemasNode.fieldNames()));

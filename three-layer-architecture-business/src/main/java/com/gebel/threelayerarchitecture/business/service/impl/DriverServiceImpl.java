@@ -3,6 +3,7 @@ package com.gebel.threelayerarchitecture.business.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	@Transactional(readOnly = true)
 	public Driver getDriverById(String id) {
+		if (StringUtils.isEmpty(id)) {
+			return null;
+		}
 		Optional<DriverEntity> optionalEntity = driverRepository.findById(id);
 		if (optionalEntity.isEmpty()) {
 			return null;
