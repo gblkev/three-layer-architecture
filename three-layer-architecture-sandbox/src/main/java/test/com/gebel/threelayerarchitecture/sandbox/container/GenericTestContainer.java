@@ -15,4 +15,6 @@ public abstract class GenericTestContainer {
 	
 	public abstract void stop();
 	
+	public abstract void resetContainerData() throws Exception;
+	
 }

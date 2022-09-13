@@ -6,11 +6,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -22,11 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
+import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.CarDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateCarDto;
@@ -39,9 +34,8 @@ import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.ColorV1Endp
 import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.DriverV1Endpoint;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class CarV1EndpointIT {
+class CarV1EndpointIT extends AbstractIntegrationTest {
 	
-	private static final TestContainersManager TEST_CONTAINERS_MANAGER = new TestContainersManager(); // Shared between all methods.
 	private static final String API_URL_PATTERN = "http://localhost:%d/api/v1/cars";
 	private static final String DELETE_BY_ID_API_URL_PATTERN = API_URL_PATTERN + "/{carId}";
 	
@@ -56,22 +50,6 @@ class CarV1EndpointIT {
 	
 	@SpyBean
 	private DriverV1Endpoint driverV1Endpoint;
-	
-	@DynamicPropertySource
-	private static void setupContainersDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
-		TEST_CONTAINERS_MANAGER.startContainers();
-		TEST_CONTAINERS_MANAGER.setDynamicContainersConfiguration(registry);
-	}
-	
-	@AfterAll
-	private static void clearAll() {
-		TEST_CONTAINERS_MANAGER.stopContainers();
-	}
-	
-	@AfterEach
-	void clear() throws Exception {
-		TEST_CONTAINERS_MANAGER.getTestContainers().getMysqlDatabaseTestContainer().executeSqlScript("api-v1/car/deleteAllCars.sql");
-	}
 	
 	@Test
 	@Sql("classpath:api-v1/car/get_findAll_createSeveralCars.sql")

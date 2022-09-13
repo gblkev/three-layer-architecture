@@ -6,11 +6,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -22,11 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
+import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.ColorDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorDto;
@@ -34,9 +29,8 @@ import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnical
 import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.ColorV2Endpoint;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class ColorV2EndpointIT {
+class ColorV2EndpointIT extends AbstractIntegrationTest {
 	
-	private static final TestContainersManager TEST_CONTAINERS_MANAGER = new TestContainersManager(); // Shared between all methods.
 	private static final String API_URL_PATTERN = "http://localhost:%d/api/v2/colors";
 	private static final String DELETE_BY_ID_API_URL_PATTERN = API_URL_PATTERN + "/{colorId}";
 	
@@ -45,22 +39,6 @@ class ColorV2EndpointIT {
 	
 	@SpyBean
 	private ColorV2Endpoint colorV2Endpoint;
-	
-	@DynamicPropertySource
-	private static void setupContainersDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
-		TEST_CONTAINERS_MANAGER.startContainers();
-		TEST_CONTAINERS_MANAGER.setDynamicContainersConfiguration(registry);
-	}
-	
-	@AfterAll
-	private static void clearAll() {
-		TEST_CONTAINERS_MANAGER.stopContainers();
-	}
-	
-	@AfterEach
-	void clear() throws Exception {
-		TEST_CONTAINERS_MANAGER.getTestContainers().getMysqlDatabaseTestContainer().executeSqlScript("api-v2/color/deleteAllColors.sql");
-	}
 	
 	@Test
 	@Sql("classpath:api-v2/color/get_findAll_createSeveralColors.sql")

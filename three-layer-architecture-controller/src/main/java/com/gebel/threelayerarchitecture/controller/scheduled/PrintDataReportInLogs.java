@@ -16,7 +16,7 @@ public class PrintDataReportInLogs {
 
 	private final DataReportService dataReportService;
 	
-	@Scheduled(cron = "0 18 * * *") // Every day at 18h.
+	@Scheduled(cron = "0 0 18 * * *") // Every day at 18h.
 	public void scheduledPrintDataReportInLogs() {
 		try {
 			printDataDataInLogs();

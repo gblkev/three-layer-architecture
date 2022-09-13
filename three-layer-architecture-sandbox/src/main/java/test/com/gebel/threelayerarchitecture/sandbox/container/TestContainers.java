@@ -2,40 +2,88 @@ package test.com.gebel.threelayerarchitecture.sandbox.container;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Getter
 public class TestContainers {
 
-	private MysqlDatabaseTestContainer mysqlDatabaseTestContainer;
+	@Getter
+	private MysqlTestContainer mysqlTestContainer;
 	
-	public void initMysqlDatabaseContainerWithRandomPort(String mysqlVersion, String dbName, String dbUser, String dbPassword) {
-		MysqlDatabaseTestContainer mysqlDatabaseTestContainer = new MysqlDatabaseTestContainer(mysqlVersion, dbName, dbUser, dbPassword);
-		this.mysqlDatabaseTestContainer = mysqlDatabaseTestContainer;
+	@Getter
+	private RedisTestContainer redisTestContainer;
+	
+	@Getter
+	private ZookeeperKafkaTestContainers zookeeperKafkaTestContainers;
+	
+	private List<GenericTestContainer> containers = new ArrayList<>();
+	
+	public void initMysqlContainerWithRandomPort(String dockerImage, String dbName, String dbUser, String dbPassword) {
+		this.mysqlTestContainer = new MysqlTestContainer(dockerImage, dbName, dbUser, dbPassword);
+		containers.add(mysqlTestContainer);
 	}
 	
-	public void initMysqlDatabaseContainerWithFixedPort(String mysqlVersion, String dbName, int dbPort, String dbUser, String dbPassword) {
-		MysqlDatabaseTestContainer mysqlDatabaseTestContainer = new MysqlDatabaseTestContainer(mysqlVersion, dbName, dbPort, dbUser, dbPassword);
-		this.mysqlDatabaseTestContainer = mysqlDatabaseTestContainer;
+	public void initMysqlContainerWithFixedPort(String dockerImage, String dbName, int dbPort, String dbUser, String dbPassword) {
+		this.mysqlTestContainer = new MysqlTestContainer(dockerImage, dbName, dbPort, dbUser, dbPassword);
+		containers.add(mysqlTestContainer);
+	}
+	
+	public void initRedisContainerWithRandomPort(String dockerImage) {
+		this.redisTestContainer = new RedisTestContainer(dockerImage);
+		containers.add(redisTestContainer);
+	}
+	
+	public void initRedisContainerWithFixedPort(String dockerImage, int redisPort) {
+		this.redisTestContainer = new RedisTestContainer(dockerImage, redisPort);
+		containers.add(redisTestContainer);
+	}
+	
+	public void initZookeeperKafkaContainersWithRandomPort(String kafkaDockerImage, String topics) {
+		this.zookeeperKafkaTestContainers = new ZookeeperKafkaTestContainers(kafkaDockerImage, topics);
+		containers.add(zookeeperKafkaTestContainers);
+	}
+	
+	public void initZookeeperKafkaContainersWithFixedPort(String kafkaDockerImage, int kafkaPort, int zookeeperPort, String kafkaTopics) {
+		this.zookeeperKafkaTestContainers = new ZookeeperKafkaTestContainers(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
+		containers.add(zookeeperKafkaTestContainers);
 	}
 	
 	public void startContainers() {
-		LOGGER.info("Starting test containers in parallel...");
+		LOGGER.info("Starting test containers...");
 		Instant start = Instant.now();
-		Stream.of(mysqlDatabaseTestContainer)
+		containers.stream()
+			.parallel()
 			.forEach(GenericTestContainer::start);
 		Instant end = Instant.now();
-		LOGGER.info("Containers test started in {}", Duration.between(start, end));
+		LOGGER.info("Test containers started in {}", Duration.between(start, end));
 	}
 	
 	public void stopContainers() {
 		LOGGER.info("Stopping test containers...");
-		Stream.of(mysqlDatabaseTestContainer)
+		containers.stream()
+			.parallel()
 			.forEach(GenericTestContainer::stop);
+		containers.clear();
+	}
+	
+	public void resetContainersData() {
+		LOGGER.info("Resetting test containers...");
+		containers.stream()
+			.parallel()
+			.forEach(this::silentResetContainerData);
+	}
+	
+	private void silentResetContainerData(GenericTestContainer genericTestContainer) {
+		try {
+			genericTestContainer.resetContainerData();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

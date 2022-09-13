@@ -9,25 +9,53 @@ public class TestContainersFactory {
 	@Value("${sandbox.use-random-ports}")
 	private boolean useRandomPorts;
 	
-	@Value("${sandbox.db.mysql-version}")
-	private String mysqlVersion;
-	@Value("${sandbox.db.name}")
-	private String dbName;
-	@Value("${sandbox.db.port}")
-	private int dbPort;
-	@Value("${sandbox.db.user}")
-	private String dbUser;
-	@Value("${sandbox.db.password}")
-	private String dbPassword;
+	@Value("${sandbox.mysql.docker-image}")
+	private String mysqlDockerImage;
+	@Value("${sandbox.mysql.db-name}")
+	private String mysqlDbName;
+	@Value("${sandbox.mysql.port}")
+	private int mysqlPort;
+	@Value("${sandbox.mysql.user}")
+	private String mysqlUser;
+	@Value("${sandbox.mysql.password}")
+	private String mysqlPassword;
+	
+	@Value("${sandbox.redis.docker-image}")
+	private String redisDockerImage;
+	@Value("${sandbox.redis.port}")
+	private int redisPort;
+	
+	@Value("${sandbox.kafka.docker-image}")
+	private String kafkaDockerImage;
+	@Value("${sandbox.kafka.port}")
+	private int kafkaPort;
+	@Value("${sandbox.zookeeper.port}")
+	private int zookeeperPort;
+	@Value("${sandbox.kafka.topics}")
+	private String kafkaTopics;
 	
 	public TestContainers build() {
-		TestContainers testContainers = new TestContainers();
 		if (useRandomPorts) {
-			testContainers.initMysqlDatabaseContainerWithRandomPort(mysqlVersion, dbName, dbUser, dbPassword);
+			return buildContainersWithRandomPorts();
 		}
 		else {
-			testContainers.initMysqlDatabaseContainerWithFixedPort(mysqlVersion, dbName, dbPort, dbUser, dbPassword);
+			return buildContainersWithFixedPorts();
 		}
+	}
+	
+	private TestContainers buildContainersWithRandomPorts() {
+		TestContainers testContainers = new TestContainers();
+		testContainers.initMysqlContainerWithRandomPort(mysqlDockerImage, mysqlDbName, mysqlUser, mysqlPassword);
+		testContainers.initRedisContainerWithRandomPort(redisDockerImage);
+		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaDockerImage, kafkaTopics);
+		return testContainers;
+	}
+	
+	private TestContainers buildContainersWithFixedPorts() {
+		TestContainers testContainers = new TestContainers();
+		testContainers.initMysqlContainerWithFixedPort(mysqlDockerImage, mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
+		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort);
+		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
 		return testContainers;
 	}
 

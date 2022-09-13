@@ -2,11 +2,9 @@ package com.gebel.threelayerarchitecture.controller.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.collections4.IteratorUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -14,33 +12,18 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gebel.threelayerarchitecture.controller._test.TestContainersManager;
+import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class SwaggerIT {
-	
-	private static final TestContainersManager TEST_CONTAINERS_MANAGER = new TestContainersManager(); // Shared between all methods.
+class SwaggerIT extends AbstractIntegrationTest {
 	
 	@LocalManagementPort
 	private int managementPort;
 	
 	private ObjectMapper mapper = new ObjectMapper();
-	
-	@DynamicPropertySource
-	private static void setupContainersDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
-		TEST_CONTAINERS_MANAGER.startContainers();
-		TEST_CONTAINERS_MANAGER.setDynamicContainersConfiguration(registry);
-	}
-	
-	@AfterAll
-	private static void clearAll() {
-		TEST_CONTAINERS_MANAGER.stopContainers();
-	}
 	
 	@Test
 	void givenSwaggerUiEnabled_whenAccessingSwaggerUi_thenHttpResponseOk() {

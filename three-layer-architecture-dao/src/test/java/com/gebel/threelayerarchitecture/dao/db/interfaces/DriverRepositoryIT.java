@@ -4,53 +4,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
 
-import test.com.gebel.threelayerarchitecture.sandbox.container.MysqlDatabaseTestContainer;
-
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@TestPropertySource("classpath:db/application-test-mysql.properties")
-class DriverRepositoryIT {
+@SpringBootTest
+@TestPropertySource("classpath:mysql/application-test-mysql.properties")
+class DriverRepositoryIT extends AbstractIntegrationTest {
 
 	// Ex: c2bba799-02db-4b4b-8782-0df1517bbe1d
 	private static final String UUID_REGEX = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
 	
-	// Shared between all methods.
-	private static final MysqlDatabaseTestContainer MYSQL_CONTAINER = new MysqlDatabaseTestContainer("8.0.11", "cars_db", "test_user", "test_password");
-
 	@Autowired
 	private DriverRepository driverRepository;
 
-	@DynamicPropertySource
-	private static void mysqlDynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
-		MYSQL_CONTAINER.start();
-		registry.add("spring.datasource.url", () -> MYSQL_CONTAINER.getJdbcUrl());
-	}
-
-	@AfterAll
-	private static void clearAll() {
-		MYSQL_CONTAINER.stop();
-	}
-
 	@Test
-	@Sql("classpath:db/driver/findById_severalDrivers.sql")
+	@Sql("classpath:mysql/driver/findById_severalDrivers.sql")
 	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() {
 		// Given + sql
 		String id = "id_1";
@@ -66,7 +44,7 @@ class DriverRepositoryIT {
 	}
 
 	@Test
-	@Sql("classpath:db/driver/findAll_severalDrivers.sql")
+	@Sql("classpath:mysql/driver/findAll_severalDrivers.sql")
 	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() {
 		// Given sql
 
@@ -117,7 +95,7 @@ class DriverRepositoryIT {
 	}
 	
 	@Test
-	@Sql("classpath:db/driver/deleteById_severalDrivers.sql")
+	@Sql("classpath:mysql/driver/deleteById_severalDrivers.sql")
 	void givenSeveralDrivers_whenDeleteById_thenDriverDeleted() {
 		// Given + sql
 		String id = "id_1";

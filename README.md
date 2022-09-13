@@ -27,4 +27,5 @@ Pre-requisite: a Docker environment has to be available on the machine (https://
 dao -> only IT because UT do not make any sense
 business -> UT (no IT because partially covered by e2e-tests)
 controller -> only IT because UT do not make any sense
-All tests classes of a given module are running in parallel (we do not execute methods in parallel in order to optimize resources instanciation only once per class as it takes quite some time)
+All containers necessary to run the application (MySQL, Redis, Kafka) are started with random ports once for every Maven module.
+Then, data are cleared after each test / method.
