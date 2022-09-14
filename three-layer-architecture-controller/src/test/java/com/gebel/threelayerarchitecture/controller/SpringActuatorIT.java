@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalManagementPort;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,16 +17,10 @@ class SpringActuatorIT extends AbstractIntegrationTest {
 	
 	private static final String ACTUATOR_URL_PATTERN = "http://localhost:%d/actuator/health";
 	
-	@LocalServerPort
-	private int serverPort;
-	
-	@LocalManagementPort
-	private int managementPort;
-	
 	@Test
 	void givenActuatorExposedOnManagementPort_whenCallingActuator_thenActuatorAvailableOnManagementPort() throws Exception {
 		// Given
-		String managementPortUrl = String.format(ACTUATOR_URL_PATTERN, managementPort);
+		String managementPortUrl = String.format(ACTUATOR_URL_PATTERN, getManagementPort());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -43,7 +35,7 @@ class SpringActuatorIT extends AbstractIntegrationTest {
 	@Test
 	void givenActuatorExposedOnManagementPort_whenCallingActuator_thenActuatorNotAvailableOnServerPort() throws Exception {
 		// Given
-		String serverPortUrl = String.format(ACTUATOR_URL_PATTERN, serverPort);
+		String serverPortUrl = String.format(ACTUATOR_URL_PATTERN, getServerPort());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();

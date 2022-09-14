@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,16 +19,13 @@ import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class SwaggerIT extends AbstractIntegrationTest {
 	
-	@LocalManagementPort
-	private int managementPort;
-	
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	@Test
 	void givenSwaggerUiEnabled_whenAccessingSwaggerUi_thenHttpResponseOk() {
 		// Given
 		String swaggerUiUrlPattern = "http://localhost:%d/actuator/swagger-ui";
-		String serverPortUrl = String.format(swaggerUiUrlPattern, managementPort);
+		String serverPortUrl = String.format(swaggerUiUrlPattern, getManagementPort());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -43,7 +39,7 @@ class SwaggerIT extends AbstractIntegrationTest {
 	void givenV1OpenApiDocEnabled_whenAccessingV1OpenApiDocEndpoint_thenValidContent() throws Exception {
 		// Given
 		String swaggerUiUrlPattern = "http://localhost:%d/actuator/openapi/v1";
-		String serverPortUrl = String.format(swaggerUiUrlPattern, managementPort);
+		String serverPortUrl = String.format(swaggerUiUrlPattern, getManagementPort());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -94,7 +90,7 @@ class SwaggerIT extends AbstractIntegrationTest {
 	void givenV2OpenApiDocEnabled_whenAccessingV2OpenApiDocEndpoint_thenValidContent() throws Exception {
 		// Given
 		String swaggerUiUrlPattern = "http://localhost:%d/actuator/openapi/v2";
-		String serverPortUrl = String.format(swaggerUiUrlPattern, managementPort);
+		String serverPortUrl = String.format(swaggerUiUrlPattern, getManagementPort());
 		
 		// When
 		TestRestTemplate restTemplate = new TestRestTemplate();
@@ -119,9 +115,12 @@ class SwaggerIT extends AbstractIntegrationTest {
 	private void assertV2ApiPaths(JsonNode responseAsJsonNode) {
 		JsonNode pathsNode = responseAsJsonNode.get("paths");
 		List<String> paths = List.of(
+			"/api/v2/cars",
+			"/api/v2/cars/{carId}",
 			"/api/v2/colors",
 			"/api/v2/colors/{colorId}",
-			"/api/v2/future");
+			"/api/v2/drivers",
+			"/api/v2/drivers/{driverId}");
 		assertEquals(paths, IteratorUtils.toList(pathsNode.fieldNames()));
 	}
 	
@@ -130,8 +129,11 @@ class SwaggerIT extends AbstractIntegrationTest {
 		List<String> schemas = List.of(
 			"ApiBusinessErrorDto",
 			"ApiTechnicalErrorDto",
+			"CarDto",
 			"ColorDto",
-			"FutureDto");
+			"CreateCarDto",
+			"CreateDriverDto",
+			"DriverDto");
 		assertEquals(schemas, IteratorUtils.toList(schemasNode.fieldNames()));
 	}
 

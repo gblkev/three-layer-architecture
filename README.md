@@ -4,7 +4,8 @@ TODO intro
 
 ### Run the application locally
 TODO
-Pre-requisite: a Docker environment has to be available on the machine (https://docs.docker.com/get-docker/).
+Pre-requisite: a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).
+Build modules in parallel (1 thread per available CPU core): mvn -T 0.5C clean install
 
 ### Endpoints
 Sandbox:  

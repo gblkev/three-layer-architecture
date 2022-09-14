@@ -4,11 +4,20 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
+import org.springframework.boot.test.web.server.LocalManagementPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
+import lombok.Getter;
 import test.com.gebel.threelayerarchitecture.sandbox.container.TestContainers;
 
+/**
+ * Holds everything which is shared between integration tests.
+ * 
+ * If different beans are injected in 2 given test classes, Spring creates a new context for each of them.
+ * In order to use the same context for all classes (and save some time), we inject in this class the beans we need to use.
+ */
 public abstract class AbstractIntegrationTest {
 	
 	private static final String MYSQL_DOCKER_IMAGE = "mysql:8.0.11";
@@ -17,9 +26,17 @@ public abstract class AbstractIntegrationTest {
 	private static final String MYSQL_PASSWORD = "test_password";
 	
 	private static final String REDIS_DOCKER_IMAGE = "redis:7.0.4";
-	
+
 	private static final TestContainers TEST_CONTAINERS = new TestContainers();
 	private static final AtomicBoolean HAS_ALREADY_BEEN_STARTED = new AtomicBoolean(false); 
+	
+	@Getter
+	@LocalServerPort
+	private int serverPort;
+	
+	@Getter
+	@LocalManagementPort
+	private int managementPort;
 	
 	@AfterEach
 	private void clean() {
@@ -30,6 +47,10 @@ public abstract class AbstractIntegrationTest {
 	private static void dynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
 		startContainers();
 		setDynamicConfigurationProperties(registry);
+	}
+	
+	protected static TestContainers getTestContainers() {
+		return TEST_CONTAINERS;
 	}
 	
 	private static void startContainers() {

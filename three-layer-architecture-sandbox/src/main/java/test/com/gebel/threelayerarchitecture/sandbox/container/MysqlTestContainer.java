@@ -19,66 +19,37 @@ import com.github.dockerjava.api.model.Ports;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MysqlTestContainer extends GenericTestContainer {
+public class MysqlTestContainer extends GenericTestContainer<MySQLContainer<?>> {
 
-	private static final int RANDOM_PORT = -1;
 	private static final int CONTAINER_MAPPED_PORT = MySQLContainer.MYSQL_PORT;
 	private static final String INIT_SCRIPT_PATH = "mysql-init.sql";
 	private static final String RESET_SCRIPT_PATH = "mysql-reset.sql";
 	
-	private final String dockerImage;
-	private final String dbName;
-	private final int dbPort;
-	private final String dbUser;
-	private final String dbPassword;
-	
-	private MySQLContainer<?> container;
-	
-	public MysqlTestContainer(String dockerImage, String dbName, String dbUser, String dbPassword) {
-		super(true);
-		this.dockerImage = dockerImage;
-		this.dbName = dbName;
-		this.dbPort = RANDOM_PORT;
-		this.dbUser = dbUser;
-		this.dbPassword = dbPassword;
-		buildContainer();
+	public MysqlTestContainer(String mysqlDockerImage, String dbName, String mysqlUser, String mysqlPassword) {
+		this(mysqlDockerImage, dbName, RANDOM_PORT, mysqlUser, mysqlPassword);
 	}
 	
-	public MysqlTestContainer(String dockerImage, String dbName, int dbPort, String dbUser, String dbPassword) {
-		super(false);
-		this.dockerImage = dockerImage;
-		this.dbName = dbName;
-		this.dbPort = dbPort;
-		this.dbUser = dbUser;
-		this.dbPassword = dbPassword;
-		buildContainer();
+	public MysqlTestContainer(String mysqlDockerImage, String dbName, int mysqlPort, String mysqlUser, String mysqlPassword) {
+		super("MySQL");
+		MySQLContainer<?> container = buildContainer(mysqlDockerImage, dbName, mysqlPort, mysqlUser, mysqlPassword);
+		setContainer(container);
 	}
 	
 	@SuppressWarnings("resource") // Resource closed by "stop()"
-	private void buildContainer() {
-		container = (MySQLContainer<?>) new MySQLContainer<>(DockerImageName.parse(dockerImage))
+	private MySQLContainer<?> buildContainer(String mysqlDockerImage, String dbName, int mysqlPort, String mysqlUser, String mysqlPassword) {
+		MySQLContainer<?> container = (MySQLContainer<?>) new MySQLContainer<>(DockerImageName.parse(mysqlDockerImage))
 			.withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("testcontainers.mysql")))
 			.withDatabaseName(dbName)
-			.withUsername(dbUser)
-			.withPassword(dbPassword)
+			.withUsername(mysqlUser)
+			.withPassword(mysqlPassword)
 			.withInitScript(INIT_SCRIPT_PATH);
-		if (!isUseRandomPort()) {
+		if (!isRandomPort(mysqlPort)) {
 			container.withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-				new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(dbPort), new ExposedPort(CONTAINER_MAPPED_PORT)))));
+				new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(mysqlPort), new ExposedPort(CONTAINER_MAPPED_PORT)))));
 		}
+		return container;
 	}
 
-	@Override
-	public void start() {
-		LOGGER.info("Starting MySQL...");
-		container.start();
-	}
-	
-	@Override
-	public void stop() {
-		container.stop();
-	}
-	
 	@Override
 	public void resetContainerData() throws Exception {
 		LOGGER.info("Resetting MySQL data...");
@@ -86,14 +57,14 @@ public class MysqlTestContainer extends GenericTestContainer {
 	}
 	
 	public void executeSqlScript(String scriptPath) throws Exception {
-		JdbcDatabaseDelegate jdbcDatabaseDelegate = new JdbcDatabaseDelegate(container, "");
+		JdbcDatabaseDelegate jdbcDatabaseDelegate = new JdbcDatabaseDelegate(getContainer(), "");
 		URL resource = MysqlTestContainer.class.getClassLoader().getResource(scriptPath);
 		String scripts = IOUtils.toString(resource, StandardCharsets.UTF_8);
 		ScriptUtils.executeDatabaseScript(jdbcDatabaseDelegate, scriptPath, scripts);
 	}
 	
 	public String getJdbcUrl() {
-		return "jdbc:mysql://" + container.getHost() + ":" + container.getFirstMappedPort() + "/" + container.getDatabaseName();
+		return "jdbc:mysql://" + getContainer().getHost() + ":" + getContainer().getFirstMappedPort() + "/" + getContainer().getDatabaseName();
 	}
 
 }

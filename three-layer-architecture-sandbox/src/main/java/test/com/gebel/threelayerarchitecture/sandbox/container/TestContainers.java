@@ -20,25 +20,25 @@ public class TestContainers {
 	@Getter
 	private ZookeeperKafkaTestContainers zookeeperKafkaTestContainers;
 	
-	private List<GenericTestContainer> containers = new ArrayList<>();
+	private List<GenericTestContainer<?>> containers = new ArrayList<>();
 	
-	public void initMysqlContainerWithRandomPort(String dockerImage, String dbName, String dbUser, String dbPassword) {
-		this.mysqlTestContainer = new MysqlTestContainer(dockerImage, dbName, dbUser, dbPassword);
+	public void initMysqlContainerWithRandomPort(String mysqlDockerImage, String dbName, String mysqlUser, String mysqlPassword) {
+		this.mysqlTestContainer = new MysqlTestContainer(mysqlDockerImage, dbName, mysqlUser, mysqlPassword);
 		containers.add(mysqlTestContainer);
 	}
 	
-	public void initMysqlContainerWithFixedPort(String dockerImage, String dbName, int dbPort, String dbUser, String dbPassword) {
-		this.mysqlTestContainer = new MysqlTestContainer(dockerImage, dbName, dbPort, dbUser, dbPassword);
+	public void initMysqlContainerWithFixedPort(String mysqlDockerImage, String dbName, int mysqlPort, String mysqlUser, String mysqlPassword) {
+		this.mysqlTestContainer = new MysqlTestContainer(mysqlDockerImage, dbName, mysqlPort, mysqlUser, mysqlPassword);
 		containers.add(mysqlTestContainer);
 	}
 	
-	public void initRedisContainerWithRandomPort(String dockerImage) {
-		this.redisTestContainer = new RedisTestContainer(dockerImage);
+	public void initRedisContainerWithRandomPort(String redisDockerImage) {
+		this.redisTestContainer = new RedisTestContainer(redisDockerImage);
 		containers.add(redisTestContainer);
 	}
 	
-	public void initRedisContainerWithFixedPort(String dockerImage, int redisPort) {
-		this.redisTestContainer = new RedisTestContainer(dockerImage, redisPort);
+	public void initRedisContainerWithFixedPort(String redisDockerImage, int redisPort) {
+		this.redisTestContainer = new RedisTestContainer(redisDockerImage, redisPort);
 		containers.add(redisTestContainer);
 	}
 	
@@ -77,7 +77,7 @@ public class TestContainers {
 			.forEach(this::silentResetContainerData);
 	}
 	
-	private void silentResetContainerData(GenericTestContainer genericTestContainer) {
+	private void silentResetContainerData(GenericTestContainer<?> genericTestContainer) {
 		try {
 			genericTestContainer.resetContainerData();
 		}

@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v1;
+package com.gebel.threelayerarchitecture.controller.api.v2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,13 +19,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.CarDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateCarDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.CarDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.ColorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.CreateCarDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.DriverDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnicalErrorDto;
 
 @SpringBootTest(
 	webEnvironment = WebEnvironment.RANDOM_PORT,
@@ -35,17 +35,17 @@ import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnical
 		"spring.datasource.hikari.validation-timeout=250"
 	}
 )
-class CarV1EndpointIT extends AbstractIntegrationTest {
+class CarV2EndpointIT extends AbstractIntegrationTest {
 	
-	private static final String CARS_API_URL_PATTERN = "http://localhost:%d/api/v1/cars";
+	private static final String CARS_API_URL_PATTERN = "http://localhost:%d/api/v2/cars";
 	private static final String CARS_DELETE_BY_ID_API_URL_PATTERN = CARS_API_URL_PATTERN + "/{carId}";
-	private static final String COLORS_API_URL_PATTERN = "http://localhost:%d/api/v1/colors";
-	private static final String DRIVERS_API_URL_PATTERN = "http://localhost:%d/api/v1/drivers";
+	private static final String COLORS_API_URL_PATTERN = "http://localhost:%d/api/v2/colors";
+	private static final String DRIVERS_API_URL_PATTERN = "http://localhost:%d/api/v2/drivers";
 	
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api-v1/car/get_findAll_createSeveralCars.sql")
+	@Sql("classpath:api-v2/car/get_findAll_createSeveralCars.sql")
 	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() {
 		// Given + sql
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -114,7 +114,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/post_create_createColorAndDriver.sql")
+	@Sql("classpath:api-v2/car/post_create_createColorAndDriver.sql")
 	void givenValidCar_whenPostCreate_thenCarCreated() {
 		// Given + sql
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -165,7 +165,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/post_create_createValidColor.sql")
+	@Sql("classpath:api-v2/car/post_create_createValidColor.sql")
 	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() {
 		// Given
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -217,7 +217,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/delete_deleteById_createSeveralCars.sql")
+	@Sql("classpath:api-v2/car/delete_deleteById_createSeveralCars.sql")
 	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() {
 		// Given
 		String url = String.format(CARS_DELETE_BY_ID_API_URL_PATTERN, getServerPort());

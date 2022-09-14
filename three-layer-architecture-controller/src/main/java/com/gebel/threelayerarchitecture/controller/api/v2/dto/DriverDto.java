@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FutureDto {
+public class DriverDto {
 
 	@Schema(required = true)
-	private String message;
+	private String id;
+	
+	@Schema(required = true, example = "Forrest")
+	private String firstName;
+	
+	@Schema(required = true, example = "Gump")
+	private String lastName;
 	
 }

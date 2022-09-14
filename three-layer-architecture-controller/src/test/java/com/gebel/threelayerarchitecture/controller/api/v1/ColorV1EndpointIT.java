@@ -2,53 +2,51 @@ package com.gebel.threelayerarchitecture.controller.api.v1;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.ColorV1Endpoint;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+	webEnvironment = WebEnvironment.RANDOM_PORT,
+	// To speed up the error occurrence when we simulate a connection issue with the database.
+	properties = {
+		"spring.datasource.hikari.connection-timeout=250",
+		"spring.datasource.hikari.validation-timeout=250"
+	}
+)
 class ColorV1EndpointIT extends AbstractIntegrationTest {
 	
 	private static final String API_URL_PATTERN = "http://localhost:%d/api/v1/colors";
 	private static final String DELETE_BY_ID_API_URL_PATTERN = API_URL_PATTERN + "/{colorId}";
-	
-	@LocalServerPort
-	private int serverPort;
-	
-	@SpyBean
-	private ColorV1Endpoint colorV1Endpoint;
+
+	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
 	@Sql("classpath:api-v1/color/get_findAll_createSeveralColors.sql")
 	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() {
 		// Given + sql
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ColorDto[]> response = restTemplate.getForEntity(serverPortUrl, ColorDto[].class);
+		ResponseEntity<ColorDto[]> response = restTemplate.getForEntity(url, ColorDto[].class);
 		
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -70,15 +68,20 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenInternalError_whenGetFindAll_thenGenericError() {
+	@Transactional // To get a connection using the specific datasource configuration we defined on top of the class.
+	void givenDatabaseUnavailable_whenGetFindAll_thenGenericError() {
 		// Given
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
-		when(colorV1Endpoint.getAllColors())
-			.thenThrow(new IllegalArgumentException("Test"));
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ApiTechnicalErrorDto> response = restTemplate.getForEntity(serverPortUrl, ApiTechnicalErrorDto.class);
+		ResponseEntity<ApiTechnicalErrorDto> response;
+		try {
+			getTestContainers().getMysqlTestContainer().pause();
+			response = restTemplate.getForEntity(url, ApiTechnicalErrorDto.class);
+		}
+		finally {
+			getTestContainers().getMysqlTestContainer().unpause();
+		}
 		
 		// Then
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -90,14 +93,13 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	@Test
 	void givenValidColor_whenPostCreate_thenColorCreated() {
 		// Given
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		String hexaCodeToCreate = "#ABCDEF";
 		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ColorDto> response = restTemplate.postForEntity(serverPortUrl, request, ColorDto.class);
+		ResponseEntity<ColorDto> response = restTemplate.postForEntity(url, request, ColorDto.class);
 		
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -110,14 +112,13 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	@Test
 	void givenInvalidColor_whenPostCreate_thenInvalidHexaCodeError() {
 		// Given
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		String hexaCodeToCreate = "#ZZZZZZ";
 		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ApiBusinessErrorDto> response = restTemplate.postForEntity(serverPortUrl, request, ApiBusinessErrorDto.class);
+		ResponseEntity<ApiBusinessErrorDto> response = restTemplate.postForEntity(url, request, ApiBusinessErrorDto.class);
 		
 		// Then
 		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -131,14 +132,13 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	@Sql("classpath:api-v1/color/post_create_createColor.sql")
 	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() {
 		// Given
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		String hexaCodeToCreate = "#000000";
 		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ApiBusinessErrorDto> response = restTemplate.postForEntity(serverPortUrl, request, ApiBusinessErrorDto.class);
+		ResponseEntity<ApiBusinessErrorDto> response = restTemplate.postForEntity(url, request, ApiBusinessErrorDto.class);
 		
 		// Then
 		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -149,19 +149,23 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenInternalError_whenPostCreate_thenGenericError() {
+	@Transactional // To get a connection using the specific datasource configuration we defined on top of the class.
+	void givenDatabaseUnavailable_whenPostCreate_thenGenericError() {
 		// Given
-		String serverPortUrl = String.format(API_URL_PATTERN, serverPort);
+		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		String hexaCodeToCreate = "#000000";
 		HttpEntity<String> request = new HttpEntity<>(hexaCodeToCreate, new HttpHeaders());
 		
-		when(colorV1Endpoint.createColor(hexaCodeToCreate))
-			.thenThrow(new IllegalArgumentException("Test"));
-		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ApiTechnicalErrorDto> response = restTemplate.postForEntity(serverPortUrl, request, ApiTechnicalErrorDto.class);
+		ResponseEntity<ApiTechnicalErrorDto> response;
+		try {
+			getTestContainers().getMysqlTestContainer().pause();
+			response = restTemplate.postForEntity(url, request, ApiTechnicalErrorDto.class);
+		}
+		finally {
+			getTestContainers().getMysqlTestContainer().unpause();
+		}
 		
 		// Then
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -174,39 +178,47 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	@Sql("classpath:api-v1/color/delete_deleteById_createSeveralColors.sql")
 	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() {
 		// Given
-		String serverPortUrl = String.format(DELETE_BY_ID_API_URL_PATTERN, serverPort);
+		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
 		
 		String colorIdToDelete = "id_1";
 		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<String> response = restTemplate.exchange(serverPortUrl, HttpMethod.DELETE, null, String.class, colorIdToDelete);
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, null, String.class, colorIdToDelete);
 		
 		// Then
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
-		List<ColorDto> allReminaingColors = colorV1Endpoint.getAllColors();
-		assertEquals(1, allReminaingColors.size());
+		List<ColorDto> remainingColors = getAllColors();
+		assertEquals(1, remainingColors.size());
 
-		ColorDto remainingColor = allReminaingColors.get(0);
+		ColorDto remainingColor = remainingColors.get(0);
 		assertEquals("id_2", remainingColor.getId());
 		assertEquals("#000001", remainingColor.getHexaCode());
 	}
 	
+	private List<ColorDto> getAllColors() {
+		String findAllUrl = String.format(API_URL_PATTERN, getServerPort());
+		ResponseEntity<ColorDto[]> findAllResponse = restTemplate.getForEntity(findAllUrl, ColorDto[].class);
+		return Arrays.asList(findAllResponse.getBody());
+	}
+	
 	@Test
-	void givenInternalError_whenDeleteDeleteById_thenGenericError() {
+	@Transactional // To get a connection using the specific datasource configuration we defined on top of the class.
+	void givenDatabaseUnavailable_whenDeleteDeleteById_thenGenericError() {
 		// Given
-		String serverPortUrl = String.format(DELETE_BY_ID_API_URL_PATTERN, serverPort);
+		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
 		
 		String colorIdToDelete = "anything";
 		
-		doThrow(new IllegalArgumentException("Test"))
-			.when(colorV1Endpoint)
-			.deleteColor(anyString());
-		
 		// When
-		TestRestTemplate restTemplate = new TestRestTemplate();
-		ResponseEntity<ApiTechnicalErrorDto> response = restTemplate.exchange(serverPortUrl, HttpMethod.DELETE, null, ApiTechnicalErrorDto.class, colorIdToDelete);
+		ResponseEntity<ApiTechnicalErrorDto> response;
+		try {
+			getTestContainers().getMysqlTestContainer().pause();
+			response = restTemplate.exchange(url, HttpMethod.DELETE, null, ApiTechnicalErrorDto.class, colorIdToDelete);
+		}
+		finally {
+			getTestContainers().getMysqlTestContainer().unpause();
+		}
 		
 		// Then
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

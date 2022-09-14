@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v1.dto;
+package com.gebel.threelayerarchitecture.controller.api.v2.dto;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +25,6 @@ public class CreateDriverDto {
 		return "CreateDriverDto [cidCompliantFirstName=" + getCidCompliantName(firstName) + ", cidCompliantLastName=" + getCidCompliantName(lastName) + "]";
 	}
 	
-	// TODO put on the business layer + do the same for DriverDto (v1 and v2)
 	private String getCidCompliantName(String name) {
 		return replaceAllCharactersWithWildcardExceptFirstLetter(name);
 	}
@@ -34,7 +33,7 @@ public class CreateDriverDto {
 		if (StringUtils.isEmpty(s)) {
 			return s;
 		}
-		return s.charAt(0) + "<masked>";
+		return s.charAt(0) + "******";
 	}
 	
 }

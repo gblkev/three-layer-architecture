@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v1;
+package com.gebel.threelayerarchitecture.controller.api.v2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,11 +19,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateDriverDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.CreateDriverDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.dto.DriverDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnicalErrorDto;
 
 @SpringBootTest(
 	webEnvironment = WebEnvironment.RANDOM_PORT,
@@ -33,15 +33,15 @@ import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnical
 		"spring.datasource.hikari.validation-timeout=250"
 	}
 )
-class DriverV1EndpointIT extends AbstractIntegrationTest {
+class DriverV2EndpointIT extends AbstractIntegrationTest {
 	
-	private static final String API_URL_PATTERN = "http://localhost:%d/api/v1/drivers";
+	private static final String API_URL_PATTERN = "http://localhost:%d/api/v2/drivers";
 	private static final String DELETE_BY_ID_API_URL_PATTERN = API_URL_PATTERN + "/{driverId}";
 	
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api-v1/driver/get_findAll_createSeveralDrivers.sql")
+	@Sql("classpath:api-v2/driver/get_findAll_createSeveralDrivers.sql")
 	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() {
 		// Given + sql
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -191,7 +191,7 @@ class DriverV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/driver/delete_deleteById_createSeveralDrivers.sql")
+	@Sql("classpath:api-v2/driver/delete_deleteById_createSeveralDrivers.sql")
 	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() {
 		// Given
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
