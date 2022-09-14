@@ -41,7 +41,7 @@ class DriverV2EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api-v2/driver/get_findAll_createSeveralDrivers.sql")
+	@Sql("classpath:api/v2/driver/get_findAll_createSeveralDrivers.sql")
 	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() {
 		// Given + sql
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -191,7 +191,7 @@ class DriverV2EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v2/driver/delete_deleteById_createSeveralDrivers.sql")
+	@Sql("classpath:api/v2/driver/delete_deleteById_createSeveralDrivers.sql")
 	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() {
 		// Given
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());

@@ -6,6 +6,11 @@ TODO intro
 TODO
 Pre-requisite: a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).
 Build modules in parallel (1 thread per available CPU core): mvn -T 0.5C clean install
+Takes 3min45s on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
+[wsl2]
+memory=8GB
+processors=4
+With a decent pc, it should be much much faster.
 
 ### Endpoints
 Sandbox:  

@@ -45,7 +45,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api-v1/car/get_findAll_createSeveralCars.sql")
+	@Sql("classpath:api/v1/car/get_findAll_createSeveralCars.sql")
 	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() {
 		// Given + sql
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -114,7 +114,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/post_create_createColorAndDriver.sql")
+	@Sql("classpath:api/v1/car/post_create_createColorAndDriver.sql")
 	void givenValidCar_whenPostCreate_thenCarCreated() {
 		// Given + sql
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -165,7 +165,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/post_create_createValidColor.sql")
+	@Sql("classpath:api/v1/car/post_create_createValidColor.sql")
 	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() {
 		// Given
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -217,7 +217,7 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/car/delete_deleteById_createSeveralCars.sql")
+	@Sql("classpath:api/v1/car/delete_deleteById_createSeveralCars.sql")
 	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() {
 		// Given
 		String url = String.format(CARS_DELETE_BY_ID_API_URL_PATTERN, getServerPort());

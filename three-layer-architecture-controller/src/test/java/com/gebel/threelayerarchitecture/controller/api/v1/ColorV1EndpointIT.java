@@ -40,7 +40,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api-v1/color/get_findAll_createSeveralColors.sql")
+	@Sql("classpath:api/v1/color/get_findAll_createSeveralColors.sql")
 	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() {
 		// Given + sql
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -129,7 +129,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/color/post_create_createColor.sql")
+	@Sql("classpath:api/v1/color/post_create_createColor.sql")
 	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() {
 		// Given
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -175,7 +175,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api-v1/color/delete_deleteById_createSeveralColors.sql")
+	@Sql("classpath:api/v1/color/delete_deleteById_createSeveralColors.sql")
 	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() {
 		// Given
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
