@@ -7,7 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gebel.threelayerarchitecture.business.domain.Driver;
-import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
 
 @Component
 public class DomainDriverConverter {

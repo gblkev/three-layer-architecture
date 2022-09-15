@@ -24,6 +24,8 @@ public class TestContainersFactory {
 	private String redisDockerImage;
 	@Value("${sandbox.redis.port}")
 	private int redisPort;
+	@Value("${sandbox.redis.password}")
+	private String redisPassword;
 	
 	@Value("${sandbox.kafka.docker-image}")
 	private String kafkaDockerImage;
@@ -46,7 +48,7 @@ public class TestContainersFactory {
 	private TestContainers buildContainersWithRandomPorts() {
 		TestContainers testContainers = new TestContainers();
 		testContainers.initMysqlContainerWithRandomPort(mysqlDockerImage, mysqlDbName, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithRandomPort(redisDockerImage);
+		testContainers.initRedisContainerWithRandomPort(redisDockerImage, redisPassword);
 		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaDockerImage, kafkaTopics);
 		return testContainers;
 	}
@@ -54,7 +56,7 @@ public class TestContainersFactory {
 	private TestContainers buildContainersWithFixedPorts() {
 		TestContainers testContainers = new TestContainers();
 		testContainers.initMysqlContainerWithFixedPort(mysqlDockerImage, mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort);
+		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort, redisPassword);
 		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
 		return testContainers;
 	}

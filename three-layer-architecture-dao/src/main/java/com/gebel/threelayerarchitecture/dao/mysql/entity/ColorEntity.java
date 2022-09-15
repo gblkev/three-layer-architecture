@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.dao.db.entity;
+package com.gebel.threelayerarchitecture.dao.mysql.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "driver")
-public class DriverEntity {
+@Table(name = "color")
+public class ColorEntity {
 	
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -27,10 +27,7 @@ public class DriverEntity {
 	@Column(name = "id", columnDefinition = "VARCHAR(255)")
 	private String id;
 	
-	@Column(name = "first_name")
-	private String firstName;
-	
-	@Column(name = "last_name")
-	private String lastName;
+	@Column(name = "hexa_code", nullable = false, unique = true)
+	private String hexaCode;
 
 }

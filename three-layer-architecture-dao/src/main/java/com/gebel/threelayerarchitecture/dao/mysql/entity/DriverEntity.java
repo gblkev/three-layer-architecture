@@ -1,11 +1,9 @@
-package com.gebel.threelayerarchitecture.dao.db.entity;
+package com.gebel.threelayerarchitecture.dao.mysql.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "car")
-public class CarEntity {
+@Table(name = "driver")
+public class DriverEntity {
 	
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -29,12 +27,10 @@ public class CarEntity {
 	@Column(name = "id", columnDefinition = "VARCHAR(255)")
 	private String id;
 	
-	@ManyToOne
-	@JoinColumn(name = "color_id", nullable = false)
-	private ColorEntity color;
-
-	@ManyToOne
-	@JoinColumn(name = "driver_id", nullable = true)
-	private DriverEntity driver;
+	@Column(name = "first_name")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
 
 }

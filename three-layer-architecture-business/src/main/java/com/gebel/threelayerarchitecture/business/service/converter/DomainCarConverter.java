@@ -7,7 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gebel.threelayerarchitecture.business.domain.Car;
-import com.gebel.threelayerarchitecture.dao.db.entity.CarEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.CarEntity;
 
 import lombok.RequiredArgsConstructor;
 

@@ -7,7 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.gebel.threelayerarchitecture.business.domain.Color;
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 
 @Component
 public class DomainColorConverter {

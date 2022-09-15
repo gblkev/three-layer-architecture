@@ -5,8 +5,10 @@ import javax.annotation.PreDestroy;
 
 import org.springframework.stereotype.Component;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @Component
 @RequiredArgsConstructor
 public class TestContainersManager {

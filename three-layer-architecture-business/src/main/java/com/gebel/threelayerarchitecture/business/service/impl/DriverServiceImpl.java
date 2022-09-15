@@ -11,8 +11,8 @@ import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.business.domain.Driver;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainDriverConverter;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
-import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
-import com.gebel.threelayerarchitecture.dao.db.interfaces.DriverRepository;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.interfaces.DriverRepository;
 
 import lombok.RequiredArgsConstructor;
 

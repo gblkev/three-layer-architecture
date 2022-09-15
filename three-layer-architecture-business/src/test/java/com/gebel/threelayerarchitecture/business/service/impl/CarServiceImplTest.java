@@ -29,10 +29,10 @@ import com.gebel.threelayerarchitecture.business.service.converter.DomainColorCo
 import com.gebel.threelayerarchitecture.business.service.converter.DomainDriverConverter;
 import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
-import com.gebel.threelayerarchitecture.dao.db.entity.CarEntity;
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
-import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
-import com.gebel.threelayerarchitecture.dao.db.interfaces.CarRepository;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.CarEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.interfaces.CarRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CarServiceImplTest {

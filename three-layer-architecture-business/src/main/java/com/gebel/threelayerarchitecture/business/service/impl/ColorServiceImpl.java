@@ -12,8 +12,8 @@ import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.business.domain.Color;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainColorConverter;
 import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
-import com.gebel.threelayerarchitecture.dao.db.interfaces.ColorRepository;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.interfaces.ColorRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.dao.db.interfaces;
+package com.gebel.threelayerarchitecture.dao.mysql.interfaces;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,7 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 
 @SpringBootTest
 @TestPropertySource("classpath:mysql/application-test-mysql.properties")

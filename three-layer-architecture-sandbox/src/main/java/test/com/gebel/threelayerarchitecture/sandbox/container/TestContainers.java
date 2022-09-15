@@ -32,13 +32,13 @@ public class TestContainers {
 		containers.add(mysqlTestContainer);
 	}
 	
-	public void initRedisContainerWithRandomPort(String redisDockerImage) {
-		this.redisTestContainer = new RedisTestContainer(redisDockerImage);
+	public void initRedisContainerWithRandomPort(String redisDockerImage, String redisPassword) {
+		this.redisTestContainer = new RedisTestContainer(redisDockerImage, redisPassword);
 		containers.add(redisTestContainer);
 	}
 	
-	public void initRedisContainerWithFixedPort(String redisDockerImage, int redisPort) {
-		this.redisTestContainer = new RedisTestContainer(redisDockerImage, redisPort);
+	public void initRedisContainerWithFixedPort(String redisDockerImage, int redisPort, String redisPassword) {
+		this.redisTestContainer = new RedisTestContainer(redisDockerImage, redisPort, redisPassword);
 		containers.add(redisTestContainer);
 	}
 	

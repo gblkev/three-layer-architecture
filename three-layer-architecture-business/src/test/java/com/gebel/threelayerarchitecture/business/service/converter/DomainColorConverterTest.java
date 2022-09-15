@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.gebel.threelayerarchitecture.business.domain.Color;
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 
 class DomainColorConverterTest {
 

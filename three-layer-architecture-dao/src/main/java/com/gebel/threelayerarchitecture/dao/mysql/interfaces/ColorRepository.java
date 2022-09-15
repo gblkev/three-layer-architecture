@@ -1,10 +1,10 @@
-package com.gebel.threelayerarchitecture.dao.db.interfaces;
+package com.gebel.threelayerarchitecture.dao.mysql.interfaces;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.gebel.threelayerarchitecture.dao.db.entity.ColorEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 
 public interface ColorRepository extends JpaRepository<ColorEntity, String> {
 

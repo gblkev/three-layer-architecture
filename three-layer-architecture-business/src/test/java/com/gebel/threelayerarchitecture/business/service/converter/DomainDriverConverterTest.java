@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.gebel.threelayerarchitecture.business.domain.Driver;
-import com.gebel.threelayerarchitecture.dao.db.entity.DriverEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
 
 class DomainDriverConverterTest {
 

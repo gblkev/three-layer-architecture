@@ -17,21 +17,22 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 
 	private static final int CONTAINER_MAPPED_PORT = 6379;
 
-	public RedisTestContainer(String dockerImage) {
-		this(dockerImage, RANDOM_PORT);
+	public RedisTestContainer(String redisDockerImage, String redisPassword) {
+		this(redisDockerImage, RANDOM_PORT, redisPassword);
 	}
 	
-	public RedisTestContainer(String dockerImage, int redisPort) {
+	public RedisTestContainer(String redisDockerImage, int redisPort, String redisPassword) {
 		super("Redis");
-		GenericContainer<?> container = buildContainer(dockerImage, redisPort);
+		GenericContainer<?> container = buildContainer(redisDockerImage, redisPort, redisPassword);
 		setContainer(container);
 	}
 
 	@SuppressWarnings("resource") // Resource closed by "stop()"
-	private GenericContainer<?> buildContainer(String dockerImage, int redisPort) {
-		GenericContainer<?> container = new GenericContainer<>(DockerImageName.parse(dockerImage))
+	private GenericContainer<?> buildContainer(String redisDockerImage, int redisPort, String redisPassword) {
+		GenericContainer<?> container = new GenericContainer<>(DockerImageName.parse(redisDockerImage))
 			.withExposedPorts(CONTAINER_MAPPED_PORT)
-			.withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("testcontainers.redis")));
+			.withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("testcontainers.redis")))
+			.withCommand("redis-server", "--requirepass", redisPassword);
 		if (!isRandomPort(redisPort)) {
 			container.withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
 				new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(redisPort), new ExposedPort(CONTAINER_MAPPED_PORT)))));

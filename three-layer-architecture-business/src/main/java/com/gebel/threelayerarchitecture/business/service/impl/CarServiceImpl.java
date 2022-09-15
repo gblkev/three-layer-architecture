@@ -14,8 +14,8 @@ import com.gebel.threelayerarchitecture.business.service.converter.DomainCarConv
 import com.gebel.threelayerarchitecture.business.service.interfaces.CarService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
-import com.gebel.threelayerarchitecture.dao.db.entity.CarEntity;
-import com.gebel.threelayerarchitecture.dao.db.interfaces.CarRepository;
+import com.gebel.threelayerarchitecture.dao.mysql.entity.CarEntity;
+import com.gebel.threelayerarchitecture.dao.mysql.interfaces.CarRepository;
 
 import lombok.RequiredArgsConstructor;
 
