@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.dao.mysql.entity.CarEntity;
@@ -20,7 +19,7 @@ import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
 
 @SpringBootTest
-@TestPropertySource("classpath:mysql/application-test-mysql.properties")
+@TestPropertySource("classpath:application-test.properties")
 class CarRepositoryIT extends AbstractIntegrationTest {
 
 	// Ex: c2bba799-02db-4b4b-8782-0df1517bbe1d
@@ -36,9 +35,9 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	private CarRepository carRepository;
 	
 	@Test
-	@Sql("classpath:mysql/car/findById_severalCars.sql")
-	void givenSeveralCars_whenFindById_thenOneCarRetrieved() {
-		// Given + sql
+	void givenSeveralCars_whenFindById_thenOneCarRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/findById_severalCars.sql");
 		String id = "car_id_1";
 
 		// When
@@ -59,9 +58,9 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Sql("classpath:mysql/car/findAll_severalCars.sql")
-	void givenSeveralCars_whenFindAll_thenAllCarsRetrieved() {
-		// Given sql
+	void givenSeveralCars_whenFindAll_thenAllCarsRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/findAll_severalCars.sql");
 
 		// When
 		List<CarEntity> cars = carRepository.findAll();
@@ -101,9 +100,10 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:mysql/car/create_existingColorAndDriver.sql")
-	void givenNoCars_whenSave_thenCarCreated() {
-		// Given + empty table
+	void givenNoCars_whenSave_thenCarCreated() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/create_existingColorAndDriver.sql");
+		
 		ColorEntity colorOfCarToCreate = colorRepository.findById("color_id_1").get();
 		DriverEntity driverOfCarToCreate = driverRepository.findById("driver_id_1").get();
 		CarEntity carToCreate = CarEntity.builder()
@@ -135,9 +135,10 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:mysql/car/deleteById_severalCars.sql")
-	void givenSeveralCars_whenDeleteById_thenCarDeleted() {
-		// Given + sql
+	void givenSeveralCars_whenDeleteById_thenCarDeleted() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/deleteById_severalCars.sql");
+		
 		String id = "car_id_1";
 		assertTrue(carRepository.findById(id).isPresent());
 		assertEquals(3, carRepository.count());

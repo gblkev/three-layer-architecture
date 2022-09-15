@@ -36,38 +36,38 @@ class TestContainersRedisIT extends AbstractIntegrationTest {
 			.build();
 		
 		// When
-		createCarBrands(redisUri);
-		Map<String, String> createdCarBrands = getAllCarBrands(redisUri);
+		createCarBrand(redisUri);
+		Map<String, String> createdCarBrand = getCarBrand(redisUri);
 		
 		// Then
 		Map<String, String> expectedCarBrands = new HashMap<>();
-	    expectedCarBrands.put("car_brand_id1", "car_brand_name1");
-	    expectedCarBrands.put("car_brand_id2", "car_brand_name2");
+	    expectedCarBrands.put("id", "car_brand_id1");
+	    expectedCarBrands.put("name", "car_brand_name1");
 	    
-	    assertEquals(expectedCarBrands, createdCarBrands);
+	    assertEquals(expectedCarBrands, createdCarBrand);
 	}
 	
-	private void createCarBrands(RedisURI redisUri) {
+	private void createCarBrand(RedisURI redisUri) {
 		RedisClient redisClient = null;
 		try {
 			redisClient = RedisClient.create(redisUri);
 			StatefulRedisConnection<String, String> connection = redisClient.connect();
 			RedisCommands<String, String> commands = connection.sync();
-			commands.hset("car_brand", "car_brand_id1", "car_brand_name1");
-			commands.hset("car_brand", "car_brand_id2", "car_brand_name2");
+			commands.hset("car_brand:car_brand_id1", "id", "car_brand_id1");
+			commands.hset("car_brand:car_brand_id1", "name", "car_brand_name1");
 		}
 		finally {
 			redisClient.shutdown();
 		}
 	}
 	
-	private Map<String, String> getAllCarBrands(RedisURI redisUri) {
+	private Map<String, String> getCarBrand(RedisURI redisUri) {
 		RedisClient redisClient = null;
 		try {
 			redisClient = RedisClient.create(redisUri);
 			StatefulRedisConnection<String, String> connection = redisClient.connect();
 			RedisCommands<String, String> commands = connection.sync();
-			return commands.hgetall("car_brand");
+			return commands.hgetall("car_brand:car_brand_id1");
 		}
 		finally {
 			redisClient.shutdown();

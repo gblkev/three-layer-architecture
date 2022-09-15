@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.dao.mysql.entity.DriverEntity;
 
 @SpringBootTest
-@TestPropertySource("classpath:mysql/application-test-mysql.properties")
+@TestPropertySource("classpath:application-test.properties")
 class DriverRepositoryIT extends AbstractIntegrationTest {
 
 	// Ex: c2bba799-02db-4b4b-8782-0df1517bbe1d
@@ -28,9 +27,10 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	private DriverRepository driverRepository;
 
 	@Test
-	@Sql("classpath:mysql/driver/findById_severalDrivers.sql")
-	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() {
-		// Given + sql
+	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/findById_severalDrivers.sql");
+		
 		String id = "id_1";
 
 		// When
@@ -44,9 +44,9 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Sql("classpath:mysql/driver/findAll_severalDrivers.sql")
-	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() {
-		// Given sql
+	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/findAll_severalDrivers.sql");
 
 		// When
 		List<DriverEntity> drivers = driverRepository.findAll();
@@ -95,9 +95,10 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:mysql/driver/deleteById_severalDrivers.sql")
-	void givenSeveralDrivers_whenDeleteById_thenDriverDeleted() {
-		// Given + sql
+	void givenSeveralDrivers_whenDeleteById_thenDriverDeleted() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/deleteById_severalDrivers.sql");
+		
 		String id = "id_1";
 		assertTrue(driverRepository.findById(id).isPresent());
 		assertEquals(3, driverRepository.count());

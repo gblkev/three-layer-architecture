@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.dao.mysql.entity.ColorEntity;
 
 @SpringBootTest
-@TestPropertySource("classpath:mysql/application-test-mysql.properties")
+@TestPropertySource("classpath:application-test.properties")
 class ColorRepositoryIT extends AbstractIntegrationTest {
 
 	// Ex: c2bba799-02db-4b4b-8782-0df1517bbe1d
@@ -28,9 +27,10 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	private ColorRepository colorRepository;
 	
 	@Test
-	@Sql("classpath:mysql/color/findById_severalColors.sql")
-	void givenSeveralColors_whenFindById_thenOneColorRetrieved() {
-		// Given + sql
+	void givenSeveralColors_whenFindById_thenOneColorRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findById_severalColors.sql");
+		
 		String id = "id_1";
 
 		// When
@@ -43,9 +43,9 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Sql("classpath:mysql/color/findAll_severalColors.sql")
-	void givenSeveralColors_whenFindAll_thenAllColorsRetrieved() {
-		// Given sql
+	void givenSeveralColors_whenFindAll_thenAllColorsRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findAll_severalColors.sql");
 
 		// When
 		List<ColorEntity> colors = colorRepository.findAll();
@@ -89,9 +89,10 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:mysql/color/deleteById_severalColors.sql")
-	void givenSeveralColors_whenDeleteById_thenColorDeleted() {
-		// Given + sql
+	void givenSeveralColors_whenDeleteById_thenColorDeleted() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/deleteById_severalColors.sql");
+		
 		String id = "id_1";
 		assertTrue(colorRepository.findById(id).isPresent());
 		assertEquals(3, colorRepository.count());
@@ -117,9 +118,10 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Sql("classpath:mysql/color/findOneByHexaCodeIgnoreCase_existingColor.sql")
-	void givenExistingColor_whenFindOneByHexaCodeIgnoreCase_thenOneResult() {
-		// Given + sql
+	void givenExistingColor_whenFindOneByHexaCodeIgnoreCase_thenOneResult() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findOneByHexaCodeIgnoreCase_existingColor.sql");
+		
 		String hexaCode = "#000000";
 
 		// When

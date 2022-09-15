@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
@@ -40,9 +39,9 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api/v1/color/get_findAll_createSeveralColors.sql")
-	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() {
-		// Given + sql
+	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/get_findAll_createSeveralColors.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		// When
@@ -129,9 +128,9 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/color/post_create_createColor.sql")
-	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() {
+	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() throws Exception {
 		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/post_create_createColor.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		String hexaCodeToCreate = "#000000";
@@ -175,9 +174,9 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/color/delete_deleteById_createSeveralColors.sql")
-	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() {
+	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() throws Exception {
 		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/delete_deleteById_createSeveralColors.sql");
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
 		
 		String colorIdToDelete = "id_1";

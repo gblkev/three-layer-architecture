@@ -1,9 +1,9 @@
 package com.gebel.threelayerarchitecture.dao.redis.interfaces;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.gebel.threelayerarchitecture.dao.redis.model.CarBrandModel;
 
-public interface CarBrandRepository extends JpaRepository<CarBrandModel, String> {
+public interface CarBrandRepository extends CrudRepository<CarBrandModel, String> {
 
 }

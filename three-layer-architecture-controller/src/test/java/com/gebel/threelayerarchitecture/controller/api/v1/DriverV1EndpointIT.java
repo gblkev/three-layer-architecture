@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
@@ -41,9 +40,9 @@ class DriverV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api/v1/driver/get_findAll_createSeveralDrivers.sql")
-	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() {
-		// Given + sql
+	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/driver/get_findAll_createSeveralDrivers.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
 		
 		// When
@@ -191,9 +190,9 @@ class DriverV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/driver/delete_deleteById_createSeveralDrivers.sql")
-	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() {
+	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() throws Exception {
 		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/driver/delete_deleteById_createSeveralDrivers.sql");
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
 		
 		String driverIdToDelete = "id_1";

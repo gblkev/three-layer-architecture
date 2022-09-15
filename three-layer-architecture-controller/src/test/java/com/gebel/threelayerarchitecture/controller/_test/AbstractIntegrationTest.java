@@ -26,6 +26,7 @@ public abstract class AbstractIntegrationTest {
 	private static final String MYSQL_PASSWORD = "test_password";
 	
 	private static final String REDIS_DOCKER_IMAGE = "redis:7.0.4";
+	private static final String REDIS_PASSWORD = "test_password";
 
 	private static final TestContainers TEST_CONTAINERS = new TestContainers();
 	private static final AtomicBoolean HAS_ALREADY_BEEN_STARTED = new AtomicBoolean(false); 
@@ -58,7 +59,7 @@ public abstract class AbstractIntegrationTest {
 			return;
 		}
 		TEST_CONTAINERS.initMysqlContainerWithRandomPort(MYSQL_DOCKER_IMAGE, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD);
-		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_DOCKER_IMAGE);
+		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_DOCKER_IMAGE, REDIS_PASSWORD);
 		// TODO init kafka
 		TEST_CONTAINERS.startContainers();
 	}

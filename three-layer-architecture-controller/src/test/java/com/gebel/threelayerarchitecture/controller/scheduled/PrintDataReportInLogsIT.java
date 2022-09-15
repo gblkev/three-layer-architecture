@@ -25,7 +25,6 @@ import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.support.CronExpression;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller._test.Log4jInMemoryAppender;
@@ -47,11 +46,11 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 	private ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor;
 	
 	@Test
-	@Sql("classpath:scheduled/printDataReportInLogs/createSeveralCars.sql")
-	void givenDataReportGenerated_whenScheduledPrintDataReportInLogs_thenDataReportPrintedOutInLogs() {
+	void givenDataReportGenerated_whenScheduledPrintDataReportInLogs_thenDataReportPrintedOutInLogs() throws Exception {
 		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender();
 		try {
-			// Given + sql
+			// Given
+			getTestContainers().getMysqlTestContainer().executeSqlScript("scheduled/printDataReportInLogs/createSeveralCars.sql");
 			log4jInMemoryAppender.setupAppender(PrintDataReportInLogs.class);
 			
 			// When

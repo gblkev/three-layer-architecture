@@ -64,7 +64,7 @@ public class MysqlTestContainer extends GenericTestContainer<MySQLContainer<?>> 
 	}
 	
 	public String getJdbcUrl() {
-		return "jdbc:mysql://" + getContainer().getHost() + ":" + getContainer().getFirstMappedPort() + "/" + getContainer().getDatabaseName();
+		return "jdbc:mysql://" + getHost() + ":" + getPort() + "/" + getContainer().getDatabaseName();
 	}
 
 }

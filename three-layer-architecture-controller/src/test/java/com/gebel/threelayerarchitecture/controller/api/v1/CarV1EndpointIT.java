@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
@@ -45,9 +44,9 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	@Sql("classpath:api/v1/car/get_findAll_createSeveralCars.sql")
-	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() {
-		// Given + sql
+	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/car/get_findAll_createSeveralCars.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
 		
 		// When
@@ -114,9 +113,9 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/car/post_create_createColorAndDriver.sql")
-	void givenValidCar_whenPostCreate_thenCarCreated() {
-		// Given + sql
+	void givenValidCar_whenPostCreate_thenCarCreated() throws Exception {
+		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/car/post_create_createColorAndDriver.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
 		
 		CreateCarDto createCarDto = CreateCarDto.builder()
@@ -165,9 +164,9 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/car/post_create_createValidColor.sql")
-	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() {
+	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() throws Exception {
 		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/car/post_create_createValidColor.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
 		
 		CreateCarDto createCarDto = CreateCarDto.builder()
@@ -217,9 +216,9 @@ class CarV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	@Sql("classpath:api/v1/car/delete_deleteById_createSeveralCars.sql")
-	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() {
+	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() throws Exception {
 		// Given
+		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/car/delete_deleteById_createSeveralCars.sql");
 		String url = String.format(CARS_DELETE_BY_ID_API_URL_PATTERN, getServerPort());
 		
 		String carIdToDelete = "car_id_1";

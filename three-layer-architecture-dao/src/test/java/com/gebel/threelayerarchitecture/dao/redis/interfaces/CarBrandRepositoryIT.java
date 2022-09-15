@@ -13,17 +13,16 @@ import com.gebel.threelayerarchitecture.dao._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.dao.redis.model.CarBrandModel;
 
 @SpringBootTest
-@TestPropertySource("classpath:mysql/application-test-redis.properties")
+@TestPropertySource("classpath:application-test.properties")
 class CarBrandRepositoryIT extends AbstractIntegrationTest {
 	
 	@Autowired
 	private CarBrandRepository carBrandRepository;
 	
-	// TODO name
 	@Test
-//	@Sql("classpath:mysql/car/findById_severalCars.sql")
-	void givenSeveralCarBrands_whenFindById_thenOneCarBrandRetrieved() {
+	void givenSeveralCarBrands_whenFindById_thenOneCarBrandRetrieved() throws Exception {
 		// Given
+		getTestContainers().getRedisTestContainer().populateRedisCache("car_brand", "redis/car/brand/findById_severalCarBrands.json", 1);
 		String id = "car_brand_id_1";
 
 		// When
@@ -32,7 +31,9 @@ class CarBrandRepositoryIT extends AbstractIntegrationTest {
 		// Then
 		CarBrandModel foundCarModel = optionalCarModel.get();
 		assertEquals("car_brand_id_1", foundCarModel.getId());
-		assertEquals("brand_name_1", foundCarModel.getName());
+		assertEquals("car_brand_name_1", foundCarModel.getName());
 	}
+	
+	// TODO add more tests
 
 }
