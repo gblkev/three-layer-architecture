@@ -4,14 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -120,19 +125,30 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 		return Optional.empty();
 	}
 	
-	// TODO ParameterizedTest
-	@Test
-	void givenCronExpression_whenGetScheduledTasks_thenValidScheduling() {
+	@ParameterizedTest
+	@MethodSource("givenValidCurrentDate")
+	void givenCronExpression_whenGetScheduledTasks_thenValidScheduling(String currentDateAsString, String nextExpectedTriggerDateAsString) {
 		// Given
 		Optional<CronTask> optionalScheduledTask = getPrintDataReportInLogsScheduledTask();
 		String cronExpressionAsString = optionalScheduledTask.get().getExpression();
 		CronExpression cronExpression = CronExpression.parse(cronExpressionAsString);
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
 		// When
-		LocalDateTime next = cronExpression.next(LocalDateTime.now());
+		LocalDateTime nextExpectedTriggerDate = cronExpression.next(LocalDateTime.parse(currentDateAsString, dateTimeFormatter));
 		
 		// Then
-		
+		assertEquals(nextExpectedTriggerDateAsString, dateTimeFormatter.format(nextExpectedTriggerDate));
+	}
+	
+	static Stream<Arguments> givenValidCurrentDate() {
+		return Stream.of(
+			// Current date + next expected trigger date.
+			Arguments.of("2022-09-15 08:30:23", "2022-09-15 18:00:00"),
+			Arguments.of("2022-09-16 10:05:47", "2022-09-16 18:00:00"),
+			Arguments.of("2022-12-31 23:59:59", "2023-01-01 18:00:00"),
+			Arguments.of("2050-05-07 18:00:00", "2050-05-08 18:00:00")
+		);
 	}
 
 }
