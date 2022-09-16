@@ -1,18 +1,18 @@
 package test.com.gebel.threelayerarchitecture.sandbox.container;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
 
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.testcontainers.shaded.org.apache.commons.lang3.StringUtils;
 import org.testcontainers.utility.DockerImageName;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
@@ -83,16 +83,17 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 		}
 	}
 	
-	public void populateRedisCache(String redisHash, String jsonFilePath, int database) throws Exception {
-		RedisURI redisUri = buildRedisUri(database);
+	// TODO I know, it's not very clean but I can't find any other solution right now :/
+	public void populateRedisCache(String commandFilePath, int database) throws Exception {
 		RedisClient redisClient = null;
 		try {
+			RedisURI redisUri = buildRedisUri(database);
 			redisClient = RedisClient.create(redisUri);
 			StatefulRedisConnection<String, String> connection = redisClient.connect();
 			RedisCommands<String, String> commands = connection.sync();
-			List<JsonNode> jsonNodes = getJsonNodes(jsonFilePath);
-			jsonNodes.stream()
-				.forEach(jsonNode -> this.persistJsonNodeToRedis(commands, redisHash, jsonNode));
+			URI uri = RedisTestContainer.class.getClassLoader().getResource(commandFilePath).toURI();
+			Files.readAllLines(Paths.get(uri))
+				.forEach(command -> executeCommandSilently(command, commands));
 		}
 		finally {
 			redisClient.shutdown();
@@ -108,26 +109,52 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 			.build();
 	}
 	
-	private List<JsonNode> getJsonNodes(String jsonFilePath) throws IOException {
-		InputStream jsonFileAsStream = RedisTestContainer.class.getClassLoader().getResourceAsStream(jsonFilePath);
-		ObjectMapper objectMapper = new ObjectMapper();
-		ArrayNode rootNode = (ArrayNode) objectMapper.readTree(jsonFileAsStream);
-		
-		List<JsonNode> jsonNodes = new ArrayList<>();
-		rootNode.elements()
-			.forEachRemaining(jsonNodes::add);
-		return jsonNodes;
+	private void executeCommandSilently(String commandAsString, RedisCommands<String, String> commands) {
+		try {
+			executeCommand(commandAsString, commands);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
-	private void persistJsonNodeToRedis(RedisCommands<String, String> commands, String redisHash, JsonNode jsonNode) {
-		String id = jsonNode.get("id").asText();
-		String hashKey = redisHash + ":" + id;
-		jsonNode.fields().forEachRemaining(field -> {
-			String fieldName = field.getKey();
-			String value = field.getValue().asText();
-			commands.hset(hashKey, fieldName, value);
-		});
-		commands.sadd(redisHash, hashKey);
+	private void executeCommand(String commandAsString, RedisCommands<String, String> commands) throws Exception {
+		if (StringUtils.isBlank(commandAsString)) {
+			return;
+		}
+		String methodToCallAsString = commandAsString.split(" ")[0].toLowerCase();
+		String[] arguments = splitArguments(commandAsString);
+		switch (methodToCallAsString) {
+			case "hset": hset(arguments, commands); return;
+			case "sadd": sadd(arguments, commands); return;
+			default: throw new IllegalArgumentException("Command " + methodToCallAsString + " is not implemented yet");
+		}
+	}
+	
+	private String[] splitArguments(String s) {
+		return Pattern.compile("\"(.*?)\"")
+	    	.matcher(s)
+	    	.results()
+	    	.map(MatchResult::group)
+	    	.map(this::cleanArgument)
+	    	.toArray(size -> new String[size]);
+	}
+	
+	private String cleanArgument(String argument) {
+		if (argument.startsWith("\"") && argument.endsWith("\"")) {
+			return argument.substring(1, argument.length() - 1);
+		}
+		return argument;
+	}
+	
+	private void hset(String[] arguments, RedisCommands<String, String> commands) {
+		commands.hset(arguments[0], arguments[1], arguments[2]);
+	}
+	
+	private void sadd(String[] arguments, RedisCommands<String, String> commands) {
+		String firstArgument = arguments[0];
+		String[] allArgumentsAfterTheFirst = Arrays.copyOfRange(arguments, 1, arguments.length);
+		commands.sadd(firstArgument, allArgumentsAfterTheFirst);
 	}
 	
 }
