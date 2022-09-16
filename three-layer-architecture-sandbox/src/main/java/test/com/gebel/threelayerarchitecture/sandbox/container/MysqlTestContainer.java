@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlTestContainer extends GenericTestContainer<MySQLContainer<?>> {
 
 	private static final int CONTAINER_MAPPED_PORT = MySQLContainer.MYSQL_PORT;
-	private static final String INIT_SCRIPT_PATH = "mysql-init.sql";
+	private static final String INIT_SCRIPT_PATH = "mysql-create-objects.sql";
 	private static final String RESET_SCRIPT_PATH = "mysql-reset.sql";
 	
 	public MysqlTestContainer(String mysqlDockerImage, String dbName, String mysqlUser, String mysqlPassword) {

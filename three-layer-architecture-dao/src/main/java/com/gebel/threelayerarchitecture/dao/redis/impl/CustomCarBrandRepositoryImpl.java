@@ -48,4 +48,9 @@ public class CustomCarBrandRepositoryImpl implements CustomCarBrandRepository {
 		return id.substring(HASH_KEY_PREFIX.length(), id.length());
 	}
 
+	@Override
+	public long countWithoutSpringBug() {
+		return findAllIds().size();
+	}
+
 }

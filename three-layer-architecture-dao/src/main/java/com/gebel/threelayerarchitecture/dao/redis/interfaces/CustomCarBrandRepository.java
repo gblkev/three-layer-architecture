@@ -6,4 +6,6 @@ public interface CustomCarBrandRepository {
 	
 	Iterable<CarBrandModel> findAllWithoutSpringBug();
 	
+	long countWithoutSpringBug();
+	
 }

@@ -28,22 +28,27 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>> {
 
 	private static final int CONTAINER_MAPPED_PORT = 6379;
+	private static final String INIT_SCRIPT_PATH = "redis-init-data";
 	
 	private final String redisPassword;
+	private final int redisDatabase;
+	private final boolean loadInitScript;
 
-	public RedisTestContainer(String redisDockerImage, String redisPassword) {
-		this(redisDockerImage, RANDOM_PORT, redisPassword);
+	public RedisTestContainer(String redisDockerImage, String redisPassword, int redisDatabase, boolean loadInitScript) throws Exception {
+		this(redisDockerImage, RANDOM_PORT, redisPassword, redisDatabase, loadInitScript);
 	}
 	
-	public RedisTestContainer(String redisDockerImage, int redisPort, String redisPassword) {
+	public RedisTestContainer(String redisDockerImage, int redisPort, String redisPassword, int redisDatabase, boolean loadInitScript) throws Exception {
 		super("Redis");
 		this.redisPassword = redisPassword;
-		GenericContainer<?> container = buildContainer(redisDockerImage, redisPort, redisPassword);
+		this.redisDatabase = redisDatabase;
+		this.loadInitScript = loadInitScript;
+		GenericContainer<?> container = buildContainer(redisDockerImage, redisPort, redisPassword, redisDatabase, loadInitScript);
 		setContainer(container);
 	}
 
 	@SuppressWarnings("resource") // Resource closed by "stop()"
-	private GenericContainer<?> buildContainer(String redisDockerImage, int redisPort, String redisPassword) {
+	private GenericContainer<?> buildContainer(String redisDockerImage, int redisPort, String redisPassword, int redisDatabase, boolean loadInitScript) throws Exception {
 		GenericContainer<?> container = new GenericContainer<>(DockerImageName.parse(redisDockerImage))
 			.withExposedPorts(CONTAINER_MAPPED_PORT)
 			.withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("testcontainers.redis")))
@@ -53,6 +58,23 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 				new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(redisPort), new ExposedPort(CONTAINER_MAPPED_PORT)))));
 		}
 		return container;
+	}
+	
+	@Override
+	public void start() {
+		super.start();
+		if (loadInitScript) {
+			loadInitScriptSilently();
+		}
+	}
+	
+	private void loadInitScriptSilently() {
+		try {
+			executeCommandsScript(INIT_SCRIPT_PATH);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
@@ -67,6 +89,7 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 			.withHost(getHost())
 			.withPort(getPort())
 			.withPassword(redisPassword.toCharArray())
+			.withDatabase(redisDatabase)
 			.build();
 	}
 	
@@ -84,29 +107,22 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 	}
 	
 	// TODO I know, it's not very clean but I can't find any other solution right now :/
-	public void populateRedisCache(String commandFilePath, int database) throws Exception {
+	public void executeCommandsScript(String commandsScriptPath) throws Exception {
 		RedisClient redisClient = null;
 		try {
-			RedisURI redisUri = buildRedisUri(database);
+			RedisURI redisUri = buildRedisUri();
 			redisClient = RedisClient.create(redisUri);
 			StatefulRedisConnection<String, String> connection = redisClient.connect();
 			RedisCommands<String, String> commands = connection.sync();
-			URI uri = RedisTestContainer.class.getClassLoader().getResource(commandFilePath).toURI();
+			URI uri = RedisTestContainer.class.getClassLoader().getResource(commandsScriptPath).toURI();
 			Files.readAllLines(Paths.get(uri))
 				.forEach(command -> executeCommandSilently(command, commands));
 		}
 		finally {
-			redisClient.shutdown();
+			if (redisClient != null) {
+				redisClient.shutdown();
+			}
 		}
-	}
-	
-	private RedisURI buildRedisUri(int database) {
-		return RedisURI.builder()
-			.withHost(getHost())
-			.withPort(getPort())
-			.withPassword(redisPassword.toCharArray())
-			.withDatabase(database)
-			.build();
 	}
 	
 	private void executeCommandSilently(String commandAsString, RedisCommands<String, String> commands) {

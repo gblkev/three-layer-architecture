@@ -30,9 +30,10 @@ public class PrintDataReportInLogs {
 		DataReport dataReport = dataReportService.generateDataReport();
 		LOGGER.info("#######################");
 		LOGGER.info("Data report:");
-		LOGGER.info("    Colors in db: {}", dataReport.getColorsCount());
-		LOGGER.info("    Drivers in db: {}", dataReport.getDriversCount());
-		LOGGER.info("    Cars in db: {}", dataReport.getCarsCount());
+		LOGGER.info("    Total colors: {}", dataReport.getColorsCount());
+		LOGGER.info("    Total drivers: {}", dataReport.getDriversCount());
+		LOGGER.info("    Total cars: {}", dataReport.getCarsCount());
+		LOGGER.info("    Total brands: {}", dataReport.getBrandsCount());
 		LOGGER.info("#######################");
 	}
 	

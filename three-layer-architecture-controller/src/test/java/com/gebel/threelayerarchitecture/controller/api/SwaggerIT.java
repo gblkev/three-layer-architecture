@@ -115,6 +115,7 @@ class SwaggerIT extends AbstractIntegrationTest {
 	private void assertV2ApiPaths(JsonNode responseAsJsonNode) {
 		JsonNode pathsNode = responseAsJsonNode.get("paths");
 		List<String> paths = List.of(
+			"/api/v2/brands",
 			"/api/v2/cars",
 			"/api/v2/cars/{carId}",
 			"/api/v2/colors",
@@ -129,11 +130,13 @@ class SwaggerIT extends AbstractIntegrationTest {
 		List<String> schemas = List.of(
 			"ApiBusinessErrorDto",
 			"ApiTechnicalErrorDto",
+			"BrandDto",
 			"CarDto",
 			"ColorDto",
 			"CreateCarDto",
 			"CreateDriverDto",
-			"DriverDto");
+			"DriverDto",
+			"ModelDto");
 		assertEquals(schemas, IteratorUtils.toList(schemasNode.fieldNames()));
 	}
 

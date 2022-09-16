@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.gebel.threelayerarchitecture.business.domain.DataReport;
+import com.gebel.threelayerarchitecture.business.service.interfaces.BrandService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.CarService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
 import com.gebel.threelayerarchitecture.business.service.interfaces.DriverService;
@@ -26,6 +27,9 @@ class DataReportServiceImplTest {
 	@Mock
 	private CarService carService;
 	
+	@Mock
+	private BrandService brandService;
+	
 	@InjectMocks
 	private DataReportServiceImpl dataReportService;
 	
@@ -38,6 +42,8 @@ class DataReportServiceImplTest {
 			.thenReturn(18L);
 		when(carService.countCars())
 			.thenReturn(17L);
+		when(brandService.countBrands())
+			.thenReturn(6L);
 		
 		// When
 		DataReport dataReport = dataReportService.generateDataReport();
@@ -46,6 +52,7 @@ class DataReportServiceImplTest {
 		assertEquals(4, dataReport.getColorsCount());
 		assertEquals(18, dataReport.getDriversCount());
 		assertEquals(17, dataReport.getCarsCount());
+		assertEquals(6, dataReport.getBrandsCount());
 	}
 
 }

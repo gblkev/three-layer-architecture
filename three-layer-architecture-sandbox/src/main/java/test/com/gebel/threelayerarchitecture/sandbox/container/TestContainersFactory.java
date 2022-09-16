@@ -26,6 +26,10 @@ public class TestContainersFactory {
 	private int redisPort;
 	@Value("${sandbox.redis.password}")
 	private String redisPassword;
+	@Value("${sandbox.redis.database}")
+	private int redisDatabase;
+	@Value("${sandbox.redis.load-init-script}")
+	private boolean redisLoadInitScript;
 	
 	@Value("${sandbox.kafka.docker-image}")
 	private String kafkaDockerImage;
@@ -36,7 +40,7 @@ public class TestContainersFactory {
 	@Value("${sandbox.kafka.topics}")
 	private String kafkaTopics;
 	
-	public TestContainers build() {
+	public TestContainers build() throws Exception {
 		if (useRandomPorts) {
 			return buildContainersWithRandomPorts();
 		}
@@ -45,18 +49,18 @@ public class TestContainersFactory {
 		}
 	}
 	
-	private TestContainers buildContainersWithRandomPorts() {
+	private TestContainers buildContainersWithRandomPorts() throws Exception {
 		TestContainers testContainers = new TestContainers();
 		testContainers.initMysqlContainerWithRandomPort(mysqlDockerImage, mysqlDbName, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithRandomPort(redisDockerImage, redisPassword);
+		testContainers.initRedisContainerWithRandomPort(redisDockerImage, redisPassword, redisDatabase, redisLoadInitScript);
 		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaDockerImage, kafkaTopics);
 		return testContainers;
 	}
 	
-	private TestContainers buildContainersWithFixedPorts() {
+	private TestContainers buildContainersWithFixedPorts() throws Exception {
 		TestContainers testContainers = new TestContainers();
 		testContainers.initMysqlContainerWithFixedPort(mysqlDockerImage, mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort, redisPassword);
+		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort, redisPassword, redisDatabase, redisLoadInitScript);
 		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
 		return testContainers;
 	}

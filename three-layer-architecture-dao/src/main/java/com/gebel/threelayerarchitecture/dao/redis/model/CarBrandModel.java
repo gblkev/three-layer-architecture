@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 @RedisHash("car_brand")
 public class CarBrandModel {
 
@@ -18,6 +20,6 @@ public class CarBrandModel {
 	
 	private String name;
 	
-	private List<String> models;
+	private List<CarModelModel> models;
 	
 }

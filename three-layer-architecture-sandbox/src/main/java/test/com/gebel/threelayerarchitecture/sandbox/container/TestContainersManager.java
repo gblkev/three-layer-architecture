@@ -18,7 +18,7 @@ public class TestContainersManager {
 	private TestContainers testContainers;
 	
 	@PostConstruct
-	public void startContainers() {
+	public void startContainers() throws Exception {
 		testContainers = testContainersFactory.build();
 		testContainers.startContainers();
 	}

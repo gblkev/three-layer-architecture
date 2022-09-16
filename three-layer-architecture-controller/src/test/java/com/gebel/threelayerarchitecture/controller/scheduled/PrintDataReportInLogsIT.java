@@ -46,11 +46,12 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 	private ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor;
 	
 	@Test
-	void givenDataReportGenerated_whenScheduledPrintDataReportInLogs_thenDataReportPrintedOutInLogs() throws Exception {
+	void givenDataReportGenerated_whenScheduledPrintDataReportInLogs_thenDataReportPrintedInLogs() throws Exception {
 		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender();
 		try {
 			// Given
 			getTestContainers().getMysqlTestContainer().executeSqlScript("scheduled/printDataReportInLogs/createSeveralCars.sql");
+			getTestContainers().getRedisTestContainer().executeCommandsScript("scheduled/printDataReportInLogs/createSeveralBrands");
 			log4jInMemoryAppender.setupAppender(PrintDataReportInLogs.class);
 			
 			// When
@@ -60,9 +61,10 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 			List<String> expectedLogs = List.of(
 				"#######################",
 				"Data report:",
-				"    Colors in db: 4",
-				"    Drivers in db: 2",
-				"    Cars in db: 6",
+				"    Total colors: 4",
+				"    Total drivers: 2",
+				"    Total cars: 6",
+				"    Total brands: 3",
 				"#######################");
 			List<String> eventsMessagesAsString = log4jInMemoryAppender.getEventsMessagesAsString();
 			assertEquals(expectedLogs, eventsMessagesAsString);

@@ -14,5 +14,6 @@ public class DataReport {
 	private long colorsCount;
 	private long driversCount;
 	private long carsCount;
+	private long brandsCount;
 
 }

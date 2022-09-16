@@ -19,6 +19,7 @@ public abstract class AbstractIntegrationTest {
 	private static final String REDIS_DOCKER_IMAGE = "redis:7.0.4";
 	private static final String REDIS_PASSWORD = "test_password";
 	private static final int REDIS_DATABASE = 1;
+	private static final boolean REDIS_LOAD_INIT_SCRIPT = false;
 	
 	private static final TestContainers TEST_CONTAINERS = new TestContainers();
 	private static final AtomicBoolean HAS_ALREADY_BEEN_STARTED = new AtomicBoolean(false); 
@@ -29,25 +30,21 @@ public abstract class AbstractIntegrationTest {
 	}
 	
 	@DynamicPropertySource
-	private static void dynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
+	private static void dynamicConfigurationProperties(DynamicPropertyRegistry registry) throws Exception {
 		startContainers();
 		setDynamicConfigurationProperties(registry);
-	}
-	
-	protected static int getRedisDatabase() {
-		return REDIS_DATABASE;
 	}
 	
 	protected static TestContainers getTestContainers() {
 		return TEST_CONTAINERS;
 	}
 	
-	private static void startContainers() {
+	private static void startContainers() throws Exception {
 		if (HAS_ALREADY_BEEN_STARTED.getAndSet(true)) {
 			return;
 		}
 		TEST_CONTAINERS.initMysqlContainerWithRandomPort(MYSQL_DOCKER_IMAGE, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD);
-		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_DOCKER_IMAGE, REDIS_PASSWORD);
+		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_DOCKER_IMAGE, REDIS_PASSWORD, REDIS_DATABASE, REDIS_LOAD_INIT_SCRIPT);
 		TEST_CONTAINERS.startContainers();
 	}
 	
