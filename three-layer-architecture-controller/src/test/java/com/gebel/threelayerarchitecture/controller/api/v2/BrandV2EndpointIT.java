@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.BrandDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.ModelDto;
-import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiTechnicalErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.ApiTechnicalErrorDto;
 
 @SpringBootTest(
 	webEnvironment = WebEnvironment.RANDOM_PORT,

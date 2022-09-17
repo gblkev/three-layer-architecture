@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.ColorDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +34,7 @@ public interface ColorV1Endpoint {
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_INVALID_HEXA_CODE"),
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.COLOR_SAME_HEXA_CODE_ALREADY_EXISTS")
 	})
-	ColorDto createColor(@RequestBody @Schema(description = "Hexadecimal code", required = true, example = "#000000") String hexaCode);
+	ColorDto createColor(@RequestBody @Schema(description = "Hexadecimal code", required = true, example = "#000000") String hexaCode) throws BusinessException;
 	
 	@DeleteMapping("/{colorId}")
 	@Operation(summary = "Delete an existing color")

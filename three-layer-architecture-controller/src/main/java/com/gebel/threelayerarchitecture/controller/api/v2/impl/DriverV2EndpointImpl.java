@@ -10,7 +10,6 @@ import com.gebel.threelayerarchitecture.business.service.interfaces.DriverServic
 import com.gebel.threelayerarchitecture.controller.api.v2.converter.V2ApiDriverConverter;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.CreateDriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.DriverDto;
-import com.gebel.threelayerarchitecture.controller.api.v2.error.ApiBusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.DriverV2Endpoint;
 
 import lombok.AllArgsConstructor;
@@ -31,17 +30,12 @@ public class DriverV2EndpointImpl implements DriverV2Endpoint {
 	}
 
 	@Override
-	public DriverDto createDriver(CreateDriverDto createDriverDto) {
-		try {
-			LOGGER.info("Creating driver with data={}", createDriverDto);
-			String firstName = (createDriverDto != null ? createDriverDto.getFirstName() : null);
-			String lastName = (createDriverDto != null ? createDriverDto.getLastName() : null);
-			Driver createdDriver = driverService.createDriver(firstName, lastName);
-			return driverConverter.toDto(createdDriver);
-		}
-		catch (BusinessException businessException) {
-			throw new ApiBusinessException(businessException);
-		}
+	public DriverDto createDriver(CreateDriverDto createDriverDto) throws BusinessException {
+		LOGGER.info("Creating driver with data={}", createDriverDto);
+		String firstName = (createDriverDto != null ? createDriverDto.getFirstName() : null);
+		String lastName = (createDriverDto != null ? createDriverDto.getLastName() : null);
+		Driver createdDriver = driverService.createDriver(firstName, lastName);
+		return driverConverter.toDto(createdDriver);
 	}
 	
 	@Override

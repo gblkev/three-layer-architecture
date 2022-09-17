@@ -1,18 +1,18 @@
-package com.gebel.threelayerarchitecture.dao.rest.dto;
-
-import java.time.ZonedDateTime;
+package com.gebel.threelayerarchitecture.controller.api.v2.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class FormulaOneAdDto {
+public class AdDto {
 	
 	private String id;
-	private ZonedDateTime expirationDate;
+	private AdCategoryDto category;
 	private String message;
 
 }

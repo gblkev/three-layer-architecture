@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.CarDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.CreateCarDto;
 
@@ -34,7 +35,7 @@ public interface CarV2Endpoint {
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.CAR_INVALID_COLOR"),
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.CAR_INVALID_DRIVER")
 	})
-	CarDto createCar(@RequestBody @Schema(required = true, implementation = CreateCarDto.class) CreateCarDto createCarDto);
+	CarDto createCar(@RequestBody @Schema(required = true, implementation = CreateCarDto.class) CreateCarDto createCarDto) throws BusinessException;
 	
 	@DeleteMapping("/{carId}")
 	@Operation(summary = "Delete an existing car")

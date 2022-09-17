@@ -1,7 +1,6 @@
 package com.gebel.threelayerarchitecture.business.service.converter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class DomainDriverConverter {
 		return CollectionUtils.emptyIfNull(entitiesDrivers)
 			.stream()
 			.map(this::toDomain)
-			.collect(Collectors.toList());
+			.toList();
 	}
 	
 	public DriverEntity toEntity(Driver domainDriver) {

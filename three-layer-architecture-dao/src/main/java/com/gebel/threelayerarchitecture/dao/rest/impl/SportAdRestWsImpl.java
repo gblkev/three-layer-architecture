@@ -1,5 +1,8 @@
 package com.gebel.threelayerarchitecture.dao.rest.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +37,10 @@ public class SportAdRestWsImpl implements SportAdRestWs {
 	}
 	
 	@Override
-	public SportAdDto getPersonalizedAd(String driverId) {
+	public List<SportAdDto> getPersonalizedAds(String driverId) {
 		String getPersonalizedAdUrl = getPersonalizedAdUrlTemplate.expand("driverId", driverId).getPath();
 		try {
-			return restTemplate.getForObject(getPersonalizedAdUrl, SportAdDto.class, driverId);
+			return Arrays.asList(restTemplate.getForObject(getPersonalizedAdUrl, SportAdDto[].class, driverId));
 		}
 		catch (Exception e) {
 			String message = String.format(
@@ -49,7 +52,7 @@ public class SportAdRestWsImpl implements SportAdRestWs {
 	}
 
 	@Override
-	public void unsubscribePersonalizedAd(String driverId) {
+	public void unsubscribePersonalizedAds(String driverId) {
 		String unsubscribePersonalizedAdUrl = unsubscribePersonalizedAdUrlTemplate.expand("driverId", driverId).getPath();
 		try {
 			restTemplate.postForEntity(unsubscribePersonalizedAdUrl, HttpEntity.EMPTY, Void.class, driverId);

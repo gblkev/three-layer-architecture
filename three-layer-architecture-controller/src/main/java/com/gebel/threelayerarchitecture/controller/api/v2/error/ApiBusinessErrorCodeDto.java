@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v2.error.dto;
+package com.gebel.threelayerarchitecture.controller.api.v2.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -10,7 +10,6 @@ import com.gebel.threelayerarchitecture.business.service.interfaces.CarService;
 import com.gebel.threelayerarchitecture.controller.api.v2.converter.V2ApiCarConverter;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.CarDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.CreateCarDto;
-import com.gebel.threelayerarchitecture.controller.api.v2.error.ApiBusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.CarV2Endpoint;
 
 import lombok.AllArgsConstructor;
@@ -31,17 +30,12 @@ public class CarV2EndpointImpl implements CarV2Endpoint {
 	}
 
 	@Override
-	public CarDto createCar(CreateCarDto createCarDto) {
-		try {
-			LOGGER.info("Creating car with data={}", createCarDto);
-			String colorId = (createCarDto != null ? createCarDto.getColorId() : null);
-			String driverId = (createCarDto != null ? createCarDto.getDriverId() : null);
-			Car createdCar = carService.createCar(colorId, driverId);
-			return carConverter.toDto(createdCar);
-		}
-		catch (BusinessException businessException) {
-			throw new ApiBusinessException(businessException);
-		}
+	public CarDto createCar(CreateCarDto createCarDto) throws BusinessException {
+		LOGGER.info("Creating car with data={}", createCarDto);
+		String colorId = (createCarDto != null ? createCarDto.getColorId() : null);
+		String driverId = (createCarDto != null ? createCarDto.getDriverId() : null);
+		Car createdCar = carService.createCar(colorId, driverId);
+		return carConverter.toDto(createdCar);
 	}
 
 	@Override

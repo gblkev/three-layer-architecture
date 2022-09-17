@@ -3,7 +3,7 @@ package com.gebel.threelayerarchitecture.controller.api.v2.converter;
 import org.springframework.stereotype.Component;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessErrorCode;
-import com.gebel.threelayerarchitecture.controller.api.v2.error.dto.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v2.error.ApiBusinessErrorCodeDto;
 
 @Component
 public class V2ApiBusinessErrorConverter {

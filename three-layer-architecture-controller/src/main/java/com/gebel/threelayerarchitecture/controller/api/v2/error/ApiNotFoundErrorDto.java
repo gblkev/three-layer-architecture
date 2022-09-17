@@ -1,4 +1,4 @@
-package com.gebel.threelayerarchitecture.controller.api.v1.error.dto;
+package com.gebel.threelayerarchitecture.controller.api.v2.error;
 
 import org.springframework.http.HttpStatus;
 

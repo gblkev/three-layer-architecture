@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateDriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
 
@@ -34,7 +35,7 @@ public interface DriverV1Endpoint {
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.DRIVER_INVALID_FIRST_NAME"),
 		@ApiResponse(responseCode = "ApiBusinessErrorCodeDto.DRIVER_INVALID_LAST_NAME")
 	})
-	DriverDto createDriver(@RequestBody @Schema(required = true, implementation = CreateDriverDto.class) CreateDriverDto createDriverDto);
+	DriverDto createDriver(@RequestBody @Schema(required = true, implementation = CreateDriverDto.class) CreateDriverDto createDriverDto) throws BusinessException;
 	
 	@DeleteMapping("/{driverId}")
 	@Operation(summary = "Delete an existing driver")

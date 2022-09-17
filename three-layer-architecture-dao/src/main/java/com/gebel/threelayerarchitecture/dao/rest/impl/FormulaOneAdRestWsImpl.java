@@ -1,5 +1,8 @@
 package com.gebel.threelayerarchitecture.dao.rest.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +37,10 @@ public class FormulaOneAdRestWsImpl implements FormulaOneAdRestWs {
 	}
 	
 	@Override
-	public FormulaOneAdDto getPersonalizedAd(String driverId) {
+	public List<FormulaOneAdDto> getPersonalizedAds(String driverId) {
 		String getPersonalizedAdUrl = getPersonalizedAdUrlTemplate.expand("driverId", driverId).getPath();
 		try {
-			return restTemplate.getForObject(getPersonalizedAdUrl, FormulaOneAdDto.class, driverId);
+			return Arrays.asList(restTemplate.getForObject(getPersonalizedAdUrl, FormulaOneAdDto.class, driverId));
 		}
 		catch (Exception e) {
 			String message = String.format(
@@ -49,7 +52,7 @@ public class FormulaOneAdRestWsImpl implements FormulaOneAdRestWs {
 	}
 
 	@Override
-	public void unsubscribePersonalizedAd(String driverId) {
+	public void unsubscribePersonalizedAds(String driverId) {
 		String unsubscribePersonalizedAdUrl = unsubscribePersonalizedAdUrlTemplate.expand("driverId", driverId).getPath();
 		try {
 			restTemplate.postForEntity(unsubscribePersonalizedAdUrl, HttpEntity.EMPTY, Void.class, driverId);

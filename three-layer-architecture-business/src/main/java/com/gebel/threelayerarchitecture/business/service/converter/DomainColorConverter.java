@@ -1,7 +1,6 @@
 package com.gebel.threelayerarchitecture.business.service.converter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class DomainColorConverter {
 		return CollectionUtils.emptyIfNull(entitiesColors)
 			.stream()
 			.map(this::toDomain)
-			.collect(Collectors.toList());
+			.toList();
 	}
 	
 	public ColorEntity toEntity(Color domainColor) {

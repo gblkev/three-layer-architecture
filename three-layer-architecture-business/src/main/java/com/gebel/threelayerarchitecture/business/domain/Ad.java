@@ -1,6 +1,4 @@
-package com.gebel.threelayerarchitecture.dao.rest.dto;
-
-import java.time.ZonedDateTime;
+package com.gebel.threelayerarchitecture.business.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +7,10 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class FormulaOneAdDto {
+public class Ad {
 	
 	private String id;
-	private ZonedDateTime expirationDate;
+	private AdCategory category;
 	private String message;
 
 }

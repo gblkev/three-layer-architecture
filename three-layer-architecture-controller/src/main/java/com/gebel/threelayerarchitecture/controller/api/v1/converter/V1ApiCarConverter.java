@@ -1,7 +1,6 @@
 package com.gebel.threelayerarchitecture.controller.api.v1.converter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,7 @@ public class V1ApiCarConverter {
 		return CollectionUtils.emptyIfNull(domainCars)
 			.stream()
 			.map(this::toDto)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 }

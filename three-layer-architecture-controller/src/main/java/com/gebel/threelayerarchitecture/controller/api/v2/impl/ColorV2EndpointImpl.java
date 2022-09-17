@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gebel.threelayerarchitecture.business.domain.BusinessException;
 import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessException;
 import com.gebel.threelayerarchitecture.controller.api.v2.converter.V2ApiColorConverter;
 import com.gebel.threelayerarchitecture.controller.api.v2.dto.ColorDto;
 import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.ColorV2Endpoint;
@@ -29,14 +28,9 @@ public class ColorV2EndpointImpl implements ColorV2Endpoint {
 	}
 
 	@Override
-	public ColorDto createColor(String hexaCode) {
-		try {
-			LOGGER.info("Creating color with hexaCode={}", hexaCode);
-			return colorConverter.toDto(colorService.createColor(hexaCode));
-		}
-		catch (BusinessException businessException) {
-			throw new ApiBusinessException(businessException);
-		}
+	public ColorDto createColor(String hexaCode) throws BusinessException {
+		LOGGER.info("Creating color with hexaCode={}", hexaCode);
+		return colorConverter.toDto(colorService.createColor(hexaCode));
 	}
 
 	@Override

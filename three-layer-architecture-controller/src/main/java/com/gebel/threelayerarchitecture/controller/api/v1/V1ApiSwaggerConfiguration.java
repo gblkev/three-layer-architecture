@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessErrorDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.interfaces.V1ApiBaseUri;
 import com.gebel.threelayerarchitecture.controller.api.v2.interfaces.V2ApiBaseUri;
 

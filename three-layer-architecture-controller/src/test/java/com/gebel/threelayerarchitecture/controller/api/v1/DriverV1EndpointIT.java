@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gebel.threelayerarchitecture.controller._test.AbstractIntegrationTest;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.CreateDriverDto;
 import com.gebel.threelayerarchitecture.controller.api.v1.dto.DriverDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorCodeDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiBusinessErrorDto;
-import com.gebel.threelayerarchitecture.controller.api.v1.error.dto.ApiTechnicalErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessErrorCodeDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiBusinessErrorDto;
+import com.gebel.threelayerarchitecture.controller.api.v1.error.ApiTechnicalErrorDto;
 
 @SpringBootTest(
 	webEnvironment = WebEnvironment.RANDOM_PORT,
