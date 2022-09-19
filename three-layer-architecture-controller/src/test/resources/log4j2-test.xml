@@ -8,6 +8,7 @@
 	</Properties>
 	
 	<Loggers>
+		<!-- Reduce noise of testcontainers -->
 		<Logger name="testcontainers" level="warn" additivity="false">
 			<Appender-ref ref="ConsoleAppender" />
 		</Logger>

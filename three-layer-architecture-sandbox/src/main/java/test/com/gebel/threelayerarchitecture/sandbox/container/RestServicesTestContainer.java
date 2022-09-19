@@ -55,6 +55,7 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 	@Override
 	public void start() {
 		super.start();
+		mockServerClient = new MockServerClient(getHost(), getPort());
 		if (initMocks) {
 			initMocks();
 		}
@@ -66,18 +67,17 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 	}
 	
 	private void initMocks() {
-		mockServerClient = new MockServerClient(getHost(), getPort());
 		mockFormulaOneAdRestWs();
 		mockSportAdRestWs();
 	}
 	
 	@SneakyThrows
 	private void mockFormulaOneAdRestWs() {
-		mockFormulaOneAdRestWs_GetPersonalizedAds(INIT_FORMULA_ONE_AD_WS_GET_PERSONALIZED_ADS_JSON_FILE);
-		mockFormulaOneAdRestWs_Unsubscribe();
+		mockFormulaOneAdRestWs_getPersonalizedAds(INIT_FORMULA_ONE_AD_WS_GET_PERSONALIZED_ADS_JSON_FILE);
+		mockFormulaOneAdRestWs_unsubscribe();
 	}
 	
-	public void mockFormulaOneAdRestWs_GetPersonalizedAds(String jsonFile) {
+	public void mockFormulaOneAdRestWs_getPersonalizedAds(String jsonFile) {
 		mockServerClient
 			.when(request()
 				.withMethod("GET")
@@ -87,7 +87,7 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 				.withBody(readFileFromClasspathAsString(jsonFile)));
 	}
 	
-	private void mockFormulaOneAdRestWs_Unsubscribe() {
+	public void mockFormulaOneAdRestWs_unsubscribe() {
 		mockServerClient
 			.when(request()
 				.withMethod("POST")
@@ -97,11 +97,11 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 	
 	@SneakyThrows
 	private void mockSportAdRestWs() {
-		mockSportAdRestWs_GetPersonalizedAds(INIT_SPORT_AD_WS_GET_PERSONALIZED_ADS_JSON_FILE);
-		mockSportAdRestWs_Unsubscribe();
+		mockSportAdRestWs_getPersonalizedAds(INIT_SPORT_AD_WS_GET_PERSONALIZED_ADS_JSON_FILE);
+		mockSportAdRestWs_unsubscribe();
 	}
 	
-	public void mockSportAdRestWs_GetPersonalizedAds(String jsonFile) {
+	public void mockSportAdRestWs_getPersonalizedAds(String jsonFile) {
 		mockServerClient
 			.when(request()
 				.withMethod("GET")
@@ -111,7 +111,7 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 				.withBody(readFileFromClasspathAsString(jsonFile)));
 	}
 	
-	private void mockSportAdRestWs_Unsubscribe() {
+	public void mockSportAdRestWs_unsubscribe() {
 		mockServerClient
 			.when(request()
 				.withMethod("POST")

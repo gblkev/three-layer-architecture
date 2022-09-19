@@ -35,7 +35,7 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	private CarRepository carRepository;
 	
 	@Test
-	void givenSeveralCars_whenFindById_thenOneCarRetrieved() throws Exception {
+	void givenSeveralCars_whenFindById_thenOneCarRetrieved(){
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/findById_severalCars.sql");
 		String id = "car_id_1";
@@ -58,7 +58,7 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	void givenSeveralCars_whenFindAll_thenAllCarsRetrieved() throws Exception {
+	void givenSeveralCars_whenFindAll_thenAllCarsRetrieved(){
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/findAll_severalCars.sql");
 
@@ -100,7 +100,7 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenNoCars_whenSave_thenCarCreated() throws Exception {
+	void givenNoCars_whenSave_thenCarCreated() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/create_existingColorAndDriver.sql");
 		
@@ -135,7 +135,7 @@ class CarRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenSeveralCars_whenDeleteById_thenCarDeleted() throws Exception {
+	void givenSeveralCars_whenDeleteById_thenCarDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/car/deleteById_severalCars.sql");
 		

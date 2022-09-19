@@ -28,7 +28,7 @@ class CarBrandRepositoryIT extends AbstractIntegrationTest {
 	private CustomCarBrandRepository customCarBrandRepository;
 	
 	@Test
-	void givenSeveralCarBrands_whenFindById_thenOneCarBrandRetrieved() throws Exception {
+	void givenSeveralCarBrands_whenFindById_thenOneCarBrandRetrieved() {
 		// Given
 		getTestContainers().getRedisTestContainer().executeCommandsScript("redis/car_brand/findById_severalCarBrands");
 		String id = "car_brand_id_1";
@@ -48,7 +48,7 @@ class CarBrandRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenSeveralCarBrands_whenFindAll_thenAllCarBrandsRetrieved() throws Exception {
+	void givenSeveralCarBrands_whenFindAll_thenAllCarBrandsRetrieved() {
 		// Given
 		getTestContainers().getRedisTestContainer().executeCommandsScript("redis/car_brand/findAll_severalCarBrands");
 		
@@ -89,7 +89,7 @@ class CarBrandRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenSeveralCarBrands_whenCount_thenRightCount() throws Exception {
+	void givenSeveralCarBrands_whenCount_thenRightCount() {
 		// Given
 		getTestContainers().getRedisTestContainer().executeCommandsScript("redis/car_brand/count_severalCarBrands");
 		

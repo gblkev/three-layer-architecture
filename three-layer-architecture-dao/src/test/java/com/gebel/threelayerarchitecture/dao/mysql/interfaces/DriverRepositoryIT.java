@@ -27,7 +27,7 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	private DriverRepository driverRepository;
 
 	@Test
-	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() throws Exception {
+	void givenSeveralDrivers_whenFindById_thenOneDriverRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/findById_severalDrivers.sql");
 		
@@ -44,7 +44,7 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() throws Exception {
+	void givenSeveralDrivers_whenFindAll_thenAllDriversRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/findAll_severalDrivers.sql");
 
@@ -95,7 +95,7 @@ class DriverRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenSeveralDrivers_whenDeleteById_thenDriverDeleted() throws Exception {
+	void givenSeveralDrivers_whenDeleteById_thenDriverDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/driver/deleteById_severalDrivers.sql");
 		

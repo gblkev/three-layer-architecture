@@ -27,7 +27,7 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	private ColorRepository colorRepository;
 	
 	@Test
-	void givenSeveralColors_whenFindById_thenOneColorRetrieved() throws Exception {
+	void givenSeveralColors_whenFindById_thenOneColorRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findById_severalColors.sql");
 		
@@ -43,7 +43,7 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	void givenSeveralColors_whenFindAll_thenAllColorsRetrieved() throws Exception {
+	void givenSeveralColors_whenFindAll_thenAllColorsRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findAll_severalColors.sql");
 
@@ -89,7 +89,7 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenSeveralColors_whenDeleteById_thenColorDeleted() throws Exception {
+	void givenSeveralColors_whenDeleteById_thenColorDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/deleteById_severalColors.sql");
 		
@@ -118,7 +118,7 @@ class ColorRepositoryIT extends AbstractIntegrationTest {
 	}
 
 	@Test
-	void givenExistingColor_whenFindOneByHexaCodeIgnoreCase_thenOneResult() throws Exception {
+	void givenExistingColor_whenFindOneByHexaCodeIgnoreCase_thenOneResult() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("mysql/color/findOneByHexaCodeIgnoreCase_existingColor.sql");
 		

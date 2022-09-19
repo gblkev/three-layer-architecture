@@ -22,6 +22,7 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -107,7 +108,8 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 	}
 	
 	// TODO I know, it's not very clean but I can't find any other solution right now :/
-	public void executeCommandsScript(String commandsScriptPath) throws Exception {
+	@SneakyThrows
+	public void executeCommandsScript(String commandsScriptPath) {
 		RedisClient redisClient = null;
 		try {
 			RedisURI redisUri = buildRedisUri();
@@ -134,7 +136,7 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 		}
 	}
 	
-	private void executeCommand(String commandAsString, RedisCommands<String, String> commands) throws Exception {
+	private void executeCommand(String commandAsString, RedisCommands<String, String> commands) {
 		if (StringUtils.isBlank(commandAsString)) {
 			return;
 		}

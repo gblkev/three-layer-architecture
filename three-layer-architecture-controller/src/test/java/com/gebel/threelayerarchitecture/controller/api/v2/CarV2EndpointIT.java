@@ -44,7 +44,7 @@ class CarV2EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() throws Exception {
+	void givenSeveralCars_whenGetFindAll_thenAllCarsRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/car/get_findAll_createSeveralCars.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -113,7 +113,7 @@ class CarV2EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenValidCar_whenPostCreate_thenCarCreated() throws Exception {
+	void givenValidCar_whenPostCreate_thenCarCreated() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/car/post_create_createColorAndDriver.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -164,7 +164,7 @@ class CarV2EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() throws Exception {
+	void givenInvalidDriver_whenPostCreate_thenInvalidDriverError() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/car/post_create_createValidColor.sql");
 		String url = String.format(CARS_API_URL_PATTERN, getServerPort());
@@ -216,7 +216,7 @@ class CarV2EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() throws Exception {
+	void givenValidCar_whenDeleteDeleteById_thenCarDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/car/delete_deleteById_createSeveralCars.sql");
 		String url = String.format(CARS_DELETE_BY_ID_API_URL_PATTERN, getServerPort());

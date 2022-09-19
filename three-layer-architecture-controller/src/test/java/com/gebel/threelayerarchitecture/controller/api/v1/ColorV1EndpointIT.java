@@ -39,7 +39,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() throws Exception {
+	void givenSeveralColors_whenGetFindAll_thenAllColorsRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/get_findAll_createSeveralColors.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -128,7 +128,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() throws Exception {
+	void givenColorAlreadyExists_whenPostCreate_thenColorAlreadyExistsError() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/post_create_createColor.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -174,7 +174,7 @@ class ColorV1EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() throws Exception {
+	void givenValidColor_whenDeleteDeleteById_thenColorDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v1/color/delete_deleteById_createSeveralColors.sql");
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());

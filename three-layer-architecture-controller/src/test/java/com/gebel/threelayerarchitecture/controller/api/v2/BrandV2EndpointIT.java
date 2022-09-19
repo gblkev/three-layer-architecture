@@ -31,7 +31,7 @@ class BrandV2EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	void givenSeveralBrands_whenGetFindAll_thenAllBrandsRetrieved() throws Exception {
+	void givenSeveralBrands_whenGetFindAll_thenAllBrandsRetrieved() {
 		// Given
 		getTestContainers().getRedisTestContainer().executeCommandsScript("api/v2/brand/get_findAll_createSeveralBrands");
 		String url = String.format(API_URL_PATTERN, getServerPort());

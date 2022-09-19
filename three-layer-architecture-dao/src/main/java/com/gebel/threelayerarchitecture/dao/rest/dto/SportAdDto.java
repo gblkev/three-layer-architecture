@@ -1,6 +1,6 @@
 package com.gebel.threelayerarchitecture.dao.rest.dto;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class SportAdDto {
 	
 	private String id;
-	private ZonedDateTime expirationDate;
+	private LocalDateTime expirationDate;
 	private String message;
 
 }

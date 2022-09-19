@@ -40,7 +40,7 @@ class DriverV2EndpointIT extends AbstractIntegrationTest {
 	private final TestRestTemplate restTemplate = new TestRestTemplate();
 	
 	@Test
-	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() throws Exception {
+	void givenSeveralDrivers_whenGetFindAll_thenAllDriversRetrieved() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/driver/get_findAll_createSeveralDrivers.sql");
 		String url = String.format(API_URL_PATTERN, getServerPort());
@@ -190,7 +190,7 @@ class DriverV2EndpointIT extends AbstractIntegrationTest {
 	}
 	
 	@Test
-	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() throws Exception {
+	void givenValidDriver_whenDeleteDeleteById_thenDriverDeleted() {
 		// Given
 		getTestContainers().getMysqlTestContainer().executeSqlScript("api/v2/driver/delete_deleteById_createSeveralDrivers.sql");
 		String url = String.format(DELETE_BY_ID_API_URL_PATTERN, getServerPort());
