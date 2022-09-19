@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>> {
 
 	private static final int CONTAINER_MAPPED_PORT = 6379;
-	private static final String INIT_SCRIPT_PATH = "redis-init-data";
+	private static final String INIT_SCRIPT_PATH = "redis/redis-init-data";
 	
 	private final String redisPassword;
 	private final int redisDatabase;

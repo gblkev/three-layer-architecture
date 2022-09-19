@@ -37,7 +37,7 @@ public class ZookeeperKafkaTestContainers extends GenericTestContainer<KafkaCont
 	}
 	
 	@Override
-	public void resetContainerData() throws Exception {
+	public void resetContainerData() {
 		LOGGER.info("Resetting Kafka data...");
 		// TODO clear kafka content
 	}

@@ -55,6 +55,6 @@ public abstract class GenericTestContainer<T extends GenericContainer<?>> {
 		return port == RANDOM_PORT;
 	}
 	
-	public abstract void resetContainerData() throws Exception;
+	public abstract void resetContainerData();
 	
 }

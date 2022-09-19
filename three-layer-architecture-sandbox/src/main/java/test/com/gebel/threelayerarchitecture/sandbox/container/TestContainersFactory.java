@@ -31,6 +31,13 @@ public class TestContainersFactory {
 	@Value("${sandbox.redis.load-init-script}")
 	private boolean redisLoadInitScript;
 	
+	@Value("${sandbox.rest.mockserver-docker-image}")
+	private String restMockServerDockerImage;
+	@Value("${sandbox.rest.mockserver-port}")
+	private int restMockServerPort;
+	@Value("${sandbox.rest.init-mocks}")
+	private boolean restInitMocks;
+	
 	@Value("${sandbox.kafka.docker-image}")
 	private String kafkaDockerImage;
 	@Value("${sandbox.kafka.port}")
@@ -54,6 +61,7 @@ public class TestContainersFactory {
 		testContainers.initMysqlContainerWithRandomPort(mysqlDockerImage, mysqlDbName, mysqlUser, mysqlPassword);
 		testContainers.initRedisContainerWithRandomPort(redisDockerImage, redisPassword, redisDatabase, redisLoadInitScript);
 		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaDockerImage, kafkaTopics);
+		testContainers.initRestServicesContainerWithRandomPort(restMockServerDockerImage, restInitMocks);
 		return testContainers;
 	}
 	
@@ -62,6 +70,7 @@ public class TestContainersFactory {
 		testContainers.initMysqlContainerWithFixedPort(mysqlDockerImage, mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
 		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort, redisPassword, redisDatabase, redisLoadInitScript);
 		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
+		testContainers.initRestServicesContainerWithFixedPort(restMockServerDockerImage, restMockServerPort, restInitMocks);
 		return testContainers;
 	}
 

@@ -21,7 +21,7 @@ public interface AdV2Endpoint {
 	@Operation(summary = "Retrieve personalized ads for a given driver")
 	List<AdDto> getPersonalizedAds(@PathVariable("driverId") String driverId);
 	
-	@PostMapping(value = "/unsubscribe/{driverId}", consumes = MediaType.TEXT_PLAIN_VALUE)
+	@PostMapping(value = "/unsubscribe/{driverId}")
 	@Operation(summary = "Unsubscribe a driver from getting personalized ads")
 	void unsubscribePersonalizedAds(@PathVariable("driverId") String driverId);
 	

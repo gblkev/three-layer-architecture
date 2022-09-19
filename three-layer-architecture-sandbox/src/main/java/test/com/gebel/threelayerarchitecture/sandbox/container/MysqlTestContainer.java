@@ -16,14 +16,15 @@ import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MysqlTestContainer extends GenericTestContainer<MySQLContainer<?>> {
 
 	private static final int CONTAINER_MAPPED_PORT = MySQLContainer.MYSQL_PORT;
-	private static final String INIT_SCRIPT_PATH = "mysql-create-objects.sql";
-	private static final String RESET_SCRIPT_PATH = "mysql-reset.sql";
+	private static final String INIT_SCRIPT_PATH = "mysql/mysql-create-objects.sql";
+	private static final String RESET_SCRIPT_PATH = "mysql/mysql-reset.sql";
 	
 	public MysqlTestContainer(String mysqlDockerImage, String dbName, String mysqlUser, String mysqlPassword) {
 		this(mysqlDockerImage, dbName, RANDOM_PORT, mysqlUser, mysqlPassword);
@@ -51,12 +52,13 @@ public class MysqlTestContainer extends GenericTestContainer<MySQLContainer<?>> 
 	}
 
 	@Override
-	public void resetContainerData() throws Exception {
+	public void resetContainerData() {
 		LOGGER.info("Resetting MySQL data...");
 		executeSqlScript(RESET_SCRIPT_PATH);
 	}
 	
-	public void executeSqlScript(String scriptPath) throws Exception {
+	@SneakyThrows
+	public void executeSqlScript(String scriptPath) {
 		JdbcDatabaseDelegate jdbcDatabaseDelegate = new JdbcDatabaseDelegate(getContainer(), "");
 		URL resource = MysqlTestContainer.class.getClassLoader().getResource(scriptPath);
 		String scripts = IOUtils.toString(resource, StandardCharsets.UTF_8);

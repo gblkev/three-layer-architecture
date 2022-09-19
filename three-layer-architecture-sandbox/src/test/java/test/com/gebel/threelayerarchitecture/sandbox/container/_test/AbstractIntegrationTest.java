@@ -16,6 +16,7 @@ public abstract class AbstractIntegrationTest {
 	
 	private static int MYSQL_PORT;
 	private static int REDIS_PORT;
+	private static int REST_SERVICES_MOCKSERVER_PORT;
 	private static int KAFKA_PORT;
 	private static int ZOOKEEPER_PORT;
 	
@@ -24,6 +25,9 @@ public abstract class AbstractIntegrationTest {
 	
 	@Value("${sandbox.redis.port}")
 	private int redisPort;
+	
+	@Value("${sandbox.rest.mockserver-port}")
+	private int restServicesMockServerPort;
 	
 	@Value("${sandbox.kafka.port}")
 	private int kafkaPort;
@@ -41,6 +45,7 @@ public abstract class AbstractIntegrationTest {
 	private static void allocateFreeTcpPorts() {
 		MYSQL_PORT = getFreeTcpPort();
 		REDIS_PORT = getFreeTcpPort();
+		REST_SERVICES_MOCKSERVER_PORT = getFreeTcpPort();
 		KAFKA_PORT = getFreeTcpPort();
 		ZOOKEEPER_PORT = getFreeTcpPort();
 	}
@@ -49,6 +54,7 @@ public abstract class AbstractIntegrationTest {
 	private static void dynamicConfigurationProperties(DynamicPropertyRegistry registry) throws IOException {
 		registry.add("sandbox.mysql.port", () -> String.valueOf(MYSQL_PORT));
         registry.add("sandbox.redis.port", () -> String.valueOf(REDIS_PORT));
+        registry.add("sandbox.rest.mockserver-port", () -> String.valueOf(REST_SERVICES_MOCKSERVER_PORT));
         registry.add("sandbox.kafka.port", () -> String.valueOf(KAFKA_PORT));
         registry.add("sandbox.zookeeper.port", () -> String.valueOf(ZOOKEEPER_PORT));
 	}

@@ -20,7 +20,10 @@ public class TestContainers {
 	@Getter
 	private ZookeeperKafkaTestContainers zookeeperKafkaTestContainers;
 	
-	private List<GenericTestContainer<?>> containers = new ArrayList<>();
+	@Getter
+	private RestServicesTestContainer restServicesTestContainer;
+	
+	private final List<GenericTestContainer<?>> containers = new ArrayList<>();
 	
 	public void initMysqlContainerWithRandomPort(String mysqlDockerImage, String dbName, String mysqlUser, String mysqlPassword) {
 		this.mysqlTestContainer = new MysqlTestContainer(mysqlDockerImage, dbName, mysqlUser, mysqlPassword);
@@ -50,6 +53,16 @@ public class TestContainers {
 	public void initZookeeperKafkaContainersWithFixedPort(String kafkaDockerImage, int kafkaPort, int zookeeperPort, String kafkaTopics) {
 		this.zookeeperKafkaTestContainers = new ZookeeperKafkaTestContainers(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
 		containers.add(zookeeperKafkaTestContainers);
+	}
+	
+	public void initRestServicesContainerWithRandomPort(String mockServerDockerImage, boolean initMocks) {
+		this.restServicesTestContainer = new RestServicesTestContainer(mockServerDockerImage, initMocks);
+		containers.add(restServicesTestContainer);
+	}
+	
+	public void initRestServicesContainerWithFixedPort(String mockServerDockerImage, int mockServerPort, boolean initMocks) {
+		this.restServicesTestContainer = new RestServicesTestContainer(mockServerDockerImage, mockServerPort, initMocks);
+		containers.add(restServicesTestContainer);
 	}
 	
 	public void startContainers() {

@@ -24,7 +24,7 @@ class SwaggerIT extends AbstractIntegrationTest {
 	@Test
 	void givenSwaggerUiEnabled_whenAccessingSwaggerUi_thenHttpResponseOk() {
 		// Given
-		String swaggerUiUrlPattern = "http://localhost:%d/actuator/swagger-ui";
+		String swaggerUiUrlPattern = "http://localhost:%d/actuator/swagger-ui/index.html";
 		String serverPortUrl = String.format(swaggerUiUrlPattern, getManagementPort());
 		
 		// When
@@ -116,7 +116,7 @@ class SwaggerIT extends AbstractIntegrationTest {
 		JsonNode pathsNode = responseAsJsonNode.get("paths");
 		List<String> paths = List.of(
 			"/api/v2/ads/unsubscribe/{driverId}",
-			"/api/v2/ads",
+			"/api/v2/ads/{driverId}",
 			"/api/v2/brands",
 			"/api/v2/cars",
 			"/api/v2/cars/{carId}",
