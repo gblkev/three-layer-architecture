@@ -36,7 +36,7 @@ public class DomainAdConverter {
 			return null;
 		}
 		return Ad.builder()
-			.id("sport" + dtoAd.getId())
+			.id("sport-" + dtoAd.getId())
 			.category(AdCategory.SPORT)
 			.message(dtoAd.getMessage())
 			.build();
