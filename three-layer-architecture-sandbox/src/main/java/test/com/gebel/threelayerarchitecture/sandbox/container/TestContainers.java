@@ -45,12 +45,12 @@ public class TestContainers {
 		containers.add(redisTestContainer);
 	}
 	
-	public void initZookeeperKafkaContainersWithRandomPort(String kafkaDockerImage, String topics) {
+	public void initZookeeperKafkaContainersWithRandomPort(String kafkaDockerImage, List<String> topics) {
 		this.zookeeperKafkaTestContainers = new ZookeeperKafkaTestContainers(kafkaDockerImage, topics);
 		containers.add(zookeeperKafkaTestContainers);
 	}
 	
-	public void initZookeeperKafkaContainersWithFixedPort(String kafkaDockerImage, int kafkaPort, int zookeeperPort, String kafkaTopics) {
+	public void initZookeeperKafkaContainersWithFixedPort(String kafkaDockerImage, int kafkaPort, int zookeeperPort, List<String> kafkaTopics) {
 		this.zookeeperKafkaTestContainers = new ZookeeperKafkaTestContainers(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
 		containers.add(zookeeperKafkaTestContainers);
 	}

@@ -3,7 +3,6 @@ package test.com.gebel.threelayerarchitecture.sandbox.container._test;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -19,21 +18,6 @@ public abstract class AbstractIntegrationTest {
 	private static int REST_SERVICES_MOCKSERVER_PORT;
 	private static int KAFKA_PORT;
 	private static int ZOOKEEPER_PORT;
-	
-	@Value("${sandbox.mysql.port}")
-	private int mysqlPort;
-	
-	@Value("${sandbox.redis.port}")
-	private int redisPort;
-	
-	@Value("${sandbox.rest.mockserver-port}")
-	private int restServicesMockServerPort;
-	
-	@Value("${sandbox.kafka.port}")
-	private int kafkaPort;
-	
-	@Value("${sandbox.zookeeper.port}")
-	private int zookeeperPort;
 	
 	@SpyBean
 	private TestContainersManager testContainersManager;

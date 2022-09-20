@@ -27,7 +27,7 @@ class TestContainersRedisIT extends AbstractIntegrationTest {
 	void givenRedisCacheCreated_whenCreatingCarBrands_thenCarBrandsRetrieved() {
 		// Given + Redis cache created
 		String host = getTestContainersManager().getTestContainers().getRedisTestContainer().getHost();
-		int port = getRedisPort();
+		int port = getTestContainersManager().getTestContainers().getRedisTestContainer().getPort();
 		RedisURI redisUri = RedisURI.builder()
 			.withHost(host)
 			.withPort(port)

@@ -30,7 +30,7 @@ class TestContainersMysqlIT extends AbstractIntegrationTest {
 		// Given + database created
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		String host = getTestContainersManager().getTestContainers().getMysqlTestContainer().getHost();
-		int port = getMysqlPort();
+		int port = getTestContainersManager().getTestContainers().getMysqlTestContainer().getPort();
 		String jdbcUrl = String.format(JDBC_URL_PATTERN, host, port);
 
 		// When

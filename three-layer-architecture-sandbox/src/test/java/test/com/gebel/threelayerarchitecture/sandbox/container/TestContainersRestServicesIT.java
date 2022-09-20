@@ -23,7 +23,7 @@ class TestContainersRestServicesIT extends AbstractIntegrationTest {
 	void givenMockedEndpoint_whenCallingEndpoint_thenMessageRetrieved() {
 		// Given
 		String host = getTestContainersManager().getTestContainers().getRestServicesTestContainer().getHost();
-		int port = getRestServicesMockServerPort();
+		int port = getTestContainersManager().getTestContainers().getRestServicesTestContainer().getPort();
 		String url = "http://" + host + ":" + port + "/test";
 		
 		// When

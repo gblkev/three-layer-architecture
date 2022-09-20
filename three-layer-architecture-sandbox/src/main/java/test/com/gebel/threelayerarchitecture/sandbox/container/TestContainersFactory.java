@@ -1,5 +1,7 @@
 package test.com.gebel.threelayerarchitecture.sandbox.container;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +47,7 @@ public class TestContainersFactory {
 	@Value("${sandbox.zookeeper.port}")
 	private int zookeeperPort;
 	@Value("${sandbox.kafka.topics}")
-	private String kafkaTopics;
+	private List<String> kafkaTopics;
 	
 	public TestContainers build() throws Exception {
 		if (useRandomPorts) {

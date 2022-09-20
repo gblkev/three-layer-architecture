@@ -1,6 +1,6 @@
 # three-layer-architecture
 
-TODO intro
+TODO intro this is a 3-layer architecture with real life components (db, redis, kafka, mocked APIs, etc.) and real tests!
 
 ### Run the application locally
 TODO
@@ -11,6 +11,8 @@ Takes 3min45s on my 7-year old pc with the following configuration in my ${HOME}
 memory=8GB
 processors=4
 With a decent pc, it should be much much faster.
+
+TODO To add a message in Kafka locally, do....
 
 ### Endpoints
 Sandbox:  
