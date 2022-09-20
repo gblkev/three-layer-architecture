@@ -63,7 +63,7 @@ public class RestServicesTestContainer extends GenericTestContainer<MockServerCo
 	
 	@Override
 	public void resetContainerData() {
-		// Nothing to do
+		mockServerClient.reset();
 	}
 	
 	private void initMocks() {

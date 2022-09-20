@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.gebel.threelayerarchitecture.business.domain.Ad;
+import com.gebel.threelayerarchitecture.business.domain.AdCategory;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainAdConverter;
 import com.gebel.threelayerarchitecture.dao.rest.dto.FormulaOneAdDto;
 import com.gebel.threelayerarchitecture.dao.rest.dto.SportAdDto;
@@ -77,18 +78,22 @@ class AdServiceImplTest {
 		
 		Ad domainAd1 = domainAds.get(0);
 		assertEquals("formulaone-test_id1", domainAd1.getId());
+		assertEquals(AdCategory.FORMULA_ONE, domainAd1.getCategory());
 		assertEquals("Formula one message 1", domainAd1.getMessage());
 		
 		Ad domainAd2 = domainAds.get(1);
 		assertEquals("formulaone-test_id2", domainAd2.getId());
+		assertEquals(AdCategory.FORMULA_ONE, domainAd2.getCategory());
 		assertEquals("Formula one message 2", domainAd2.getMessage());
 		
 		Ad domainAd3 = domainAds.get(2);
 		assertEquals("sport-test_id3", domainAd3.getId());
+		assertEquals(AdCategory.SPORT, domainAd3.getCategory());
 		assertEquals("Sport message 1", domainAd3.getMessage());
 		
 		Ad domainAd4 = domainAds.get(3);
 		assertEquals("sport-test_id4", domainAd4.getId());
+		assertEquals(AdCategory.SPORT, domainAd4.getCategory());
 		assertEquals("Sport message 2", domainAd4.getMessage());
 	}
 	
@@ -120,10 +125,12 @@ class AdServiceImplTest {
 		
 		Ad domainAd1 = domainAds.get(0);
 		assertEquals("formulaone-test_id1", domainAd1.getId());
+		assertEquals(AdCategory.FORMULA_ONE, domainAd1.getCategory());
 		assertEquals("Formula one message 1", domainAd1.getMessage());
 		
 		Ad domainAd2 = domainAds.get(1);
 		assertEquals("formulaone-test_id2", domainAd2.getId());
+		assertEquals(AdCategory.FORMULA_ONE, domainAd2.getCategory());
 		assertEquals("Formula one message 2", domainAd2.getMessage());
 	}
 	
@@ -155,10 +162,12 @@ class AdServiceImplTest {
 		
 		Ad domainAd1 = domainAds.get(0);
 		assertEquals("sport-test_id1", domainAd1.getId());
+		assertEquals(AdCategory.SPORT, domainAd1.getCategory());
 		assertEquals("Sport message 1", domainAd1.getMessage());
 		
 		Ad domainAd2 = domainAds.get(1);
 		assertEquals("sport-test_id2", domainAd2.getId());
+		assertEquals(AdCategory.SPORT, domainAd2.getCategory());
 		assertEquals("Sport message 2", domainAd2.getMessage());
 	}
 	

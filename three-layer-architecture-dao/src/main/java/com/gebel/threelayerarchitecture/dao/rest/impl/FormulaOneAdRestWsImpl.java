@@ -8,8 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
@@ -26,6 +25,12 @@ public class FormulaOneAdRestWsImpl implements FormulaOneAdRestWs {
 	@Value("${dao.rest.formula-one.ad.url}")
 	private String baseUrl;
 	
+	@Value("${dao.rest.formula-one.ad.connect-timeout-in-millis}")
+	private int connectTimeoutInMillis;
+	
+	@Value("${dao.rest.formula-one.ad.read-timeout-in-millis}")
+	private int readTimeoutInMillis;
+	
 	private UriComponents getPersonalizedAdUrlTemplate;
 	private UriComponents unsubscribePersonalizedAdUrlTemplate;
 	
@@ -39,6 +44,13 @@ public class FormulaOneAdRestWsImpl implements FormulaOneAdRestWs {
 		unsubscribePersonalizedAdUrlTemplate = UriComponentsBuilder.fromUriString(baseUrl)
 			.path("/unsubscribe/{" + DRIVER_ID_URI_PARAMETER + "}")
 			.build();
+		setTimeouts();
+	}
+		
+	private void setTimeouts() {
+		SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
+		simpleClientHttpRequestFactory.setConnectTimeout(connectTimeoutInMillis);
+		simpleClientHttpRequestFactory.setReadTimeout(readTimeoutInMillis);
 	}
 	
 	@Override
@@ -64,11 +76,8 @@ public class FormulaOneAdRestWsImpl implements FormulaOneAdRestWs {
 			.expand(Map.of(DRIVER_ID_URI_PARAMETER, driverId))
 			.toUriString();
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 		try {
-			restTemplate.postForEntity(unsubscribePersonalizedAdUrl, httpEntity, Void.class, driverId);
+			restTemplate.postForEntity(unsubscribePersonalizedAdUrl, HttpEntity.EMPTY, Void.class, driverId);
 		}
 		catch (Exception e) {
 			String message = String.format(
