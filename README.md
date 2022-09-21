@@ -6,7 +6,7 @@ TODO intro this is a 3-layer architecture with real life components (db, redis, 
 TODO
 Pre-requisite: a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).
 Build modules in parallel (1 thread per available CPU core): mvn -T 0.5C clean install
-Takes 3min45s on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
+Takes 4min on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
 [wsl2]
 memory=8GB
 processors=4
@@ -19,6 +19,7 @@ Sandbox:
    - API: http://localhost:8080/api/v1/colors  
    - Swagger: http://localhost:9090/actuator/swagger-ui  
    - Spring boot actuator: http://localhost:9090/actuator/health  
+jolokia (JMX over HTTP)  http://localhost:9090/actuator/jolokia/read/java.lang:type=Memory/HeapMemoryUsage
 
 ### Architecture
 TODO

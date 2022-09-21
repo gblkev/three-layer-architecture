@@ -64,4 +64,20 @@ public class Driver {
 				.matches();
 	}
 
+	@Override
+	public String toString() {
+		return "Driver [id=" + id + ", cidCompliantFirstName=" + getCidCompliantName(firstName) + ", cidCompliantLastName=" + getCidCompliantName(lastName) + "]";
+	}
+	
+	private String getCidCompliantName(String name) {
+		return replaceAllCharactersWithWildcardExceptFirstLetter(name);
+	}
+	
+	private String replaceAllCharactersWithWildcardExceptFirstLetter(String s) {
+		if (StringUtils.isEmpty(s)) {
+			return s;
+		}
+		return s.charAt(0) + "<masked>";
+	}
+
 }

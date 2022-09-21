@@ -25,7 +25,6 @@ public class CreateDriverDto {
 		return "CreateDriverDto [cidCompliantFirstName=" + getCidCompliantName(firstName) + ", cidCompliantLastName=" + getCidCompliantName(lastName) + "]";
 	}
 	
-	// TODO put on the business layer + do the same for DriverDto (v1 and v2)
 	private String getCidCompliantName(String name) {
 		return replaceAllCharactersWithWildcardExceptFirstLetter(name);
 	}

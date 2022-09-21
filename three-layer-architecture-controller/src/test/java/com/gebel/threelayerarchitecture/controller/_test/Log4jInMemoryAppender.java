@@ -14,26 +14,32 @@ import lombok.Getter;
 
 public class Log4jInMemoryAppender extends AbstractAppender {
 
+	private final Class<?> clazz;
+	
 	@Getter
 	private final List<LogEvent> events = Collections.synchronizedList(new ArrayList<>());
 
-	public Log4jInMemoryAppender() {
+	public Log4jInMemoryAppender(Class<?> clazz) {
         super(Log4jInMemoryAppender.class.getSimpleName(), null, null, true, null);
+        this.clazz = clazz;
     }
 
 	@Override
 	public void append(LogEvent event) {
+		if (!clazz.getName().equals(event.getSource().getClassName())) {
+			return;
+		}
 		events.add(event);
 	}
 	
-	public void setupAppender(Class<?> clazz) {
+	public void setupAppender() {
 		start();
 		org.apache.logging.log4j.Logger logger = LogManager.getLogger(clazz);
 		org.apache.logging.log4j.core.Logger coreLogger = (org.apache.logging.log4j.core.Logger) logger;
 		coreLogger.get().addAppender(this, Level.INFO, null);
 	}
 	
-	public void removeAppender(Class<?> clazz) {
+	public void removeAppender() {
 		org.apache.logging.log4j.Logger logger = LogManager.getLogger(clazz);
 		org.apache.logging.log4j.core.Logger coreLogger = (org.apache.logging.log4j.core.Logger) logger;
 		coreLogger.get().removeAppender(getName());

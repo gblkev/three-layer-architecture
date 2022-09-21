@@ -107,7 +107,7 @@ public class RedisTestContainer extends GenericTestContainer<GenericContainer<?>
 		}
 	}
 	
-	// TODO I know, it's not very clean but I can't find any other solution right now :/
+	// I know, it's not very clean but I can't find any other solution right now :/
 	@SneakyThrows
 	public void executeCommandsScript(String commandsScriptPath) {
 		RedisClient redisClient = null;

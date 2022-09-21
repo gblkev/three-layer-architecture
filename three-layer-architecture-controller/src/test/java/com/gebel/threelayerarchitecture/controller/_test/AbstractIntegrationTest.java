@@ -21,20 +21,16 @@ import test.com.gebel.threelayerarchitecture.sandbox.container.TestContainers;
  */
 public abstract class AbstractIntegrationTest {
 	
-	private static final String MYSQL_DOCKER_IMAGE = "mysql:8.0.11";
 	private static final String MYSQL_DB_NAME = "cars_db";
 	private static final String MYSQL_USER = "test_user";
 	private static final String MYSQL_PASSWORD = "test_password";
 	
-	private static final String REDIS_DOCKER_IMAGE = "redis:7.0.4";
 	private static final String REDIS_PASSWORD = "test_password";
 	private static final int REDIS_DATABASE = 1;
 	private static final boolean REDIS_LOAD_INIT_SCRIPT = false;
 	
-	private static final String REST_SERVICES_MOCKSERVER_DOCKER_IMAGE = "jamesdbloom/mockserver:mockserver-5.13.2";
 	private static final boolean REST_SERVICES_INIT_MOCKS = false;
 	
-	private static final String KAFKA_DOCKER_IMAGE = "confluentinc/cp-kafka:7.2.1";
 	private static final List<String> KAFKA_TOPICS = List.of("threelayerarchitecture.create-color");
 
 	private static final TestContainers TEST_CONTAINERS = new TestContainers();
@@ -67,10 +63,10 @@ public abstract class AbstractIntegrationTest {
 		if (HAS_ALREADY_BEEN_STARTED.getAndSet(true)) {
 			return;
 		}
-		TEST_CONTAINERS.initMysqlContainerWithRandomPort(MYSQL_DOCKER_IMAGE, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD);
-		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_DOCKER_IMAGE, REDIS_PASSWORD, REDIS_DATABASE, REDIS_LOAD_INIT_SCRIPT);
-		TEST_CONTAINERS.initRestServicesContainerWithRandomPort(REST_SERVICES_MOCKSERVER_DOCKER_IMAGE, REST_SERVICES_INIT_MOCKS);
-		TEST_CONTAINERS.initZookeeperKafkaContainersWithRandomPort(KAFKA_DOCKER_IMAGE, KAFKA_TOPICS);
+		TEST_CONTAINERS.initMysqlContainerWithRandomPort(MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD);
+		TEST_CONTAINERS.initRedisContainerWithRandomPort(REDIS_PASSWORD, REDIS_DATABASE, REDIS_LOAD_INIT_SCRIPT);
+		TEST_CONTAINERS.initRestServicesContainerWithRandomPort(REST_SERVICES_INIT_MOCKS);
+		TEST_CONTAINERS.initZookeeperKafkaContainersWithRandomPort(KAFKA_TOPICS);
 		TEST_CONTAINERS.startContainers();
 	}
 	
@@ -85,7 +81,7 @@ public abstract class AbstractIntegrationTest {
 		registry.add("dao.rest.formula-one.ad.url", () -> "http://" + restServicesContainerHost + ":" + restServicesContainerPort + "/formulaone");
 		registry.add("dao.rest.sport.ad.url", () -> "http://" + restServicesContainerHost + ":" + restServicesContainerPort + "/sport");
 		
-		registry.add("spring.kafka.properties.bootstrap.servers", () -> TEST_CONTAINERS.getZookeeperKafkaTestContainers().getContainer().getBootstrapServers());
+		registry.add("spring.kafka.bootstrap-servers", () -> TEST_CONTAINERS.getZookeeperKafkaTestContainers().getContainer().getBootstrapServers());
 	}
 	
 }

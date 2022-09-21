@@ -47,12 +47,12 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 	
 	@Test
 	void givenDataReportGenerated_whenScheduledPrintDataReportInLogs_thenDataReportPrintedInLogs() throws Exception {
-		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender();
+		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender(PrintDataReportInLogs.class);
 		try {
 			// Given
 			getTestContainers().getMysqlTestContainer().executeSqlScript("scheduled/printDataReportInLogs/createSeveralCars.sql");
 			getTestContainers().getRedisTestContainer().executeCommandsScript("scheduled/printDataReportInLogs/createSeveralBrands");
-			log4jInMemoryAppender.setupAppender(PrintDataReportInLogs.class);
+			log4jInMemoryAppender.setupAppender();
 			
 			// When
 			printDataReportInLogs.scheduledPrintDataReportInLogs();
@@ -70,16 +70,16 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 			assertEquals(expectedLogs, eventsMessagesAsString);
 		}
 		finally {
-			log4jInMemoryAppender.removeAppender(PrintDataReportInLogs.class);
+			log4jInMemoryAppender.removeAppender();
 		}
 	}
 	
 	@Test
 	void givenDatabaseUnavailable_whenScheduledPrintDataReportInLogs_thenErrorInLogs() {
-		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender();
+		Log4jInMemoryAppender log4jInMemoryAppender = new Log4jInMemoryAppender(PrintDataReportInLogs.class);
 		try {
 			// Given + sql
-			log4jInMemoryAppender.setupAppender(PrintDataReportInLogs.class);
+			log4jInMemoryAppender.setupAppender();
 			getTestContainers().getMysqlTestContainer().pause();
 			
 			// When
@@ -95,7 +95,7 @@ class PrintDataReportInLogsIT extends AbstractIntegrationTest {
 			Assertions.fail();
 		}
 		finally {
-			log4jInMemoryAppender.removeAppender(PrintDataReportInLogs.class);
+			log4jInMemoryAppender.removeAppender();
 			getTestContainers().getMysqlTestContainer().unpause();
 		}
 	}

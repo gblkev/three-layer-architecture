@@ -11,8 +11,6 @@ public class TestContainersFactory {
 	@Value("${sandbox.use-random-ports}")
 	private boolean useRandomPorts;
 	
-	@Value("${sandbox.mysql.docker-image}")
-	private String mysqlDockerImage;
 	@Value("${sandbox.mysql.db-name}")
 	private String mysqlDbName;
 	@Value("${sandbox.mysql.port}")
@@ -22,8 +20,6 @@ public class TestContainersFactory {
 	@Value("${sandbox.mysql.password}")
 	private String mysqlPassword;
 	
-	@Value("${sandbox.redis.docker-image}")
-	private String redisDockerImage;
 	@Value("${sandbox.redis.port}")
 	private int redisPort;
 	@Value("${sandbox.redis.password}")
@@ -33,15 +29,11 @@ public class TestContainersFactory {
 	@Value("${sandbox.redis.load-init-script}")
 	private boolean redisLoadInitScript;
 	
-	@Value("${sandbox.rest.mockserver-docker-image}")
-	private String restMockServerDockerImage;
 	@Value("${sandbox.rest.mockserver-port}")
 	private int restMockServerPort;
 	@Value("${sandbox.rest.init-mocks}")
 	private boolean restInitMocks;
 	
-	@Value("${sandbox.kafka.docker-image}")
-	private String kafkaDockerImage;
 	@Value("${sandbox.kafka.port}")
 	private int kafkaPort;
 	@Value("${sandbox.zookeeper.port}")
@@ -60,19 +52,19 @@ public class TestContainersFactory {
 	
 	private TestContainers buildContainersWithRandomPorts() throws Exception {
 		TestContainers testContainers = new TestContainers();
-		testContainers.initMysqlContainerWithRandomPort(mysqlDockerImage, mysqlDbName, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithRandomPort(redisDockerImage, redisPassword, redisDatabase, redisLoadInitScript);
-		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaDockerImage, kafkaTopics);
-		testContainers.initRestServicesContainerWithRandomPort(restMockServerDockerImage, restInitMocks);
+		testContainers.initMysqlContainerWithRandomPort(mysqlDbName, mysqlUser, mysqlPassword);
+		testContainers.initRedisContainerWithRandomPort(redisPassword, redisDatabase, redisLoadInitScript);
+		testContainers.initZookeeperKafkaContainersWithRandomPort(kafkaTopics);
+		testContainers.initRestServicesContainerWithRandomPort(restInitMocks);
 		return testContainers;
 	}
 	
 	private TestContainers buildContainersWithFixedPorts() throws Exception {
 		TestContainers testContainers = new TestContainers();
-		testContainers.initMysqlContainerWithFixedPort(mysqlDockerImage, mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
-		testContainers.initRedisContainerWithFixedPort(redisDockerImage, redisPort, redisPassword, redisDatabase, redisLoadInitScript);
-		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaDockerImage, kafkaPort, zookeeperPort, kafkaTopics);
-		testContainers.initRestServicesContainerWithFixedPort(restMockServerDockerImage, restMockServerPort, restInitMocks);
+		testContainers.initMysqlContainerWithFixedPort(mysqlDbName, mysqlPort, mysqlUser, mysqlPassword);
+		testContainers.initRedisContainerWithFixedPort(redisPort, redisPassword, redisDatabase, redisLoadInitScript);
+		testContainers.initZookeeperKafkaContainersWithFixedPort(kafkaPort, zookeeperPort, kafkaTopics);
+		testContainers.initRestServicesContainerWithFixedPort(restMockServerPort, restInitMocks);
 		return testContainers;
 	}
 

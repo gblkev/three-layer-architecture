@@ -78,7 +78,7 @@ class TestContainersZookeeperKafkaIT extends AbstractIntegrationTest {
 		try (KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties)) {
 			kafkaConsumer.subscribe(List.of(TOPIC));
 			Map<String, String> messages = new HashMap<>();
-			waitAtMost(Duration.ofSeconds(2))
+			waitAtMost(Duration.ofSeconds(5))
 				.alias("Find messages in Kafka")
 				.until(() -> {
 					messages.putAll(pollMessages(kafkaConsumer));

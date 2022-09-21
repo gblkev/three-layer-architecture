@@ -1,13 +1,23 @@
 package test.com.gebel.threelayerarchitecture.sandbox.container;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.RecordsToDelete;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.utility.DockerImageName;
@@ -53,9 +63,7 @@ public class ZookeeperKafkaTestContainers extends GenericTestContainer<KafkaCont
 	
 	@SneakyThrows
 	private void createTopics() {
-		Properties properties = new Properties();
-		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, getContainer().getBootstrapServers());
-		try (AdminClient adminClient = AdminClient.create(properties)) {
+		try (AdminClient adminClient = buildKafkaAdminClient()) {
 			List<NewTopic> topics = kafkaTopics.stream()
 				.map(topic -> new NewTopic(topic, 1, (short) 1))
 				.toList();
@@ -65,10 +73,40 @@ public class ZookeeperKafkaTestContainers extends GenericTestContainer<KafkaCont
 		}
 	}
 	
+	private AdminClient buildKafkaAdminClient() {
+		Properties properties = new Properties();
+		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, getContainer().getBootstrapServers());
+		return AdminClient.create(properties);
+	}
+	
 	@Override
 	public void resetContainerData() {
 		LOGGER.info("Resetting Kafka data...");
-		// TODO clear kafka content
+		kafkaTopics.forEach(this::clearTopicData);
+	}
+	
+	private void clearTopicData(String topic) {
+		TopicPartition topicPartition = new TopicPartition(topic, 0);
+		Map<TopicPartition, RecordsToDelete> deleteMap = new HashMap<>();
+		deleteMap.put(topicPartition, RecordsToDelete.beforeOffset(Long.MAX_VALUE));
+		try (AdminClient adminClient = buildKafkaAdminClient()) {
+			adminClient.deleteRecords(deleteMap);
+		}
+	}
+	
+	@SneakyThrows
+	public void publishMessage(String topic, Object message) {
+		Properties properties = new Properties();
+		properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, getContainer().getBootstrapServers());
+		properties.put(ProducerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString());
+		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+		
+		ProducerRecord<String, Object> producerRecord = new ProducerRecord<>(topic, message);
+		
+		try (KafkaProducer<String, Object> kafkaProducer = new KafkaProducer<>(properties)) {
+			kafkaProducer.send(producerRecord).get();
+		}
 	}
 
 }
