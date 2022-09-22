@@ -13,23 +13,24 @@ Here are the implemented features:
    - Exposition of a JMX resource
 
 ### Architecture
-**parent**:
+**parent**  
 It's the Bill Of Materials (BOM) of the application. Any version of a library or a plugin must be defined in it.  
 It also contains the plugins configuration that has to be shared between all Maven modules (Java version, lombok configuration, tests configuration, etc.).  
 All Maven modules composing the project inherit from this pom.
 
-**sandbox**
+**sandbox**  
 It provides components necessary to run the application (MySQL db, Redis, Kafka, Rest mocks).  
 It's used in 2 different contexts:
    - It lets you run the application locally, against a "real" environment (with fixed ports)
    - It provides those same components to the integration tests (with random ports)  
 The sandbox does not depend on any other Maven module (except the BOM).
 
-**dao**:
+**dao**  
 
-**business**:
+**business**  
 
-**controller**: it's the remote controller of the application.
+**controller**  
+It's the remote controller of the application.
 
 ### Build the application
 Pre-requisite: in order for testcontainers to work, a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).  
