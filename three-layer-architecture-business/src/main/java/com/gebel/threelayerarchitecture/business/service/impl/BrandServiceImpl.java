@@ -32,6 +32,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public long countBrands() {
 		return customCarBrandRepository.countWithoutSpringBug();
 	}

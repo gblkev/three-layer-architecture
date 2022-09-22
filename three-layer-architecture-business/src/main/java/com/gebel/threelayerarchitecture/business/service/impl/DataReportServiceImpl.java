@@ -1,6 +1,7 @@
 package com.gebel.threelayerarchitecture.business.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gebel.threelayerarchitecture.business.domain.DataReport;
 import com.gebel.threelayerarchitecture.business.service.interfaces.BrandService;
@@ -21,6 +22,7 @@ public class DataReportServiceImpl implements DataReportService {
 	private final BrandService brandService;
 
 	@Override
+	@Transactional(readOnly = true)
 	public DataReport generateDataReport() {
 		long colorsCount = colorService.countColors();
 		long driversCount = driverService.countDrivers();
