@@ -1,0 +1,3 @@
+DELETE FROM car;
+DELETE FROM driver;
+DELETE FROM color;
