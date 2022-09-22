@@ -2,7 +2,7 @@
 
 ### Introduction
 This application is a complete implementation (with real tests!) of a 3-layer architecture based on the following technologies:
-   - Java + Maven wrapper
+   - Java 17 + Maven wrapper
    - Spring boot
    - JUnit 5 + Testcontainers + MockServer
    - MySQL, Redis, Kafka
