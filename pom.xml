@@ -50,16 +50,7 @@
 	<dependencyManagement>
 		<dependencies>
 
-			<!-- Spring -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-parent</artifactId>
-				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<!-- Miscellaneous -->
+			<!-- Project -->
 			<dependency>
 				<groupId>com.gebel.threelayerarchitecture</groupId>
 				<artifactId>three-layer-architecture-dao</artifactId>
@@ -70,6 +61,17 @@
 				<artifactId>three-layer-architecture-business</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<!-- Spring -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Miscellaneous -->
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
