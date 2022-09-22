@@ -77,7 +77,7 @@ With a decent pc, it should be much, much faster.
 **business** -> only unit tests  
 **controller** -> only integration tests  
 All components necessary to run the application (MySQL, Redis, Kafka, etc.) are started with random ports once for every Maven module.  
-Then, data are cleared after each test / method.  
+Then, data is cleared after each test / method.  
 
 ### Endpoints
 Sandbox:  
