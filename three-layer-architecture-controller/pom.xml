@@ -17,6 +17,12 @@
 
 	<dependencies>
 
+		<!-- Project -->
+		<dependency>
+			<groupId>com.gebel.threelayerarchitecture</groupId>
+			<artifactId>three-layer-architecture-business</artifactId>
+		</dependency>
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -42,10 +48,6 @@
 		</dependency>
 
 		<!-- Miscellaneous -->
-		<dependency>
-			<groupId>com.gebel.threelayerarchitecture</groupId>
-			<artifactId>three-layer-architecture-business</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
