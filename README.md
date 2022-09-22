@@ -13,6 +13,12 @@ Here are the implemented features:
    - Consumption of a Kafka queue
    - Exposition of a JMX resource
 
+The 3-layer architecture should not get mixed up with the 3-tier architecture.  
+A layer is a division of a given application (so inside a unique JVM).  
+A tier is a division of a system into several applications.  
+Example of a 2-tier architecture: a frontend app (tier 1) running on a server A, communicating with a backend API (tier 2) running on a server B.  
+In other words, a n-tier architecture happens at a higher level of architecture than a n-layer architecture.  
+
 ### Architecture
 **parent**  
 It's the Bill Of Materials (BOM) of the application. Any version of a library or a plugin used in this project must be defined in it.  
@@ -42,6 +48,8 @@ Triggers can be varied:
    - A scheduled task
    - A JMX resource
    - etc.
+
+![Architecture](three-layer-architecture.drawio.png?raw=true)
 
 ### Build the application
 Pre-requisite: in order for testcontainers to work, a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).  
