@@ -16,6 +16,8 @@ import com.gebel.threelayerarchitecture.dao.redis.model.CarBrandModel;
 
 import lombok.RequiredArgsConstructor;
 
+// I had to implement a custom repository because of a bug in Spring data Redis at the moment:
+// https://stackoverflow.com/questions/68454213/spring-boot-redis-crud-repository-findbyid-or-findall-always-returns-optional-e
 @Repository
 @RequiredArgsConstructor
 public class CustomCarBrandRepositoryImpl implements CustomCarBrandRepository {
@@ -25,7 +27,6 @@ public class CustomCarBrandRepositoryImpl implements CustomCarBrandRepository {
 	private final RedisTemplate<String, Map<String, Object>> redisTemplate;
     private final CarBrandRepository carBrandRepository;
     
-    // https://stackoverflow.com/questions/68454213/spring-boot-redis-crud-repository-findbyid-or-findall-always-returns-optional-e
 	@Override
 	public Iterable<CarBrandModel> findAllWithoutSpringBug() {
 		return carBrandRepository.findAllById(findAllIds());
