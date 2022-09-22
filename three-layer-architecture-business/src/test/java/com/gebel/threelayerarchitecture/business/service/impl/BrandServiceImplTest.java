@@ -15,7 +15,6 @@ import com.gebel.threelayerarchitecture.business.domain.Brand;
 import com.gebel.threelayerarchitecture.business.domain.Model;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainBrandConverter;
 import com.gebel.threelayerarchitecture.business.service.converter.DomainModelConverter;
-import com.gebel.threelayerarchitecture.business.service.interfaces.ColorService;
 import com.gebel.threelayerarchitecture.dao.redis.interfaces.CustomCarBrandRepository;
 import com.gebel.threelayerarchitecture.dao.redis.model.CarBrandModel;
 import com.gebel.threelayerarchitecture.dao.redis.model.CarModelModel;
@@ -25,9 +24,6 @@ class BrandServiceImplTest {
 	
 	@Mock
 	private CustomCarBrandRepository customCarBrandRepository;
-	
-	@Mock
-	private ColorService colorService;
 	
 	private BrandServiceImpl brandService;
 	
