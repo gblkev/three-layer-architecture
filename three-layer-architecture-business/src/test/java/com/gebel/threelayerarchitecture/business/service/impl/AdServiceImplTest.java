@@ -1,6 +1,7 @@
 package com.gebel.threelayerarchitecture.business.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -10,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -214,7 +214,7 @@ class AdServiceImplTest {
 			.unsubscribePersonalizedAds(driverId);
 		
 		// Then
-		Assertions.assertThrows(ExecutionException.class,() -> {
+		assertThrows(ExecutionException.class,() -> {
 			// When
 			adService.unsubscribePersonalizedAds(driverId);
 		});
@@ -230,7 +230,7 @@ class AdServiceImplTest {
 			.unsubscribePersonalizedAds(driverId);
 		
 		// Then
-		Assertions.assertThrows(ExecutionException.class,() -> {
+		assertThrows(ExecutionException.class,() -> {
 			// When
 			adService.unsubscribePersonalizedAds(driverId);
 		});
