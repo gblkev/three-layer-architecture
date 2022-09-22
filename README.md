@@ -5,6 +5,7 @@ This application is a complete implementation (with real tests!) of a 3-layer ar
    - Spring boot
    - JUnit 5 + Testcontainers + MockServer
    - MySQL, Redis, Kafka
+
 Here are the implemented features:
    - An API (a v1 + a v2) with its Swagger
    - A scheduled task
@@ -13,11 +14,15 @@ Here are the implemented features:
 
 ### Run the application locally
 Pre-requisite: in order for testcontainers to work, a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).  
-Build modules in parallel (1 thread per available CPU core): mvn -T 0.5C clean install
+Build modules in parallel (1 thread per available CPU core):
+   - mvn -T 0.5C clean install
+
 Takes 4min on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
+```
 [wsl2]
 memory=8GB
 processors=4
+```
 With a decent pc, it should be much much faster.
 
 TODO To add a message in Kafka locally, do....
