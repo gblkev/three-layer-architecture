@@ -54,9 +54,11 @@ Triggers can be varied:
 ### Build the application
 Pre-requisite: in order for testcontainers to work, a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).  
 Build modules in parallel (1 thread per available CPU core):
-   - mvnw -T 1C clean install
+```
+mvnw -T 1C clean install
+```
 
-It takes 4 minutes on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
+It takes 4 minutes on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig:
 ```
 [wsl2]
 memory=8GB
@@ -65,20 +67,21 @@ processors=4
 With a decent pc, it should be much, much faster.
 
 ### Run the application locally
-
-TODO To add a message in Kafka locally, do....
-Just run the class SandboxApplication.
+   - Start the sandbox: run SandboxApplication class as a Spring Boot application from the IDE.
+   - Start the application: run ThreeLayerArchitectureApplication class as a Spring Boot application from the IDE.
+   - To add a new message in Kafka, run the following JMX operation (with JConsole for instance): threelayerarchitecture:name=kafka.consumers, publishCreateColorMessageToKafka
 
 ### Tests
-dao -> only IT because UT do not make any sense
-business -> UT (no IT because partially covered by e2e-tests)
-controller -> only IT because UT do not make any sense
-All containers necessary to run the application (MySQL, Redis, Kafka) are started with random ports once for every Maven module.
-Then, data are cleared after each test / method.
+**sandbox** -> only integration tests because unit tests do not make sense  
+**dao** -> only integration tests because unit tests do not make sense  
+**business** -> only unit tests  
+**controller** -> only integration tests  
+All components necessary to run the application (MySQL, Redis, Kafka, etc.) are started with random ports once for every Maven module.  
+Then, data are cleared after each test / method.  
 
 ### Endpoints
 Sandbox:  
    - API: http://localhost:8080/api/v1/colors  
    - Swagger: http://localhost:9090/actuator/swagger-ui  
    - Spring boot actuator: http://localhost:9090/actuator/health  
-jolokia (JMX over HTTP)  http://localhost:9090/actuator/jolokia/read/java.lang:type=Memory/HeapMemoryUsage
+   - Jolokia (JMX over HTTP):  http://localhost:9090/actuator/jolokia/read/java.lang:type=Memory/HeapMemoryUsage
