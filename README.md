@@ -1,7 +1,7 @@
 # three-layer-architecture
 
 This application is a complete implementation (with real tests!) of a 3-layer architecture based on the following technologies:
-   - Java
+   - Java + Maven wrapper
    - Spring boot
    - JUnit 5 + Testcontainers + MockServer
    - MySQL, Redis, Kafka
@@ -12,31 +12,42 @@ Here are the implemented features:
    - Consumption of a Kafka queue
    - Exposition of a JMX resource
 
-### Run the application locally
+### Architecture
+**parent**:
+It's the Bill Of Materials (BOM) of the application. Any version of a library or a plugin must be defined in it.  
+It also contains the plugins configuration that has to be shared between all Maven modules (Java version, lombok configuration, tests configuration, etc.).  
+All Maven modules composing the project inherit from this pom.
+
+**sandbox**
+It provides components necessary to run the application (MySQL db, Redis, Kafka, Rest mocks).  
+It's used in 2 different contexts:
+   - It lets you run the application locally, against a "real" environment (with fixed ports)
+   - It provides those same components to the integration tests (with random ports)  
+The sandbox does not depend on any other Maven module (except the BOM).
+
+**dao**:
+
+**business**:
+
+**controller**: it's the remote controller of the application.
+
+### Build the application
 Pre-requisite: in order for testcontainers to work, a Docker server has to be available on the machine (https://docs.docker.com/get-docker/).  
 Build modules in parallel (1 thread per available CPU core):
-   - mvn -T 0.5C clean install
+   - mvnw -T 1C clean install
 
-Takes 4min on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
+It takes 4 minutes on my 7-year old pc with the following configuration in my ${HOME}\.wslconfig :
 ```
 [wsl2]
 memory=8GB
 processors=4
 ```
-With a decent pc, it should be much much faster.
+With a decent pc, it should be much, much faster.
+
+### Run the application locally
 
 TODO To add a message in Kafka locally, do....
-
-### Architecture
-TODO
-sandbox: provides components necessary to run the application (mysql db, redis, kafka, rest mocks).
-It's used in 2 different contexts:
-   - It lets you run the application locally, against a "real" environment (with fixed ports)
-   - It provides those same components to the integration tests (with random ports)
-
-three-layer-architecture-sandbox starts components needed to run the application locally (database, cache, mock of external APIs, etc.). Just run the class SandboxApplication.  
-Pre-requisite: a Docker environment has to be available on the machine (https://docs.docker.com/get-docker/).
-
+Just run the class SandboxApplication.
 
 ### Tests
 dao -> only IT because UT do not make any sense
