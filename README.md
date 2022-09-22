@@ -67,7 +67,7 @@ processors=4
 With a decent pc, it should be much, much faster.
 
 ### Run the application locally
-   - Start the sandbox: run SandboxApplication class as a Spring Boot application from the IDE.
+   - Start the sandbox: run ThreeLayerArchitectureSandboxApplication class as a Spring Boot application from the IDE.
    - Start the application: run ThreeLayerArchitectureApplication class as a Spring Boot application from the IDE.
    - To add a new message in Kafka, run the following JMX operation (with JConsole for instance): threelayerarchitecture:name=kafka.consumers, publishCreateColorMessageToKafka
 

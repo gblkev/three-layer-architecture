@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class SandboxApplication {
+class ThreeLayerArchitectureSandboxApplication {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(SandboxApplication.class, args);
+		SpringApplication.run(ThreeLayerArchitectureSandboxApplication.class, args);
 	}
 	
 }
